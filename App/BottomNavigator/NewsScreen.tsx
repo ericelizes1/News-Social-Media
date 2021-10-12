@@ -25,7 +25,7 @@ const NewsScreen:FC = ({navigation}: any) => {
         name='StackScreen'
         component={StackScreen}
         options={{
-          title: 'Shayan',
+          title: 'Deven\'s Stack',
           headerStyle: {height: Platform.OS === 'ios' ? 75 : 100},
           headerRight: () => (
             <Pressable
