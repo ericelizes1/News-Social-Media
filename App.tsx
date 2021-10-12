@@ -1,7 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import 'react-native-gesture-handler';
 import React, { FC } from 'react';
-import { SafeAreaView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -21,6 +20,9 @@ const App:FC = () => {
   
   return(
     <NavigationContainer>
+      <StatusBar
+        animated={true}
+        backgroundColor="white"/>
       <MainNavigator.Navigator
         initialRouteName='BottomNavigator'
       >
