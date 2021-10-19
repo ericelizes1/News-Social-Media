@@ -14,6 +14,7 @@ import EditProfileScreen from './App/EditProfileScreen';
 import PostScreen from './App/PostScreen';
 import ArticleScreen from './App/ArticleScreen';
 import StoryScreen from './App/StoryScreen';
+import Login from './App/Login';
 
 const App:FC = () => {
   const MainNavigator : any =  createStackNavigator();
@@ -29,6 +30,13 @@ const App:FC = () => {
         <MainNavigator.Screen
           name='BottomNavigator'
           component={BottomNavigator}
+          options={{
+            headerShown: false
+          }}
+        />
+        <MainNavigator.Screen
+          name='Login'
+          component={Login}
           options={{
             headerShown: false
           }}

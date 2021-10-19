@@ -1,26 +1,51 @@
 import React, { FC } from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
-import { Text } from 'react-native-elements';
+import { SafeAreaView, View, ScrollView, StyleSheet, Pressable } from 'react-native';
+import { Text, Header, Icon, Badge } from 'react-native-elements';
 
-import StackMiniCard from './StackMiniCard';
+import StackMiniCard from './ForYouScreen/StackMiniCard';
 
-const ForYouScreen:FC = () => {
+const ForYouScreen:FC = ({navigation}:any) => {
   return(
-    <ScrollView style={styles.container}>
-      <StackMiniCard/>
-      <StackMiniCard/>
-      <StackMiniCard/>
-      <StackMiniCard/>
-      <StackMiniCard/>
-      <StackMiniCard/>
-      <StackMiniCard/>
-      <StackMiniCard/>
-      
-    </ScrollView>
+    <View>
+      <Header 
+        backgroundColor='white'
+        containerStyle={styles.headerContainer}
+        centerComponent={
+          <Text h4>Your Stacks</Text>
+        }
+        rightComponent={
+          <Pressable
+            onPress={() => navigation.navigate('SubscriptionMenuScreen')}>
+            <Icon name='bookmark-multiple-outline' type='material-community' color='black' size={35}/>
+            <Badge
+              status="error"
+              containerStyle={{ position: 'absolute', top: 0, right: 2 }}
+            />
+          </Pressable>
+        }
+      >
+      </Header>
+      <ScrollView style={styles.container}>
+        <StackMiniCard/>
+        <StackMiniCard/>
+        <StackMiniCard/>
+        <StackMiniCard/>
+        <StackMiniCard/>
+        <StackMiniCard/>
+        <StackMiniCard/>
+        <StackMiniCard/>
+        
+      </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  headerContainer: {
+    height: 100,
+    borderBottomWidth: 1,
+    borderBottomColor: '#cccccc',
+  },
   container: {
     padding:10,
     flexDirection: 'column',

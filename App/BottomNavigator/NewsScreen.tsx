@@ -1,13 +1,16 @@
 import React, { FC } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Platform, Pressable, Image, StyleSheet } from 'react-native';
+import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
+import { SafeAreaView, StyleSheet, Pressable } from 'react-native';
+import { Avatar, Text, Icon } from 'react-native-elements';
 
-import StackMenuScreen from './NewsScreen/StackMenuScreen';
 import StackScreen from './NewsScreen/StackScreen';
 import ProfileScreen from '../ProfileScreen';
 import PostScreen from '../PostScreen';
 import FollowersScreen from '../FollowersScreen';
 import FollowingScreen from '../FollowingScreen';
+import StackMenuScreen from './NewsScreen/StackMenuScreen';
+
 
 const NewsScreen:FC = ({navigation}: any) => {
   const NewsNavigator = createStackNavigator();
@@ -19,21 +22,22 @@ const NewsScreen:FC = ({navigation}: any) => {
       <NewsNavigator.Screen
         name='StackMenuScreen'
         component={StackMenuScreen}
-        options={{ title: 'Stacks'}}
+        options={{header: () => (null)}}
       />
       <NewsNavigator.Screen
         name='StackScreen'
         component={StackScreen}
         options={{
           title: 'Deven\'s Stack',
-          headerStyle: {height: Platform.OS === 'ios' ? 75 : 100},
+          headerStyle: {height: 110},
           headerRight: () => (
-            <Pressable
-              onPress={() => {navigation.navigate('ProfileScreen')}}>
-              <Image 
-                  source={require('./NewsScreen/StackMenuScreen/img/img2.jpg')}
-                  style={styles.profilePic}/>
-            </Pressable>
+            <Avatar
+              rounded
+              size='medium'
+              onPress={() => {navigation.navigate('ProfileScreen')}}
+              source={require('./NewsScreen/StackMenuScreen/img/img2.jpg')}
+              containerStyle={styles.profilePic}
+            />
           )
         }}
       />
@@ -59,12 +63,7 @@ const NewsScreen:FC = ({navigation}: any) => {
 
 const styles = StyleSheet.create({
   profilePic: {
-    width: 44,
-    height: 44,
-    borderRadius: 25,
-    marginRight: Platform.OS === 'ios' ? 5 : 20,
-    marginBottom: 10,
-    marginTop: 10,
+    margin: 10,
   },
 })
 export default NewsScreen;

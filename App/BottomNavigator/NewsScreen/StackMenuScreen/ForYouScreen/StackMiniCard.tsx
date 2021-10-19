@@ -13,7 +13,7 @@ const StackMiniCard:FC = () => {
       ]}
       onPress={() => {navigation.navigate('StackScreen')}}>
       <Image 
-        source={require('./img/img2.jpg')}
+        source={require('../img/img2.jpg')}
         style={styles.image}/>
     </Pressable>
   );
@@ -31,7 +31,6 @@ const styles = StyleSheet.create({
     width: '100%',
     borderRadius: 6,
     alignItems: 'center',
-
   }
 })
 
