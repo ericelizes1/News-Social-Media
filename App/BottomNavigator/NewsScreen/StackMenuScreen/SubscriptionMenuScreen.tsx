@@ -26,6 +26,8 @@ const SubscriptionMenuScreen:FC = ({navigation}:any) => {
 const styles = StyleSheet.create({
   headerContainer: {
     height: 100,
+    borderBottomWidth: 1,
+    borderBottomColor: '#dedede',
   },
   container: {
     backgroundColor: 'white',

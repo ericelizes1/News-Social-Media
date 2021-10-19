@@ -14,18 +14,19 @@ import EditProfileScreen from './App/EditProfileScreen';
 import PostScreen from './App/PostScreen';
 import ArticleScreen from './App/ArticleScreen';
 import StoryScreen from './App/StoryScreen';
-import Login from './App/Login';
+import LoginScreen from './App/LoginScreen';
 
 const App:FC = () => {
   const MainNavigator : any =  createStackNavigator();
-  
+  const isLoggedIn:boolean = false;
+
   return(
     <NavigationContainer>
       <StatusBar
         animated={true}
         backgroundColor="white"/>
       <MainNavigator.Navigator
-        initialRouteName='BottomNavigator'
+        initialRouteName= {isLoggedIn ? 'BottomNavigator' : 'LoginScreen'}
       >
         <MainNavigator.Screen
           name='BottomNavigator'
@@ -35,8 +36,8 @@ const App:FC = () => {
           }}
         />
         <MainNavigator.Screen
-          name='Login'
-          component={Login}
+          name='LoginScreen'
+          component={LoginScreen}
           options={{
             headerShown: false
           }}

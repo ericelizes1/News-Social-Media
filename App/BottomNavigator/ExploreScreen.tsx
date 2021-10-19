@@ -17,7 +17,9 @@ const ExploreScreen:FC = () => {
       <ExploreNavigator.Screen
         name='MainExploreScreen'
         component={MainExploreScreen}
-        options={{ title: 'Explore'}}
+        options={{ 
+          title: 'Explore',
+          header: () => (null)}}
       />
       <ExploreNavigator.Screen
         name='ProfileScreen'

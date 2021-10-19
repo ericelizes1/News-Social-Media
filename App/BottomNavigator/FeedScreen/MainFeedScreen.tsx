@@ -1,13 +1,27 @@
 import React, { FC } from 'react';
-import { Text } from 'react-native';
-import { ScrollView, StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet, Pressable, View } from 'react-native';
+import { Header, Text, Icon } from 'react-native-elements';
 
 import PostCard from './MainFeedScreen/PostCard';
 
 
-const MainFeedScreen:FC = () => {
+const MainFeedScreen:FC = ({navigation}:any) => {
   return(
-    <ScrollView style={styles.container}>
+    <View>
+      <Header 
+          backgroundColor='white'
+          containerStyle={styles.headerContainer}
+          centerComponent={
+            <Text h4>Feed</Text>
+          }
+          rightComponent={
+            <Pressable
+              onPress={() => navigation.navigate('SubscriptionMenuScreen')}>
+              <Icon name='bell-outline' type='material-community' color='black' size={35}/>
+            </Pressable>
+          }
+      />
+      <ScrollView style={styles.container}>
         <PostCard/>
         <PostCard/>
         <PostCard/>
@@ -17,10 +31,16 @@ const MainFeedScreen:FC = () => {
         <PostCard/>
         <PostCard/>
       </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  headerContainer: {
+    height: 100,
+    borderBottomWidth: 1,
+    borderBottomColor: '#dedede',
+  },
   container: {
     flexDirection: 'column',
     alignContent: 'center',

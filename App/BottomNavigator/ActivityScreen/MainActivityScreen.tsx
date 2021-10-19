@@ -1,28 +1,32 @@
 import React, { FC } from 'react';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { Pressable, StyleSheet } from 'react-native';
+import { Header, Text, Icon } from 'react-native-elements';
 
-import DMMenuScreen from './MainActivityScreen/DMMenuScreen';
-import NotificationsScreen from './MainActivityScreen/NotificationsScreen';
-
-const MainActivityScreen:FC = () => {
-  const MainActivityNavigator = createMaterialTopTabNavigator();
+const MainActivityScreen:FC = ({navigation}:any) => {
 
   return(
-    <MainActivityNavigator.Navigator
-      initialRouteName='NotificationsScreen'
-    >
-      <MainActivityNavigator.Screen
-        name='NotificationsScreen'
-        component={NotificationsScreen}
-        options={{ title: 'Notifications'}}
-      />
-      <MainActivityNavigator.Screen
-        name='DMMenuScreen'
-        component={DMMenuScreen}
-        options={{ title: 'Messages'}}
-      />      
-    </MainActivityNavigator.Navigator>
+    <Header 
+      backgroundColor='white'
+      containerStyle={styles.headerContainer}
+      centerComponent={
+        <Text h4>Activity</Text>
+      }
+      rightComponent={
+        <Pressable
+          onPress={() => navigation.navigate('DMMenuScreen')}>
+          <Icon name='bell-outline' type='material-community' color='black' size={35}/>
+        </Pressable>
+      }
+    />
   );
 }
+
+const styles = StyleSheet.create({
+  headerContainer: {
+    height: 100,
+    borderBottomWidth: 1,
+    borderBottomColor: '#dedede',
+  },
+})
 
 export default MainActivityScreen;

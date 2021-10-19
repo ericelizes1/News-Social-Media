@@ -1,51 +1,82 @@
 import React, { FC } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { StyleSheet, Pressable, View, Text, Image, TouchableOpacity } from 'react-native';
-import { Card, ListItem, Button, Icon, Avatar } from 'react-native-elements';
+import { StyleSheet, Pressable, View, Image, TouchableHighlight } from 'react-native';
+import { Icon, Avatar } from 'react-native-elements';
+import { Caption, Title, Subheading, Headline, Text, Paragraph } from 'react-native-paper';
 
 const PostCard:FC = () => {
   const navigation = useNavigation(); 
+
   return(
-      <TouchableOpacity onPress={() => {navigation.navigate('PostScreen')}}>
-        <Card containerStyle={styles.card}> 
-        <View style={containerStyle.rowContainer}>
-          <Avatar
+      <Pressable
+        onPress={() => {navigation.navigate('PostScreen')}}
+        style={styles.card}
+      >
+        <View style={{
+          flexDirection: 'row', 
+          justifyContent: 'flex-start', 
+          alignItems: 'center'}}>
+            <Avatar
               rounded
               size='medium'
               source={require('./img/img2.jpg')}
               containerStyle={styles.profilePic}
             />
-            <Text>Eric the terrorist
-              Time
-              Date
-            </Text>
+          <View style={{
+            flexDirection: 'column', 
+            justifyContent: 'center'}}>
+            <View style={{
+              flexDirection: 'row', 
+              justifyContent: 'flex-start', 
+              alignItems: 'flex-start',
+              marginBottom: -5
+            }}>
+              <Text style={{fontSize:15}}>Deven Desai</Text>
+              <Caption style={{marginLeft: 5}}>• 2h ago</Caption>
             </View>
-          <Card.Image source={require('./img/img2.jpg')}
-            style={styles.image}>
-          </Card.Image>
-          <Card.Divider/>
-            <Text style={{marginBottom: 10}}>
-              The idea with React Native Elements is more about component structure than actual design.
-            </Text>
-            <View style={containerStyle.rowContainer}>
-            <Button
-            type='clear'
-            icon={<Icon name='arrow-up' type="material-community" color='purple' />}
-            buttonStyle={{borderRadius: 0, marginLeft: 290, marginRight: 0, marginBottom: 0}}/>
-            <Button
-            type='clear'
-            icon={<Icon name='rocket' type="material-community" color='purple' />}
-            buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}} />
-            </View>
-        </Card>
-      </TouchableOpacity>
+            <Caption>@devendesai1</Caption>
+          </View>
+        </View>
+        <Pressable style={{
+          borderWidth: 1,
+          borderRadius: 5,
+          borderColor: '#dedede',
+          flexDirection: 'row'
+        }}>
+          <Image 
+            source={require('./img/img2.jpg')}
+            style={styles.image}/>
+          <Text style={{flex: 1, flexWrap: 'wrap', margin: 5}}>
+            The idea with React Native Elements is more about component structure than actual design.
+          </Text>
+        </Pressable>
+        <View style={{
+          flexDirection: 'row',    
+          justifyContent: 'flex-end',  
+          alignItems: 'center'
+        }}>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Pressable>
+              <Icon name='arrow-up' type="material-community" color='purple' />
+            </Pressable>
+            <Text>32</Text>
+          </View>
+          <View style={{flexDirection: 'row', alignItems: 'center', marginLeft: 10}}>
+            <Pressable>
+              <Icon name='pepper-hot' type="font-awesome-5" color='purple' />
+            </Pressable>
+            <Text>32</Text>
+          </View>
+        </View>
+      </Pressable>
   );
 }
 const styles = StyleSheet.create({
   image: {
-    marginRight: 200,
-    marginBottom: 10, 
-    alignItems: 'center',
+    height: 100,
+    width: 100,
+    margin: 10,
+    borderRadius: 5,
   },
   post: {
     margin: 10,
@@ -56,9 +87,10 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   card:{
-    paddingLeft: 0,
-    margin: 0,
+    padding: 10,
     marginBottom: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#dedede',
   }
 })
 const containerStyle = StyleSheet.create({
@@ -67,7 +99,9 @@ const containerStyle = StyleSheet.create({
     backgroundColor: "#ffffff",
   },
   rowContainer: {
-    flexDirection: 'row'
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
   }
 }); 
 

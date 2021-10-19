@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
   headerContainer: {
     height: 100,
     borderBottomWidth: 1,
-    borderBottomColor: '#cccccc',
+    borderBottomColor: '#dedede',
   },
   container: {
     padding:10,

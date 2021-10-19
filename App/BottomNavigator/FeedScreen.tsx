@@ -20,16 +20,7 @@ const FeedScreen:FC = ({navigation}:any) => {
       <FeedNavigator.Screen
         name='MainFeedScreen'
         component={MainFeedScreen}
-        options={{ 
-          title: 'Feed',
-          headerLeft: () => (  
-            <Button
-              onPress={() => navigation.navigate('StoryScreen')}
-              type='clear'
-              icon={<Icon name='bell' type='material-community' color='red' size={25}/>}
-            />
-          ),
-        }}
+        options={{header: () => (null)}}
       />
       <FeedNavigator.Screen
         name='StoryMenuScreen'
