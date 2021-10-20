@@ -18,13 +18,14 @@ const BottomNavigator:FC = () => {
       screenOptions={{
         keyboardHidesTabBar: true,
       }}
-      barStyle={{backgroundColor: 'white', borderTopWidth: 1, borderColor: '#dedede'}}
+      barStyle={{backgroundColor: 'white', borderTopWidth: 1, borderColor: '#dedede', height: '9.5%' }}
+      shifting={false}
     >
       <TabNavigator.Screen
         name="FeedScreen"
         component={FeedScreen}
         options={{
-          tabBarLabel: 'Home',
+          tabBarLabel: false,
           tabBarIcon: ({focused}:any) =>
             <Icon name={focused ? 'home' :'home-outline'} 
               type='material-community' 
@@ -36,7 +37,7 @@ const BottomNavigator:FC = () => {
         name="ExploreScreen"
         component={ExploreScreen}
         options={{
-          tabBarLabel: 'Explore',
+          tabBarLabel: false,
           tabBarIcon: ({focused}:any) => (
               <Icon name={focused ? 'compass' :'compass-outline'} 
                 type='material-community' 
@@ -48,7 +49,7 @@ const BottomNavigator:FC = () => {
         name="NewsScreen"
         component={NewsScreen}
         options={{
-          tabBarLabel: 'Stacks',
+          tabBarLabel: false,
           tabBarIcon: ({focused}:any) =>
             <Icon name={focused ? 'newspaper-variant' : 'newspaper-variant-outline'} 
               type='material-community' 
@@ -60,7 +61,8 @@ const BottomNavigator:FC = () => {
         name="ActivityScreen"
         component={ActivityScreen}
         options={{
-          tabBarLabel: 'Activity',
+          tabBarLabel: false,
+          tabBarBadge: true,
           tabBarIcon: ({focused}:any) => 
             <Icon name={focused ? 'bell' : 'bell-outline'} 
               type='material-community' 
@@ -72,7 +74,7 @@ const BottomNavigator:FC = () => {
         name="MainProfileScreen"
         component={MainProfileScreen}
         options={{
-          tabBarLabel: 'Me',
+          tabBarLabel: false,
           tabBarIcon: ({focused}:any) =>
             <Icon name={focused ? 'account' : 'account-outline'} 
               type='material-community' 
