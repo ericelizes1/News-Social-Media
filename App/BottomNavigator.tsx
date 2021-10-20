@@ -17,7 +17,7 @@ const BottomNavigator:FC = () => {
       options={{
         keyboardHidesTabBar: true,
       }}
-      barStyle={{backgroundColor: 'darkviolet'}}
+      barStyle={{backgroundColor: 'white'}}
     >
       <TabNavigator.Screen
         name="FeedScreen"
@@ -25,7 +25,7 @@ const BottomNavigator:FC = () => {
         options={{
           tabBarLabel: 'Home',
           tabBarIcon: ({color}:any) =>
-            <Icon name='home' type='material-community' color={color} size={25}/>
+            <Icon name='home' type='material-community' color={'purple'} size={25}/>
         }}
       />
       <TabNavigator.Screen
@@ -34,7 +34,7 @@ const BottomNavigator:FC = () => {
         options={{
           tabBarLabel: 'Explore',
           tabBarIcon: ({color}:any) =>
-            <Icon name='compass' type='material-community' color={color} size={25}/>
+            <Icon name='compass' type='material-community' color={'purple'} size={25}/>
         }}
       />
       <TabNavigator.Screen
@@ -43,7 +43,7 @@ const BottomNavigator:FC = () => {
         options={{
           tabBarLabel: 'Stacks',
           tabBarIcon: ({color}:any) =>
-            <Icon name='newspaper-variant' type='material-community' color={color} size={25}/>
+            <Icon name='newspaper-variant' type='material-community' color={'purple'} size={25}/>
         }}
       />
       <TabNavigator.Screen
@@ -52,7 +52,7 @@ const BottomNavigator:FC = () => {
         options={{
           tabBarLabel: 'Activity',
           tabBarIcon: ({color}:any) => 
-            <Icon name='bell' type='material-community' color={color} size={25}/>
+            <Icon name='bell' type='material-community' color={'purple'} size={25}/>
         }}
       />
       <TabNavigator.Screen
@@ -61,7 +61,7 @@ const BottomNavigator:FC = () => {
         options={{
           tabBarLabel: 'Me',
           tabBarIcon: ({color}:any) =>
-            <Icon name='account' type='material-community' color={color} size={25}/>
+            <Icon name='account' type='material-community' color={'purple'} size={25}/>
         }}
       />
     </TabNavigator.Navigator>
