@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { Pressable } from 'react-native';
 import { Icon, Text } from 'react-native-elements';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 
@@ -14,18 +15,21 @@ const BottomNavigator:FC = () => {
   return(
     <TabNavigator.Navigator
       initialRouteName='FeedScreen'
-      options={{
+      screenOptions={{
         keyboardHidesTabBar: true,
       }}
-      barStyle={{backgroundColor: 'white'}}
+      barStyle={{backgroundColor: 'white', borderTopWidth: 1, borderColor: '#dedede'}}
     >
       <TabNavigator.Screen
         name="FeedScreen"
         component={FeedScreen}
         options={{
           tabBarLabel: 'Home',
-          tabBarIcon: ({color}:any) =>
-            <Icon name='home' type='material-community' color={'purple'} size={25}/>
+          tabBarIcon: ({focused}:any) =>
+            <Icon name={focused ? 'home' :'home-outline'} 
+              type='material-community' 
+              color={'black'} 
+              size={25}/>
         }}
       />
       <TabNavigator.Screen
@@ -33,8 +37,11 @@ const BottomNavigator:FC = () => {
         component={ExploreScreen}
         options={{
           tabBarLabel: 'Explore',
-          tabBarIcon: ({color}:any) =>
-            <Icon name='compass' type='material-community' color={'purple'} size={25}/>
+          tabBarIcon: ({focused}:any) => (
+              <Icon name={focused ? 'compass' :'compass-outline'} 
+                type='material-community' 
+                color={'black'} 
+                size={25}/>),        
         }}
       />
       <TabNavigator.Screen
@@ -42,8 +49,11 @@ const BottomNavigator:FC = () => {
         component={NewsScreen}
         options={{
           tabBarLabel: 'Stacks',
-          tabBarIcon: ({color}:any) =>
-            <Icon name='newspaper-variant' type='material-community' color={'purple'} size={25}/>
+          tabBarIcon: ({focused}:any) =>
+            <Icon name={focused ? 'newspaper-variant' : 'newspaper-variant-outline'} 
+              type='material-community' 
+              color={'black'} 
+              size={25}/>
         }}
       />
       <TabNavigator.Screen
@@ -51,8 +61,11 @@ const BottomNavigator:FC = () => {
         component={ActivityScreen}
         options={{
           tabBarLabel: 'Activity',
-          tabBarIcon: ({color}:any) => 
-            <Icon name='bell' type='material-community' color={'purple'} size={25}/>
+          tabBarIcon: ({focused}:any) => 
+            <Icon name={focused ? 'bell' : 'bell-outline'} 
+              type='material-community' 
+              color={'black'} 
+              size={25}/>
         }}
       />
       <TabNavigator.Screen
@@ -60,8 +73,11 @@ const BottomNavigator:FC = () => {
         component={MainProfileScreen}
         options={{
           tabBarLabel: 'Me',
-          tabBarIcon: ({color}:any) =>
-            <Icon name='account' type='material-community' color={'purple'} size={25}/>
+          tabBarIcon: ({focused}:any) =>
+            <Icon name={focused ? 'account' : 'account-outline'} 
+              type='material-community' 
+              color={'black'} 
+              size={25}/>
         }}
       />
     </TabNavigator.Navigator>
