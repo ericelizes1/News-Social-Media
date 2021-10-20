@@ -5,7 +5,7 @@ import { Icon, Avatar } from 'react-native-elements';
 import { Caption, Title, Subheading, Headline, Text, Paragraph } from 'react-native-paper';
 
 const PostCard:FC = () => {
-  const navigation = useNavigation(); 
+  const navigation:any = useNavigation(); 
 
   return(
       <Pressable

@@ -4,7 +4,7 @@ import { StyleSheet, Pressable, Image, View } from 'react-native';
 import { Text } from 'react-native-elements';
 
 const StackMiniCard:FC = () => {
-  const navigation = useNavigation(); 
+  const navigation:any = useNavigation(); 
 
   return(
     <Pressable 
