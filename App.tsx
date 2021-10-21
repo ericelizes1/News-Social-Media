@@ -18,7 +18,7 @@ import LoginScreen from './App/LoginScreen';
 
 const App:FC = () => {
   const MainNavigator : any =  createStackNavigator();
-  const isLoggedIn:boolean = false;
+  const isLoggedIn:boolean = true;
 
   return(
     <NavigationContainer>

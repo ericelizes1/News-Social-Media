@@ -23,17 +23,15 @@ const ForYouScreen:FC = ({navigation}:any) => {
             />
           </Pressable>
         }
-      >
-      </Header>
+      />
       <ScrollView style={styles.container}>
-        <StackMiniCard/>
-        <StackMiniCard/>
-        <StackMiniCard/>
-        <StackMiniCard/>
-        <StackMiniCard/>
-        <StackMiniCard/>
-        <StackMiniCard/>
-        <StackMiniCard/>
+      <StackMiniCard size={1}/>
+        <StackMiniCard size={2}/>
+        <StackMiniCard size={3}/>        
+        <StackMiniCard size={3}/>
+        <StackMiniCard size={2}/>
+        <StackMiniCard size={2}/>
+        <StackMiniCard size={2}/>
         
       </ScrollView>
     </View>

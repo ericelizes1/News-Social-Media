@@ -7,6 +7,7 @@
     "start": "expo start"
   },
   "dependencies": {
+    "@react-navigation/bottom-tabs": "^6.0.9",
     "@react-navigation/material-bottom-tabs": "^6.0.7",
     "@react-navigation/material-top-tabs": "^6.0.4",
     "@react-navigation/native": "^6.0.4",

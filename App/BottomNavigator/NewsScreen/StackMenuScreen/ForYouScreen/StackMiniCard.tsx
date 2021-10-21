@@ -3,13 +3,26 @@ import { useNavigation } from '@react-navigation/native';
 import { StyleSheet, Pressable, Image, View } from 'react-native';
 import { Text } from 'react-native-elements';
 
-const StackMiniCard:FC = () => {
+export interface PropType {
+  size: number,
+}
+
+const StackMiniCard:FC<PropType> = (props: PropType) => {
   const navigation:any = useNavigation(); 
+
+  var corr = {
+    1 : 400,
+    2 : 300,
+    3 : 200,
+  };
+  var cardHeight = corr[props.size];
 
   return(
     <Pressable 
-      style=  {({pressed}) => [{borderWidth: pressed ? 3 : 0},
-                styles.container
+      style=  {({pressed}) => [{
+        borderWidth: pressed ? 3 : 0,
+        height: cardHeight},
+        styles.container
       ]}
       onPress={() => {navigation.navigate('StackScreen')}}>
       <Image 
@@ -22,7 +35,6 @@ const StackMiniCard:FC = () => {
 const styles = StyleSheet.create({
   container: {
     margin: 10,
-    height: 200,
     alignItems: 'center',
     borderColor: 'white',
   },
