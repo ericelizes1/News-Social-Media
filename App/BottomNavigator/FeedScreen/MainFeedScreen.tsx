@@ -12,7 +12,7 @@ const MainFeedScreen:FC = ({navigation}:any) => {
           backgroundColor='white'
           containerStyle={styles.headerContainer}
           centerComponent={
-            <Text h4>Feed</Text>
+            <Text h4 style={{fontFamily: 'Palatino'}}>Feed</Text>
           }
           rightComponent={
             <Pressable

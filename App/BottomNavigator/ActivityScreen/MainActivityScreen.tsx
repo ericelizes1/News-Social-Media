@@ -13,7 +13,8 @@ const MainActivityScreen:FC = ({navigation}:any) => {
       }
       rightComponent={
         <Pressable
-          onPress={() => navigation.navigate('DMMenuScreen')}>
+          onPress={() => navigation.navigate('DMMenuScreen')}
+        > 
           <Icon name='bell-outline' type='material-community' color='black' size={35}/>
         </Pressable>
       }

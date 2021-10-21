@@ -11,11 +11,14 @@ const ForYouScreen:FC = ({navigation}:any) => {
         backgroundColor='white'
         containerStyle={styles.headerContainer}
         centerComponent={
-          <Text h4>Your Stacks</Text>
+          //Copperplate-Bold
+          //Palatino
+          <Text h4 style={{fontFamily: 'Copperplate-Bold'}}>Your Stacks</Text>
         }
         rightComponent={
           <Pressable
-            onPress={() => navigation.navigate('SubscriptionMenuScreen')}>
+            onPress={() => navigation.navigate('SubscriptionMenuScreen')}
+          >
             <Icon name='bookmark-multiple-outline' type='material-community' color='black' size={35}/>
             <Badge
               status="error"
@@ -25,7 +28,7 @@ const ForYouScreen:FC = ({navigation}:any) => {
         }
       />
       <ScrollView style={styles.container}>
-      <StackMiniCard size={1}/>
+        <StackMiniCard size={1}/>
         <StackMiniCard size={2}/>
         <StackMiniCard size={3}/>        
         <StackMiniCard size={3}/>
