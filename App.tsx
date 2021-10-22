@@ -3,6 +3,7 @@ import 'react-native-gesture-handler';
 import React, { FC } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { Animated } from 'react-native';
 
 import ProfileScreen from './App/ProfileScreen';
 import BottomNavigator from './App/BottomNavigator';
@@ -16,10 +17,48 @@ import ArticleScreen from './App/ArticleScreen';
 import StoryScreen from './App/StoryScreen';
 import LoginScreen from './App/LoginScreen';
 
+
 const App:FC = () => {
   const MainNavigator : any =  createStackNavigator();
-  const isLoggedIn:boolean = true;
-
+  const isLoggedIn:boolean = false;
+  
+  const SlideFromTop = ({ current, next, inverted, layouts: { screen } }) => {
+    const progress = Animated.add(
+        current.progress.interpolate({
+            inputRange: [0, 1],
+            outputRange: [0, 1],
+            extrapolate: 'clamp',
+        }),
+        next
+            ? next.progress.interpolate({
+                inputRange: [1, 2],
+                outputRange: [0, 1],
+                extrapolate: 'clamp',
+            })
+            : 0
+    );
+    
+    return {
+        cardStyle: {
+            transform: [
+                {
+                    translateY: Animated.multiply(
+                        progress.interpolate({
+                            inputRange: [0, 1, 2],
+                            outputRange: [
+                              -screen.height,
+                              0,
+                              -screen.height,
+                            ],
+                            extrapolate: 'clamp',
+                        }),
+                        inverted
+                    ),
+                },
+            ],
+        },
+    };
+  };
   return(
     <NavigationContainer>
       <StatusBar
@@ -61,6 +100,11 @@ const App:FC = () => {
         <MainNavigator.Screen
           name='StoryScreen'
           component={StoryScreen}
+          options={{
+            headerShown: false,
+            cardStyleInterpolator: SlideFromTop,
+            }
+          }
         />
         <MainNavigator.Screen
           name='ArticleScreen'

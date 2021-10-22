@@ -9,13 +9,12 @@ const MainActivityScreen:FC = ({navigation}:any) => {
       backgroundColor='white'
       containerStyle={styles.headerContainer}
       centerComponent={
-        <Text h4>Activity</Text>
+        <Text h4 style={{fontFamily: 'Palatino'}}>Activity</Text>
       }
       rightComponent={
         <Pressable
-          onPress={() => navigation.navigate('DMMenuScreen')}
-        > 
-          <Icon name='bell-outline' type='material-community' color='black' size={35}/>
+          onPress={() => navigation.navigate('DMMenuScreen')}> 
+          <Icon name='bell-outline' type='material-community' color='black' size={28} style={styles.dmIcon}/>
         </Pressable>
       }
     />
@@ -24,10 +23,13 @@ const MainActivityScreen:FC = ({navigation}:any) => {
 
 const styles = StyleSheet.create({
   headerContainer: {
-    height: 100,
+    height: 93,
     borderBottomWidth: 1,
     borderBottomColor: '#dedede',
   },
+  dmIcon:{
+    margin: -2,
+  }
 })
 
 export default MainActivityScreen;

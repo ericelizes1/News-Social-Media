@@ -14,10 +14,10 @@ const MainFeedScreen:FC = ({navigation}:any) => {
           centerComponent={
             <Text h4 style={{fontFamily: 'Palatino'}}>Feed</Text>
           }
-          rightComponent={
+          leftComponent={
             <Pressable
-              onPress={() => navigation.navigate('StoryMenuScreen')}>
-              <Icon name='bell-outline' type='material-community' color='black' size={35}/>
+              onPress={() => navigation.navigate('StoryScreen')}>
+              <Icon name='bell-outline' type='material-community' color='black' size={28} style={styles.storyIcon} />
             </Pressable>
           }
       />
@@ -30,6 +30,7 @@ const MainFeedScreen:FC = ({navigation}:any) => {
         <PostCard/>
         <PostCard/>
         <PostCard/>
+        <Text h4 style={{fontFamily: 'Palatino', alignSelf: 'center', margin: 25}}>Congrats! Your at the bottom</Text>
       </ScrollView>
     </View>
   );
@@ -37,7 +38,7 @@ const MainFeedScreen:FC = ({navigation}:any) => {
 
 const styles = StyleSheet.create({
   headerContainer: {
-    height: 100,
+    height: 93,
     borderBottomWidth: 1,
     borderBottomColor: '#dedede',
   },
@@ -46,6 +47,9 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     backgroundColor: 'white',
   },
+  storyIcon: {
+    marginTop: -2,
+  }
 })
 
 export default MainFeedScreen;
