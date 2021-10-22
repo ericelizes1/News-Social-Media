@@ -28,14 +28,31 @@ const ForYouScreen:FC = ({navigation}:any) => {
         }
       />
       <ScrollView style={styles.container}>
-        <StackMiniCard size={1}/>
-        <StackMiniCard size={2}/>
-        <StackMiniCard size={3}/>        
-        <StackMiniCard size={3}/>
-        <StackMiniCard size={2}/>
-        <StackMiniCard size={2}/>
-        <StackMiniCard size={2}/>
-        
+        <StackMiniCard 
+          size={2} 
+          title='Mobile Device Reviews' 
+          username='linustechtips'
+          imgUrl='https://techcrunch.com/wp-content/uploads/2020/09/2020-09-10-083646924.jpg?w=1390&crop=1'
+        />
+        <StackMiniCard 
+          size={2}
+          title='Washington Football Team'
+          username='devendesai1'
+          imgUrl='https://thespun.com/wp-content/uploads/2020/12/GettyImages-1289992812-775x465.jpg'
+        />
+        <StackMiniCard 
+          size={3}
+          title='When Cars Can Fly'
+          username='officialelonmusk'
+          imgUrl='https://cdn.mos.cms.futurecdn.net/9fXs6VTtvcuokKj6zMW4WT-1024-80.jpg.webp'
+        />
+        <StackMiniCard 
+          size={3}
+          title='When Cars Can Fly'
+          username='officialelonmusk'
+          imgUrl='https://cdn.mos.cms.futurecdn.net/9fXs6VTtvcuokKj6zMW4WT-1024-80.jpg.webp'
+        />
+
       </ScrollView>
     </View>
   );
