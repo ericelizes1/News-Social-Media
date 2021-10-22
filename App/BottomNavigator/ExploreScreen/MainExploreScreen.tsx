@@ -9,7 +9,7 @@ const MainExploreScreen:FC = ({navigation}:any) => {
         backgroundColor='white'
         containerStyle={styles.headerContainer}
         centerComponent={
-          <Text h4>Explore</Text>
+          <Text h4 style={{fontFamily: 'Palatino'}}>Explore</Text>
         }
 
       />
@@ -20,7 +20,7 @@ const MainExploreScreen:FC = ({navigation}:any) => {
 
 const styles = StyleSheet.create({
   headerContainer: {
-    height: 100,
+    height: 93,
     borderBottomWidth: 1,
     borderBottomColor: '#dedede',
   },

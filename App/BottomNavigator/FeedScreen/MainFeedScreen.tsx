@@ -30,6 +30,7 @@ const MainFeedScreen:FC = ({navigation}:any) => {
         <PostCard/>
         <PostCard/>
         <PostCard/>
+        <Text h4 style={{fontFamily: 'Palatino', alignSelf: 'center', margin: 25}}>Congrats! Your at the bottom</Text>
       </ScrollView>
     </View>
   );

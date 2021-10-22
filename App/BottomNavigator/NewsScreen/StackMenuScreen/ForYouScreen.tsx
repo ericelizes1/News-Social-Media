@@ -19,7 +19,7 @@ const ForYouScreen:FC = ({navigation}:any) => {
           <Pressable
             onPress={() => navigation.navigate('SubscriptionMenuScreen')}
           >
-            <Icon name='bookmark-multiple-outline' type='material-community' color='black' size={35}/>
+            <Icon name='bookmark-multiple-outline' type='material-community' color='black' size={28} style={styles.subIcon}/>
             <Badge
               status="error"
               containerStyle={{ position: 'absolute', top: 0, right: 2 }}
@@ -43,7 +43,7 @@ const ForYouScreen:FC = ({navigation}:any) => {
 
 const styles = StyleSheet.create({
   headerContainer: {
-    height: 100,
+    height: 93,
     borderBottomWidth: 1,
     borderBottomColor: '#dedede',
   },
@@ -53,5 +53,8 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     backgroundColor: 'white',
   },
+  subIcon: {
+    margin: -2,
+  }
 })
 export default ForYouScreen;

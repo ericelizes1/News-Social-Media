@@ -78,11 +78,6 @@ const styles = StyleSheet.create({
     margin: 10,
     borderRadius: 5,
   },
-  post: {
-    margin: 10,
-    height: 200,
-    alignItems: 'center',
-  },
   profilePic: {
     margin: 10,
   },
@@ -93,17 +88,5 @@ const styles = StyleSheet.create({
     borderBottomColor: '#dedede',
   }
 })
-const containerStyle = StyleSheet.create({
-  container: {
-    padding: 8,
-    backgroundColor: "#ffffff",
-  },
-  rowContainer: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-  }
-}); 
-
 
 export default PostCard;
