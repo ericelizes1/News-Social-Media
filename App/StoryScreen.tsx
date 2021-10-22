@@ -14,7 +14,7 @@ const StoryScreen:FC = ({navigation}:any) => {
           leftComponent={
             <Pressable
               onPress={() => navigation.navigate('MainFeedScreen')}>
-              <Icon name='bell-outline' type='material-community' color='black' size={28} style={styles.storyIcon} />
+              <Icon name='format-list-text' type='material-community' color='black' size={28} style={styles.storyIcon} />
             </Pressable>
           }
       />

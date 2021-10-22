@@ -31,7 +31,7 @@ const App:FC = () => {
         }),
         next
             ? next.progress.interpolate({
-                inputRange: [0, 1],
+                inputRange: [1, 2],
                 outputRange: [0, 1],
                 extrapolate: 'clamp',
             })
