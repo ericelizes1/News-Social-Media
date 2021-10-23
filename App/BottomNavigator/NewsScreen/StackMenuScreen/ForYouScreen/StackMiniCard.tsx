@@ -1,7 +1,7 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StyleSheet, Pressable, ImageBackground, View } from 'react-native';
-import { Text } from 'react-native-elements';
+import { Text, Icon } from 'react-native-elements';
 import { Caption } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -11,10 +11,13 @@ export interface PropType {
   username: string,
   imgUrl: string,
   topics: string[],
+  subscribed: boolean,
 }
 
 const StackMiniCard:FC<PropType> = (props: PropType) => {
   const navigation:any = useNavigation(); 
+
+  const [subscribed, setSubscribed] = useState(props.subscribed);
 
   var corr = {
     1 : 400,
@@ -54,18 +57,50 @@ const StackMiniCard:FC<PropType> = (props: PropType) => {
         source={{uri: props.imgUrl}}
         style={styles.image}
         imageStyle={{borderRadius: 6,}}>
-        <LinearGradient
-          colors={['rgba(0, 0, 0, 0.70)', 'rgba(0, 0, 0, 0)']}
-          style={{
-            paddingRight: 10,
-            paddingLeft: 10,
-            paddingBottom: 30,
-            borderRadius: 6,
-            width: '100%',
-          }}>
-          <Text style={{color: 'white'}} h2>{props.title}</Text>
-          <Caption style={{color:'white'}}>1hr ago</Caption>
-        </LinearGradient>
+        <View style={{width: '100%'}}>
+          <LinearGradient
+            colors={['rgba(0, 0, 0, 0.60)', 'rgba(0, 0, 0, 0.50)']}
+            style={{
+              paddingLeft: 10,
+              paddingBottom: 0,
+              borderTopLeftRadius: 6,
+              borderTopRightRadius: 6,
+              width: '100%',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+            }}>
+            <Text style={{
+              color: 'white', 
+              width: '80%'}} h2>{props.title}</Text>
+            <View style={{
+              justifyContent: 'flex-start', 
+              alignItems: 'flex-end',
+              width: '20%'}}>
+              <Pressable 
+                style={{ 
+                  padding:20,
+                }}
+                onPress = {() => {setSubscribed(!subscribed)}}
+                >
+                <Icon 
+                  name={subscribed ? 'bookmark' : 'bookmark-outline'} 
+                  type='material-community' 
+                  color= 'white'
+                  size={35} />
+              </Pressable>
+            </View>
+          </LinearGradient>
+          <LinearGradient
+            colors={['rgba(0, 0, 0, 0.5)', 'rgba(0, 0, 0, 0)']}
+            style={{
+              paddingRight: 10,
+              paddingLeft: 10,
+              paddingBottom: 30,
+              width: '100%',
+            }}>
+            <Caption style={{color:'white'}}>1hr ago</Caption>
+          </LinearGradient>
+        </View>
         <LinearGradient
           colors={['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 0.6)']}
           style={{
