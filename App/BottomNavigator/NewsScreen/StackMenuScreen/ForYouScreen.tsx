@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { SafeAreaView, View, ScrollView, StyleSheet, Pressable } from 'react-native';
 import { Text, Header, Icon, Badge } from 'react-native-elements';
+import { Caption } from 'react-native-paper';
 
 import StackMiniCard from './ForYouScreen/StackMiniCard';
 
@@ -13,7 +14,7 @@ const ForYouScreen:FC = ({navigation}:any) => {
         centerComponent={
           //Copperplate-Bold
           //Palatino
-          <Text h4 style={{fontFamily: 'Copperplate-Bold'}}>Your Stacks</Text>
+            <Text h4 style={{fontFamily: 'Copperplate-Bold'}}>Reccomended</Text>
         }
         rightComponent={
           <Pressable
@@ -33,26 +34,30 @@ const ForYouScreen:FC = ({navigation}:any) => {
           title='Mobile Device Reviews' 
           username='linustechtips'
           imgUrl='https://techcrunch.com/wp-content/uploads/2020/09/2020-09-10-083646924.jpg?w=1390&crop=1'
+          topics={['Tech', 'Hardware']}
+        />
+        <StackMiniCard
+          size={3}
+          title='The Grandest Piano'
+          username='lingling_og'
+          imgUrl='https://newyorkclassicalreview.com/wp-content/uploads/2019/10/10.7.2019-Concert-26_Photo-Zach-Mahone.jpg'
+          topics={['Music']}
         />
         <StackMiniCard 
-          size={2}
-          title='Washington Football Team'
+          size={3}
+          title='The Washington Football Team'
           username='devendesai1'
-          imgUrl='https://thespun.com/wp-content/uploads/2020/12/GettyImages-1289992812-775x465.jpg'
+          imgUrl='https://s.abcnews.com/images/Politics/washington-01-as-gty-200723_1595528169605_hpMain_16x9_992.jpg'
+          topics={['Sports', 'NFL']}
         />
         <StackMiniCard 
           size={3}
           title='When Cars Can Fly'
           username='officialelonmusk'
           imgUrl='https://cdn.mos.cms.futurecdn.net/9fXs6VTtvcuokKj6zMW4WT-1024-80.jpg.webp'
+          topics={['Tech', 'Space']}
         />
-        <StackMiniCard 
-          size={3}
-          title='When Cars Can Fly'
-          username='officialelonmusk'
-          imgUrl='https://cdn.mos.cms.futurecdn.net/9fXs6VTtvcuokKj6zMW4WT-1024-80.jpg.webp'
-        />
-
+        <View style={{padding: 50}}/>
       </ScrollView>
     </View>
   );

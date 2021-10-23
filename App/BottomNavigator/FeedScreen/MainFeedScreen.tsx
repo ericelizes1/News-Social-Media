@@ -14,7 +14,7 @@ const MainFeedScreen:FC = ({navigation}:any) => {
           centerComponent={
             <Text h4 style={{fontFamily: 'Palatino'}}>Feed</Text>
           }
-          leftComponent={
+          rightComponent={
             <Pressable
               onPress={() => navigation.navigate('StoryScreen')}>
               <Icon name='bell-outline' type='material-community' color='black' size={28} style={styles.storyIcon} />
