@@ -16,13 +16,25 @@ export interface PropType {
 
 const StackMiniCard:FC<PropType> = (props: PropType) => {
   const navigation:any = useNavigation(); 
-
   const [subscribed, setSubscribed] = useState(props.subscribed);
 
+  const [titleFontSize, setTitleFontSize] = useState(35);
+  var [isTitleFontSet, setIsTitleFontSet] = useState(false);
+
+  const getTitleFontSize = ({x, y, width, height}, isTitleFontSet) => {
+    if (!isTitleFontSet) {
+      if (height > 100) setTitleFontSize(30)
+      else if (height > 90) setTitleFontSize(35)
+      else if (height > 20) setTitleFontSize(40)
+
+      setIsTitleFontSet(true)
+    }
+  }
+  
   var corr = {
     1 : 400,
     2 : 300,
-    3 : 200,
+    3 : 250,
   };
   var cardHeight = corr[props.size];
 
@@ -44,11 +56,10 @@ const StackMiniCard:FC<PropType> = (props: PropType) => {
       </View>)
   }
 
-
   return(
     <Pressable 
       style=  {({pressed}) => [{
-        borderWidth: pressed ? 3 : 0,
+        opacity: pressed ? 0.8 : 1,
         height: cardHeight},
         styles.container
       ]}
@@ -59,26 +70,35 @@ const StackMiniCard:FC<PropType> = (props: PropType) => {
         imageStyle={{borderRadius: 6,}}>
         <View style={{width: '100%'}}>
           <LinearGradient
-            colors={['rgba(0, 0, 0, 0.60)', 'rgba(0, 0, 0, 0.50)']}
+            colors={['rgba(0, 0, 0, 0.60)', 'rgba(0, 0, 0, 0)']}
             style={{
               paddingLeft: 10,
-              paddingBottom: 0,
+              paddingBottom: 30,
               borderTopLeftRadius: 6,
               borderTopRightRadius: 6,
               width: '100%',
               flexDirection: 'row',
               justifyContent: 'space-between',
             }}>
-            <Text style={{
-              color: 'white', 
-              width: '80%'}} h2>{props.title}</Text>
+            <View style={{width: '80%'}}>
+              <Text 
+                onLayout={(event) => {
+                  var {x, y, width, height} = event.nativeEvent.layout;
+                  getTitleFontSize({x, y, width, height}, isTitleFontSet);
+                }}
+                style={{
+                  color: 'white'}} 
+                h2Style={{fontSize: titleFontSize}}
+                h2>{props.title}</Text>
+                <Caption style={{color:'white'}}>1hr ago</Caption>
+            </View>
             <View style={{
               justifyContent: 'flex-start', 
               alignItems: 'flex-end',
               width: '20%'}}>
               <Pressable 
                 style={{ 
-                  padding:20,
+                  padding: 20,
                 }}
                 onPress = {() => {setSubscribed(!subscribed)}}
                 >
@@ -86,19 +106,11 @@ const StackMiniCard:FC<PropType> = (props: PropType) => {
                   name={subscribed ? 'bookmark' : 'bookmark-outline'} 
                   type='material-community' 
                   color= 'white'
-                  size={35} />
+                  size={35}                
+                  tvParallaxProperties={false}
+                />
               </Pressable>
             </View>
-          </LinearGradient>
-          <LinearGradient
-            colors={['rgba(0, 0, 0, 0.5)', 'rgba(0, 0, 0, 0)']}
-            style={{
-              paddingRight: 10,
-              paddingLeft: 10,
-              paddingBottom: 30,
-              width: '100%',
-            }}>
-            <Caption style={{color:'white'}}>1hr ago</Caption>
           </LinearGradient>
         </View>
         <LinearGradient
@@ -115,15 +127,18 @@ const StackMiniCard:FC<PropType> = (props: PropType) => {
         >
           <View style={{
             flexDirection: 'row',
-            justifyContent: 'flex-start'
+            justifyContent: 'flex-start',
+            paddingLeft: 5,
           }}>
             {topicElements}
           </View>
-          <Caption
-            style={{
-              color: 'white',
-              fontSize: 15,
-            }}>@{props.username}</Caption>
+            <Caption
+              style={{
+                color: 'white',
+                fontSize: 15,
+                paddingRight: 5,
+                paddingLeft: 5,
+              }}>@{props.username}</Caption>
         </LinearGradient>
       </ImageBackground>
     </Pressable>

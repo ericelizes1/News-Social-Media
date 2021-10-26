@@ -19,6 +19,7 @@ const BottomNavigator:FC = () => {
       screenOptions={{
         tabBarShowLabel: false,
         headerShown: false,
+        tabBarHideOnKeyboard: true,
         tabBarStyle: {
           backgroundColor: 'white', 
           borderTopWidth: 1, 
@@ -34,7 +35,9 @@ const BottomNavigator:FC = () => {
             <Icon name={focused ? 'home' :'home-outline'} 
               type='material-community' 
               color={'black'} 
-              size={33}/>
+              size={33}
+              tvParallaxProperties={false}
+            />
         }}
       />
       <TabNavigator.Screen
@@ -45,7 +48,9 @@ const BottomNavigator:FC = () => {
               <Icon name={focused ? 'compass' :'compass-outline'} 
                 type='material-community' 
                 color={'black'} 
-                size={33}/>),        
+                size={33}
+                tvParallaxProperties={false}
+              />),        
         }}
       />
       <TabNavigator.Screen
@@ -57,7 +62,9 @@ const BottomNavigator:FC = () => {
               <Icon name={focused ? 'newspaper-variant' : 'newspaper-variant-outline'} 
                 type='material-community' 
                 color={'black'} 
-                size={33}/>
+                size={33}
+                tvParallaxProperties={false}
+              />
             </View>
         }}
       />
@@ -70,7 +77,9 @@ const BottomNavigator:FC = () => {
             <Icon name={focused ? 'bell' : 'bell-outline'} 
               type='material-community' 
               color={'black'} 
-              size={33}/>
+              size={33}
+              tvParallaxProperties={false}
+            />
             <Badge
               status="error"
               containerStyle={{ position: 'absolute', top: 0, right: 2 }}
@@ -86,7 +95,9 @@ const BottomNavigator:FC = () => {
               <Icon name={focused ? 'account' : 'account-outline'} 
                 type='material-community' 
                 color={'black'} 
-                size={33}/>
+                size={33}
+                tvParallaxProperties={false}
+              />
         }}
       />
     </TabNavigator.Navigator>

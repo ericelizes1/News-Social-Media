@@ -20,7 +20,7 @@ import LoginScreen from './App/LoginScreen';
 
 const App:FC = () => {
   const MainNavigator : any =  createStackNavigator();
-  const isLoggedIn:boolean = false;
+  const isLoggedIn:boolean = true;
   
   const SlideFromTop = ({ current, next, inverted, layouts: { screen } }) => {
     const progress = Animated.add(

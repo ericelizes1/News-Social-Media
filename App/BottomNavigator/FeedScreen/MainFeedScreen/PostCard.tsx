@@ -37,18 +37,23 @@ const PostCard:FC = () => {
             <Caption>@devendesai1</Caption>
           </View>
         </View>
-        <Pressable style={{
-          borderWidth: 1,
-          borderRadius: 5,
-          borderColor: '#dedede',
-          flexDirection: 'row'
-        }}>
+        <Pressable 
+          style=  {({pressed}) => [{
+            opacity: pressed ? 0.8 : 1,
+            borderWidth: 1,
+            borderRadius: 5,
+            borderColor: '#dedede',
+            flexDirection: 'row'
+          }]}
+        >
           <Image 
             source={require('./img/img2.jpg')}
             style={styles.image}/>
-          <Text style={{flex: 1, flexWrap: 'wrap', margin: 5}}>
-            The idea with React Native Elements is more about component structure than actual design.
-          </Text>
+          <View style={{flexDirection: 'row'}}>
+            <Text style={{flex: 1, flexWrap: 'wrap', margin: 5}}>
+              The idea with React Native Elements is more about component structure than actual design.
+            </Text>
+          </View>
         </Pressable>
         <View style={{
           flexDirection: 'row',    
@@ -57,13 +62,22 @@ const PostCard:FC = () => {
         }}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Pressable>
-              <Icon name='arrow-up' type="material-community" color='purple' />
+              <Icon name='arrow-up' 
+                type="material-community" 
+                color='purple' 
+                tvParallaxProperties={false}
+              />
             </Pressable>
             <Text>32</Text>
           </View>
           <View style={{flexDirection: 'row', alignItems: 'center', marginLeft: 10}}>
             <Pressable>
-              <Icon name='pepper-hot' type="font-awesome-5" color='purple' />
+              <Icon 
+                name='pepper-hot' 
+                type="font-awesome-5" 
+                color='purple'
+                tvParallaxProperties={false}
+              />
             </Pressable>
             <Text>32</Text>
           </View>
