@@ -14,7 +14,12 @@ const StoryScreen:FC = ({navigation}:any) => {
           rightComponent={
             <Pressable
               onPress={() => navigation.navigate('MainFeedScreen')}>
-              <Icon name='format-list-text' type='material-community' color='black' size={28} style={styles.storyIcon} />
+              <Icon name='format-list-text' 
+                    type='material-community' 
+                    color='black' 
+                    size={28} 
+                    style={styles.storyIcon}
+                    tvParallaxProperties={false} />
             </Pressable>
           }
       />

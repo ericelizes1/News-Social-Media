@@ -5,6 +5,12 @@ import { Caption } from 'react-native-paper';
 import ForYouMiniCard from './ForYouScreen/ForYouMiniCard';
 
 import StackMiniCard from './ForYouScreen/StackMiniCard';
+import TestCard from './ForYouScreen/TestCard';
+import TestCard2 from './ForYouScreen/TestCard2';
+import CardFlip from 'react-native-flip-card';
+import TestCardMaris from './ForYouScreen/MarisCard';
+
+import MarisFlipCard from './ForYouScreen/MarisCard2';
 
 const ForYouScreen:FC = ({navigation}:any) => {
   return(
@@ -37,6 +43,24 @@ const ForYouScreen:FC = ({navigation}:any) => {
       />
       <ScrollView style={styles.container}>
         <ForYouMiniCard/>
+        {/*<TestCardMaris/>
+        <MarisFlipCard/>*/}
+        <TestCard2 
+          size={3} 
+          title='Mobile Device Reviews' 
+          username='linustechtips'
+          imgUrl='https://cdn.pocket-lint.com/r/s/1200x/assets/images/157961-phones-review-hands-on-samsung-galaxy-z-fold-3-review-image1-coz70vermc.jpg'
+          topics={['Tech', 'Hardware']}
+          subscribed={false}
+        />
+        {/*<TestCard 
+          size={3} 
+          title='Mobile Device Reviews' 
+          username='linustechtips'
+          imgUrl='https://cdn.pocket-lint.com/r/s/1200x/assets/images/157961-phones-review-hands-on-samsung-galaxy-z-fold-3-review-image1-coz70vermc.jpg'
+          topics={['Tech', 'Hardware']}
+          subscribed={false}
+        />*/}
         <StackMiniCard 
           size={3} 
           title='Mobile Device Reviews' 
@@ -133,6 +157,42 @@ const ForYouScreen:FC = ({navigation}:any) => {
           topics={['Sports', 'Climbing']}
           subscribed={false}
         />
+        {/*<CardFlip 
+          style={{
+            flex: 1, 
+            justifyContent: 'center', 
+            alignItems: 'center',
+            position: 'relative',
+            width: "100%"}} 
+          ref={(card) => card = card} 
+        >
+            <Pressable 
+              style={{    
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        height: '100%',
+                        width: '100%',
+                        backfaceVisibility: 'hidden',
+                    }} 
+              onPress={() => {}} 
+            > 
+              <Text>AB</Text>
+            </Pressable>
+            <Pressable 
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                height: '100%',
+                width: '100%',
+                backfaceVisibility: 'hidden',
+              }} 
+              onPress={() => {}}
+            > 
+              <Text>CD</Text>
+            </Pressable>
+        </CardFlip>*/}
         <View style={{padding: 50}}/>
       </ScrollView>
     </View>
@@ -146,6 +206,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#dedede',
   },
   container: {
+    position: 'relative',
     padding:10,
     flexDirection: 'column',
     alignContent: 'center',

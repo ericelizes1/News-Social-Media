@@ -27,19 +27,7 @@ const NewsScreen:FC = ({navigation}: any) => {
       <NewsNavigator.Screen
         name='StackScreen'
         component={StackScreen}
-        options={{
-          title: 'Deven\'s Stack',
-          headerStyle: {height: 110},
-          headerRight: () => (
-            <Avatar
-              rounded
-              size='medium'
-              onPress={() => {navigation.navigate('ProfileScreen')}}
-              source={require('./NewsScreen/StackMenuScreen/img/img2.jpg')}
-              containerStyle={styles.profilePic}
-            />
-          )
-        }}
+        options={{header: () => (null)}}
       />
       <NewsNavigator.Screen
         name='ProfileScreen'

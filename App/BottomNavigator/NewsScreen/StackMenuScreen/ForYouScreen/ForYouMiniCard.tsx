@@ -11,10 +11,7 @@ const ForYouMiniCard:FC = () => {
 
   return(
     <Pressable 
-      style=  {({pressed}) => [{
-        opacity: pressed ? 0.8 : 1},
-        styles.container
-      ]}
+      style={styles.container}
       onPress={() => {navigation.navigate('StackScreen')}}>
       <ImageBackground
         source={{uri: 'https://e3.365dm.com/21/10/2048x1152/skynews-donald-trump-us-iowa_5554035.jpg'}}

@@ -24,7 +24,7 @@ const SubscriptionMenuScreen:FC = ({navigation}:any) => {
             />
           </Pressable>
         }
-        centerComponent={<Text h4 style={{fontFamily: 'Copperplate-Bold'}}>Recommended</Text>}
+        centerComponent={<Text h4 style={{fontFamily: 'Copperplate-Bold'}}>Subscriptions</Text>}
       />
       <Searchbar
         placeholder="Search"
