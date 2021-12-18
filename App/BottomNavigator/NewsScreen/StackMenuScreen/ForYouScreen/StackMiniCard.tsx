@@ -1,9 +1,10 @@
 import React, { FC, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { Animated, StyleSheet, Pressable, ImageBackground, View } from 'react-native';
+import { Animated, StyleSheet, Pressable, ImageBackground, View, TouchableNativeFeedbackBase } from 'react-native';
 import { Text, Icon } from 'react-native-elements';
 import { Caption } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useRef } from 'react';
 
 export interface PropType {
   size: number,
@@ -14,10 +15,10 @@ export interface PropType {
   subscribed: boolean,
 }
 
-const StackMiniCard:FC<PropType> = (props: PropType) => {
+const StackMiniCard:FC<PropType> = (props:PropType) => {
   const navigation:any = useNavigation(); 
   const [subscribed, setSubscribed] = useState(props.subscribed);
-
+  //let subscribed = useRef(false);
   const [titleFontSize, setTitleFontSize] = useState(35);
   var [isTitleFontSet, setIsTitleFontSet] = useState(false);
 
@@ -68,7 +69,7 @@ const StackMiniCard:FC<PropType> = (props: PropType) => {
   })
   let backOpacity = animatedValue.interpolate({ 
     inputRange: [89, 90], 
-    outputRange: [0, 1] 
+    outputRange: [0,1] 
   })
   let frontInterpolate = animatedValue.interpolate({
     inputRange: [0, 180],
@@ -82,35 +83,33 @@ const StackMiniCard:FC<PropType> = (props: PropType) => {
   const frontAnimatedStyle = {
     transform: [
       { rotateY: frontInterpolate }
-    ], opacity: frontOpacity
+    ], 
+    opacity: frontOpacity,
+    zIndex: frontOpacity
   }
   const backAnimatedStyle = {
     transform: [
       { rotateY: backInterpolate }
-    ], opacity: backOpacity,
+    ], 
+    opacity: backOpacity,
+    zIndex: backOpacity
   }
 
+
   const flipCard = () => {
-    if (val >= 90) {
-      Animated.spring(animatedValue, {
-        toValue:0, 
-        friction: 8,
-        tension: 10,
-        useNativeDriver: true,
-      }).start();
-    } else {
     Animated.spring(animatedValue, {
-      toValue:180, 
+      toValue: val >= 90 ? 0 : 180, 
       friction: 8,
       tension: 10,
       useNativeDriver: true,
     }).start();
-    }
   }
-  
+
   return(
-    <View style={{flex: 1}}>
-      <Animated.View style={frontAnimatedStyle}>
+    <View style={styles.container}>
+      <Animated.View 
+        style={[styles.cardStyle, 
+                frontAnimatedStyle]}>
         <Pressable 
           style=  {({pressed}) => [{
             opacity: pressed ? 0.8 : 1,
@@ -120,98 +119,106 @@ const StackMiniCard:FC<PropType> = (props: PropType) => {
           onPress={() => {navigation.navigate('StackScreen')}}>
           <ImageBackground
             source={{uri: props.imgUrl}}
-            style={styles.image}
-            imageStyle={{borderRadius: 6,}}>
-            <View style={{width: '100%'}}>
+            style={[styles.image]}
+            imageStyle={{borderRadius: 6}}>
+            <View style={[styles.image, {height: '100%', backgroundColor: 'rgba(0,0,0,0)'}]}>
+              <View style={{width: '100%'}}>
+                <LinearGradient
+                  colors={['rgba(0, 0, 0, 0.60)', 'rgba(0, 0, 0, 0)']}
+                  style={{
+                    paddingLeft: 10,
+                    paddingBottom: 30,
+                    borderTopLeftRadius: 6,
+                    borderTopRightRadius: 6,
+                    width: '100%',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                  }}>
+                  <View style={{width: '80%'}}>
+                    <Text 
+                      onLayout={(event) => {
+                        var {x, y, width, height} = event.nativeEvent.layout;
+                        getTitleFontSize({x, y, width, height}, isTitleFontSet);
+                      }}
+                      style={{
+                        color: 'white'}} 
+                      h2Style={{fontSize: titleFontSize}}
+                      h2>{props.title}</Text>
+                      <Caption style={{color:'white'}}>1hr ago</Caption>
+                  </View>
+                  <View style={{
+                    justifyContent: 'flex-start', 
+                    alignItems: 'flex-end',
+                    width: '20%'}}>
+                    <Pressable 
+                      style={{ 
+                        paddingTop: 10,
+                        paddingRight: 10,
+                      }}
+                      onPress = {() => {setSubscribed(!subscribed)}}
+                      >
+                      <Icon 
+                        name={subscribed ? 'bookmark' : 'bookmark-outline'} 
+                        type='material-community' 
+                        color= 'white'
+                        size={35}                
+                        tvParallaxProperties={false}
+                      />
+                    </Pressable>
+                  </View>
+                </LinearGradient>
+              </View>
               <LinearGradient
-                colors={['rgba(0, 0, 0, 0.60)', 'rgba(0, 0, 0, 0)']}
+                colors={['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 0.3)']}
                 style={{
-                  paddingLeft: 10,
-                  paddingBottom: 30,
-                  borderTopLeftRadius: 6,
-                  borderTopRightRadius: 6,
                   width: '100%',
                   flexDirection: 'row',
                   justifyContent: 'space-between',
-                }}>
-                <View style={{width: '80%'}}>
-                  <Text 
-                    onLayout={(event) => {
-                      var {x, y, width, height} = event.nativeEvent.layout;
-                      getTitleFontSize({x, y, width, height}, isTitleFontSet);
-                    }}
+                  padding: 10,
+                  paddingTop: '10%',
+                  borderBottomLeftRadius: 6,
+                  borderBottomRightRadius: 6,
+                }}
+              >
+                <Pressable 
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'flex-start',
+                  }}
+                  hitSlop={50}
+                  onPress={() => flipCard()}
+                >
+                  <Icon 
+                    name='information-outline' 
+                    type='material-community' 
+                    color= 'white'
+                    size={25}                
+                    tvParallaxProperties={false}
+                  />
+                </Pressable>
+                <Pressable hitSlop={50}>
+                  <Caption
                     style={{
-                      color: 'white'}} 
-                    h2Style={{fontSize: titleFontSize}}
-                    h2>{props.title}</Text>
-                    <Caption style={{color:'white'}}>1hr ago</Caption>
-                </View>
-                <View style={{
-                  justifyContent: 'flex-start', 
-                  alignItems: 'flex-end',
-                  width: '20%'}}>
-                  <Pressable 
-                    style={{ 
-                      paddingTop: 10,
-                      paddingRight: 10,
-                    }}
-                    onPress = {() => {setSubscribed(!subscribed)}}
-                    >
-                    <Icon 
-                      name={subscribed ? 'bookmark' : 'bookmark-outline'} 
-                      type='material-community' 
-                      color= 'white'
-                      size={35}                
-                      tvParallaxProperties={false}
-                    />
-                  </Pressable>
-                </View>
+                      color: 'white',
+                      fontSize: 15,
+                    }}>@{props.username}</Caption>
+                </Pressable>
               </LinearGradient>
             </View>
-            <LinearGradient
-              colors={['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 0.6)']}
-              style={{
-                width: '100%',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                padding: 10,
-                borderRadius: 6,
-              }}
-            >
-              <Pressable 
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'flex-start',
-                }}
-                onPress={() => flipCard()}
-              >
-                <Icon 
-                  name='information-outline' 
-                  type='material-community' 
-                  color= 'white'
-                  size={25}                
-                  tvParallaxProperties={false}
-                />
-              </Pressable>
-              <Pressable>
-                <Caption
-                  style={{
-                    color: 'white',
-                    fontSize: 15,
-                  }}>@{props.username}</Caption>
-              </Pressable>
-            </LinearGradient>
           </ImageBackground>
         </Pressable>
       </Animated.View>
-      <Animated.View style={backAnimatedStyle}>
+      <Animated.View 
+        style={[styles.cardStyle, 
+                styles.backCardStyle, 
+                backAnimatedStyle]}>
         <Pressable 
-            style=  {({pressed}) => [{
-              opacity: pressed ? 0.8 : 1,
-              height: cardHeight},
-              styles.container
-            ]}
-            onPress={() => {navigation.navigate('StackScreen')}}
+          style=  {({pressed}) => [{
+            opacity: pressed ? 0.8 : 1,
+            height: cardHeight},
+            styles.container,
+          ]}
+          onPress={() => {navigation.navigate('StackScreen')}}
         >
           <ImageBackground
             source={{uri: props.imgUrl}}
@@ -244,6 +251,7 @@ const StackMiniCard:FC<PropType> = (props: PropType) => {
                     flexDirection: 'row',
                     justifyContent: 'flex-start',
                   }}
+                  hitSlop={50}
                   onPress={() => flipCard()}
                 >
                   <Icon 
@@ -277,18 +285,20 @@ const StackMiniCard:FC<PropType> = (props: PropType) => {
 
 const styles = StyleSheet.create({
   container: {
-    margin: 10,
+    position: 'relative',
+    flex: 1, 
+    justifyContent: 'center', 
     alignItems: 'center',
-    borderColor: 'white',
+    margin: 5,
+  },
+  cardStyle: {
+    height: '100%',
+    width: '100%',
     backfaceVisibility: 'hidden',
   },
-  containerBack: {
-    margin: 10,
-    alignItems: 'center',
-    backgroundColor: 'black',
-    backfaceVisibility: 'hidden',
+  backCardStyle: {
+    top: 0,
     position: 'absolute',
-    top: 0
   },
   image: {
     flex: 1,
