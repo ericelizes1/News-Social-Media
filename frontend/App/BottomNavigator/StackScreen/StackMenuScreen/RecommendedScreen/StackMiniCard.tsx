@@ -6,7 +6,7 @@ import { Caption } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRef } from 'react';
 
-const AnimatedIcon = Animated.createAnimatedComponent(Icon);
+//const AnimatedIcon = Animated.createAnimatedComponent(Icon);
 
 export interface PropType {
   size: number,
@@ -123,6 +123,8 @@ const StackMiniCard:FC<PropType> = (props:PropType) => {
       () => {subscribed.current = !subscribed.current}
     );
   }*/
+  const [subscribed, setSubscribed] = useState(false);
+  const switchSubscribed = () => {setSubscribed(!subscribed)}
 
   return(
     <View style={styles.container}>
@@ -176,7 +178,7 @@ const StackMiniCard:FC<PropType> = (props:PropType) => {
                       }}
                       onPress = {() => {switchSubscribed()}}
                       >
-                      <AnimatedIcon
+                      <Icon
                         name={subscribed ? 'bookmark' : 'bookmark-outline'} 
                         type='material-community' 
                         color= 'white'

@@ -2,8 +2,8 @@ import React, { FC } from 'react';
 import { SafeAreaView, View, ScrollView, StyleSheet, Pressable } from 'react-native';
 import { Text, Header, Icon, Badge } from 'react-native-elements';
 import { Caption } from 'react-native-paper';
-import ForYouMiniCard from './ForYouScreen/ForYouMiniCard';
-import StackMiniCard from './ForYouScreen/StackMiniCard';
+import ForYouMiniCard from './RecommendedScreen/ForYouMiniCard';
+import StackMiniCard from './RecommendedScreen/StackMiniCard';
 
 const RecommendedScreen:FC = ({navigation}:any) => {
   return(
