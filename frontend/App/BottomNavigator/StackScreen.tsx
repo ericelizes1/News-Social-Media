@@ -4,15 +4,15 @@ import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { SafeAreaView, StyleSheet, Pressable } from 'react-native';
 import { Avatar, Text, Icon } from 'react-native-elements';
 
-import StackScreen from './NewsScreen/StackScreen';
+import StackFocusScreen from './StackScreen/StackFocusScreen';
 import ProfileScreen from '../ProfileScreen';
 import PostScreen from '../PostScreen';
 import FollowersScreen from '../FollowersScreen';
 import FollowingScreen from '../FollowingScreen';
-import StackMenuScreen from './NewsScreen/StackMenuScreen';
+import StackMenuScreen from './StackScreen/StackMenuScreen';
 
 
-const NewsScreen:FC = ({navigation}: any) => {
+const StackScreen:FC = ({navigation}: any) => {
   const NewsNavigator = createStackNavigator();
 
   return(
@@ -25,8 +25,8 @@ const NewsScreen:FC = ({navigation}: any) => {
         options={{header: () => (null)}}
       />
       <NewsNavigator.Screen
-        name='StackScreen'
-        component={StackScreen}
+        name='StackFocusScreen'
+        component={StackFocusScreen}
         options={{header: () => (null)}}
       />
       <NewsNavigator.Screen
@@ -54,4 +54,4 @@ const styles = StyleSheet.create({
     margin: 10,
   },
 })
-export default NewsScreen;
+export default StackScreen;

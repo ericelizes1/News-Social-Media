@@ -8,7 +8,6 @@ import ProfileScreen from '../ProfileScreen';
 import PostScreen from '../PostScreen';
 import FollowersScreen from '../FollowersScreen';
 import FollowingScreen from '../FollowingScreen';
-import { NavigationContainer } from '@react-navigation/native';
 
 const FeedScreen:FC = ({navigation}:any) => {
   const FeedNavigator = createStackNavigator();

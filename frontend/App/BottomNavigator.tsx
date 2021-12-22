@@ -6,7 +6,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import FeedScreen from './BottomNavigator/FeedScreen';
 import ExploreScreen from './BottomNavigator/ExploreScreen';
-import NewsScreen from './BottomNavigator/NewsScreen';
+import StackScreen from './BottomNavigator/StackScreen';
 import ActivityScreen from './BottomNavigator/ActivityScreen';
 import MainProfileScreen from './BottomNavigator/MainProfileScreen';
 
@@ -54,8 +54,8 @@ const BottomNavigator:FC = () => {
         }}
       />
       <TabNavigator.Screen
-        name="NewsScreen"
-        component={NewsScreen}
+        name="StackScreen"
+        component={StackScreen}
         options={{
           tabBarIcon: ({focused}:any) =>
             <View>

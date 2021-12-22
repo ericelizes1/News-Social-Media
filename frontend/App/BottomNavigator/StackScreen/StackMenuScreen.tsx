@@ -4,7 +4,7 @@ import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 
 import { Pressable, Image } from 'react-native';
 
-import ForYouScreen from './StackMenuScreen/ForYouScreen';
+import RecommendedScreen from './StackMenuScreen/RecommendedScreen';
 import SubscriptionMenuScreen from './StackMenuScreen/SubscriptionMenuScreen';
 
 
@@ -16,8 +16,8 @@ const StackMenuScreen:FC = ({route}:any, {navigation}: any) => {
       initialRouteName='ForYouScreen'
       tabBar={() => null}>
       <StackMenuNavigator.Screen
-        name='ForYouScreen'
-        component={ForYouScreen}
+        name='RecommendedScreen'
+        component={RecommendedScreen}
         options={{ title: 'Recommended'}}
       />
       <StackMenuNavigator.Screen

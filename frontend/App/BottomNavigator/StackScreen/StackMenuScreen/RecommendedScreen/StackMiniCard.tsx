@@ -6,6 +6,8 @@ import { Caption } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRef } from 'react';
 
+const AnimatedIcon = Animated.createAnimatedComponent(Icon);
+
 export interface PropType {
   size: number,
   title: string,
@@ -17,8 +19,6 @@ export interface PropType {
 
 const StackMiniCard:FC<PropType> = (props:PropType) => {
   const navigation:any = useNavigation(); 
-  const [subscribed, setSubscribed] = useState(props.subscribed);
-  //let subscribed = useRef(false);
   const [titleFontSize, setTitleFontSize] = useState(35);
   var [isTitleFontSet, setIsTitleFontSet] = useState(false);
 
@@ -105,6 +105,25 @@ const StackMiniCard:FC<PropType> = (props:PropType) => {
     }).start();
   }
 
+  /*
+  let subscribed = useRef(props.subscribed);
+  let subVal = new Animated.Value(props.subscribed ? 1 : 0)
+
+  let tempSubVal = subVal;
+  subVal.addListener(({ value }) => {
+    tempSubVal = value;
+  })
+  const switchSubscribed = () => {
+    Animated.spring(subVal, {
+      toValue: tempSubVal = 1 ? 0 : 1, 
+      friction: 0,
+      tension: 10,
+      useNativeDriver: true,
+    }).start(
+      () => {subscribed.current = !subscribed.current}
+    );
+  }*/
+
   return(
     <View style={styles.container}>
       <Animated.View 
@@ -155,9 +174,9 @@ const StackMiniCard:FC<PropType> = (props:PropType) => {
                         paddingTop: 10,
                         paddingRight: 10,
                       }}
-                      onPress = {() => {setSubscribed(!subscribed)}}
+                      onPress = {() => {switchSubscribed()}}
                       >
-                      <Icon 
+                      <AnimatedIcon
                         name={subscribed ? 'bookmark' : 'bookmark-outline'} 
                         type='material-community' 
                         color= 'white'

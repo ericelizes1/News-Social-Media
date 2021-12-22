@@ -3,7 +3,6 @@ import { ScrollView, StyleSheet, Pressable, View } from 'react-native';
 import { Header, Text, Icon } from 'react-native-elements';
 
 import PostCard from './MainFeedScreen/PostCard';
-import StackMiniCard from '../NewsScreen/StackMenuScreen/ForYouScreen/StackMiniCard';
 
 const MainFeedScreen:FC = ({navigation}:any) => {
   return(
@@ -12,7 +11,11 @@ const MainFeedScreen:FC = ({navigation}:any) => {
           backgroundColor='white'
           containerStyle={styles.headerContainer}
           centerComponent={
-            <Text h4 style={{fontFamily: 'Palatino'}}>Feed</Text>
+            <Text 
+              h4 
+              h4Style={{}}
+              style={{}}
+            >Feed</Text>
           }
           rightComponent={
             <Pressable
@@ -28,14 +31,6 @@ const MainFeedScreen:FC = ({navigation}:any) => {
           }
       />
       <ScrollView style={styles.container}>
-        <StackMiniCard 
-            size={3}
-            title='The Washington Football Team'
-            username='devendesai1'
-            imgUrl='https://s.abcnews.com/images/Politics/washington-01-as-gty-200723_1595528169605_hpMain_16x9_992.jpg'
-            topics={['Sports', 'NFL']}
-            subscribed={false}
-        />
         <PostCard/>
         <PostCard/>
         <PostCard/>
@@ -62,7 +57,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   storyIcon: {
-    marginTop: -2,
+
   }
 })
 

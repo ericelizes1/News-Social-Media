@@ -3,17 +3,9 @@ import { SafeAreaView, View, ScrollView, StyleSheet, Pressable } from 'react-nat
 import { Text, Header, Icon, Badge } from 'react-native-elements';
 import { Caption } from 'react-native-paper';
 import ForYouMiniCard from './ForYouScreen/ForYouMiniCard';
-
 import StackMiniCard from './ForYouScreen/StackMiniCard';
-import TestCard from './ForYouScreen/TestCard';
-import TestCard2 from './ForYouScreen/StackMiniCard';
-import CardFlip from 'react-native-flip-card';
-import TestCardMaris from './ForYouScreen/MarisCard';
 
-import MarisFlipCard from './ForYouScreen/MarisCard2';
-import Word from './ForYouScreen/Word';
-
-const ForYouScreen:FC = ({navigation}:any) => {
+const RecommendedScreen:FC = ({navigation}:any) => {
   return(
     <View>
       <Header 
@@ -199,4 +191,4 @@ const styles = StyleSheet.create({
     margin: -2,
   }
 })
-export default ForYouScreen;
+export default RecommendedScreen;
