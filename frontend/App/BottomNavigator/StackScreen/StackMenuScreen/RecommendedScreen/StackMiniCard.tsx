@@ -177,6 +177,7 @@ const StackMiniCard:FC<PropType> = (props:PropType) => {
                         paddingRight: 10,
                       }}
                       onPress = {() => {switchSubscribed()}}
+                      hitSlop={50}
                       >
                       <Icon
                         name={subscribed ? 'bookmark' : 'bookmark-outline'} 

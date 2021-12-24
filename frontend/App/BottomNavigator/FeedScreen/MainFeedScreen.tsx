@@ -1,35 +1,22 @@
 import React, { FC } from 'react';
 import { ScrollView, StyleSheet, Pressable, View } from 'react-native';
-import { Header, Text, Icon } from 'react-native-elements';
+import { Text, Icon } from 'react-native-elements';
 
+import Header from '../../components/Header';
 import PostCard from './MainFeedScreen/PostCard';
 
 const MainFeedScreen:FC = ({navigation}:any) => {
   return(
     <View>
-      <Header 
-          backgroundColor='white'
-          containerStyle={styles.headerContainer}
-          centerComponent={
-            <Text 
-              h4 
-              h4Style={{}}
-              style={{}}
-            >Feed</Text>
-          }
-          rightComponent={
-            <Pressable
-              onPress={() => navigation.navigate('StoryScreen')}>
-              <Icon name='bell-outline' 
-                type='material-community' 
-                color='black' 
-                size={28} 
-                style={styles.storyIcon}
-                tvParallaxProperties={false}
-              />
-            </Pressable>
-          }
-      />
+      <Header elevated={true}>
+        <View style={styles.headerContainer}>
+          <Text h4 style={{fontFamily: 'Palatino'}}>Feed</Text>
+          <Pressable
+            onPress={() => navigation.navigate('StoryScreen')}> 
+            <Icon name='bell-outline' type='material-community' color='black' size={28}/>
+          </Pressable>
+        </View>
+      </Header>
       <ScrollView style={styles.container}>
         <PostCard/>
         <PostCard/>
@@ -47,9 +34,11 @@ const MainFeedScreen:FC = ({navigation}:any) => {
 
 const styles = StyleSheet.create({
   headerContainer: {
-    height: 93,
-    borderBottomWidth: 1,
-    borderBottomColor: '#dedede',
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 10,
   },
   container: {
     flexDirection: 'column',

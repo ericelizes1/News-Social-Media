@@ -1,25 +1,26 @@
 import React, { FC } from 'react';
 import { SafeAreaView, View, ScrollView, StyleSheet, Pressable } from 'react-native';
-import { Text, Header, Icon, Badge } from 'react-native-elements';
-import { Caption } from 'react-native-paper';
+import { Text, Icon, Badge } from 'react-native-elements';
+import { Searchbar } from 'react-native-paper';
+
 import ForYouMiniCard from './RecommendedScreen/ForYouMiniCard';
 import StackMiniCard from './RecommendedScreen/StackMiniCard';
+import Header from '../../../components/Header';
+
 
 const RecommendedScreen:FC = ({navigation}:any) => {
+
+  const [searchQuery, setSearchQuery] = React.useState('');
+
+  const onChangeSearch = query => setSearchQuery(query);
+
   return(
     <View>
-      <Header 
-        backgroundColor='white'
-        containerStyle={styles.headerContainer}
-        centerComponent={
-          //Copperplate-Bold
-          //Palatino
-          <Text h4 style={{fontFamily: 'Copperplate-Bold'}}>Recommended</Text>
-        }
-        rightComponent={
+      <Header elevated={false}>
+        <View style={styles.headerContainer}>
+          <Text h4 style={{fontFamily: 'Palatino'}}>Stacks</Text>
           <Pressable
-            onPress={() => navigation.navigate('SubscriptionMenuScreen')}
-          >
+            onPress={() => navigation.navigate('SubscriptionMenuScreen')}> 
             <Icon name='bookmark-multiple-outline' 
               type='material-community' 
               color='black' 
@@ -32,7 +33,13 @@ const RecommendedScreen:FC = ({navigation}:any) => {
               containerStyle={{ position: 'absolute', top: 0, right: 2 }}
             />
           </Pressable>
-        }
+        </View>
+      </Header>
+      <Searchbar
+        placeholder="Search"
+        onChangeText={onChangeSearch}
+        value={searchQuery}
+        autoCompleteType='off'
       />
       <ScrollView style={styles.container}>
         <ForYouMiniCard/>
@@ -132,42 +139,6 @@ const RecommendedScreen:FC = ({navigation}:any) => {
           topics={['Sports', 'Climbing']}
           subscribed={false}
         />
-        {/*<CardFlip 
-          style={{
-            flex: 1, 
-            justifyContent: 'center', 
-            alignItems: 'center',
-            position: 'relative',
-            width: "100%"}} 
-          ref={(card) => card = card} 
-        >
-            <Pressable 
-              style={{    
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        height: '100%',
-                        width: '100%',
-                        backfaceVisibility: 'hidden',
-                    }} 
-              onPress={() => {}} 
-            > 
-              <Text>AB</Text>
-            </Pressable>
-            <Pressable 
-              style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                height: '100%',
-                width: '100%',
-                backfaceVisibility: 'hidden',
-              }} 
-              onPress={() => {}}
-            > 
-              <Text>CD</Text>
-            </Pressable>
-        </CardFlip>*/}
         <View style={{padding: 50}}/>
       </ScrollView>
     </View>
@@ -176,9 +147,11 @@ const RecommendedScreen:FC = ({navigation}:any) => {
 
 const styles = StyleSheet.create({
   headerContainer: {
-    height: 93,
-    borderBottomWidth: 1,
-    borderBottomColor: '#dedede',
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 10,
   },
   container: {
     position: 'relative',

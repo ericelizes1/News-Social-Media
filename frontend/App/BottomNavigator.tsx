@@ -21,6 +21,7 @@ const BottomNavigator:FC = () => {
         headerShown: false,
         tabBarHideOnKeyboard: true,
         tabBarStyle: {
+          zIndex: 2,
           backgroundColor: 'white', 
           borderTopWidth: 1, 
           borderColor: '#dedede', }
