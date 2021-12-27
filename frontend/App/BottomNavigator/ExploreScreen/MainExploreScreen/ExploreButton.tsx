@@ -7,39 +7,27 @@ interface ButtonProps {
     topic: number,
     dynamicTopic: any,
     setDynamicTopic: any,
+    scrollToIndex: any
   }
   
   const ExploreButton:FC<ButtonProps> = (props:ButtonProps, {navigation}:any) => {
-  
+    const isSelected = props.dynamicTopic == props.topic;
+
     return(
         <Pressable 
-            style={[styles.exploreButtonContainer,]}
+            style={styles.exploreButtonContainer}
+            hitSlop={5}
             onPress={() => {
               props.setDynamicTopic(props.topic);
+              props.scrollToIndex();
             }}
-            hitSlop={5}
         >   
-            <View
-              style={{height: 38, justifyContent: 'center'}}
-            >
+            <View style={styles.textContainer}>
               <Text
-                style={{
-                  fontSize: 16,
-                  fontWeight: props.dynamicTopic == props.topic ? 'bold' : 'normal',
-                  color: props.dynamicTopic == props.topic ? 'black' : '#696969'
-                }}
+                style={[styles.text, {fontWeight: isSelected ? 'bold' : 'normal',color: isSelected ? 'black' : '#696969'}]}
               >{props.title}</Text>
             </View>
-            <View
-              style={{
-                width: '100%',
-                height: 2,
-                borderTopRightRadius: 2,
-                borderTopLeftRadius: 2,
-                backgroundColor: props.dynamicTopic == props.topic ? 'purple' : 'white',
-              }}
-            >
-            </View>
+            <View style={[styles.indicator, {backgroundColor: isSelected ? 'purple' : 'white'}]}/>
         </Pressable>
     )
   }
@@ -53,6 +41,19 @@ interface ButtonProps {
       flexDirection: 'column',
       justifyContent: 'flex-end',
       alignItems: 'center',
+    },
+    textContainer: {
+      height: 38, 
+      justifyContent: 'center'
+    },
+    text: {
+      fontSize: 16,
+    },
+    indicator: {
+      width: '100%',
+      height: 2,
+      borderTopRightRadius: 2,
+      borderTopLeftRadius: 2,
     }
   })
 export default ExploreButton;

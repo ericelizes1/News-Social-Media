@@ -9,7 +9,7 @@ import ProfileScreen from '../ProfileScreen';
 import PostScreen from '../PostScreen';
 import FollowersScreen from '../FollowersScreen';
 import FollowingScreen from '../FollowingScreen';
-import StackMenuScreen from './StackScreen/StackMenuScreen';
+import YourStacksScreen from './StackScreen/YourStacksScreen';
 
 
 const StackScreen:FC = ({navigation}: any) => {
@@ -20,8 +20,8 @@ const StackScreen:FC = ({navigation}: any) => {
       initialRouteName='StackMenuScreen'
     >
       <NewsNavigator.Screen
-        name='StackMenuScreen'
-        component={StackMenuScreen}
+        name='YourStacksScreen'
+        component={YourStacksScreen}
         options={{header: () => (null)}}
       />
       <NewsNavigator.Screen

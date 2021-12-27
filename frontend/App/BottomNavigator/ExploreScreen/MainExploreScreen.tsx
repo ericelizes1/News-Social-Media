@@ -1,5 +1,5 @@
-import React, { FC, useState } from 'react';
-import { View, StyleSheet, SafeAreaView, ScrollView, Pressable, useWindowDimensions } from 'react-native';
+import React, { FC, useState, useRef } from 'react';
+import { View, StyleSheet, SafeAreaView, ScrollView, FlatList, Pressable, useWindowDimensions } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { Searchbar } from 'react-native-paper';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
@@ -11,13 +11,29 @@ import FilterMenu from './MainExploreScreen/FilterMenu';
 
 const MainExploreScreen:FC = ({navigation}:any) => {
   const window = useWindowDimensions();
-
+  const flatListRef = useRef<FlatList>(null);
   const Tab = createMaterialTopTabNavigator();
-
   const [searchQuery, setSearchQuery] = useState('');
   const onChangeSearch = query => setSearchQuery(query);
 
+  const exploreButtonData = [
+    { id: 0, title: 'Recommended', },
+    { id: 1, title: 'Trending', },
+    { id: 2, title: 'COVID-19', },
+    { id: 3, title: 'Politics', },
+    { id: 4, title: 'Science', },
+    { id: 5, title: 'Finance', },
+    { id: 6, title: 'Sports', },
+    { id: 7, title: 'Fitness', },
+  ];
+
   const [categoryState, setCategoryState] = useState({
+    articles: true,
+    posts: true,
+    stacks: true
+  })
+
+  const [tempCategoryState, setTempCategoryState] = useState({
     articles: true,
     posts: true,
     stacks: true
@@ -27,90 +43,43 @@ const MainExploreScreen:FC = ({navigation}:any) => {
   const [isVisible, setIsVisible] = useState(false);
 
   return(
-    <SafeAreaView style={{justifyContent: 'flex-start'}}>
+    <SafeAreaView>
       <Header elevated={false}>
-        <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+        <View style={styles.searchBarRow}>
           <Searchbar
+              style={[styles.searchBar, {width: window.width - 65}]}
+              inputStyle={styles.searchBarText}
             placeholder="Search"
             onChangeText={onChangeSearch}
             value={searchQuery}
             autoCompleteType='off'
-            icon={() => 
-              <Icon 
-                name='search' 
-                type='feather' 
-                color='#696969'
-                size={20}
-                tvParallaxProperties={false}
-              />
-            }
-            style={{
-              height: 35,
-              width: window.width - 65,
-              borderRadius: 20,
-              marginLeft: 10,
-              backgroundColor: '#f5f5f5',
-              elevation: 0,
-            }}
-            inputStyle={{
-              fontSize: 17,
-            }}
+            icon={() => <Icon name='search' type='feather' color='#696969'size={20} tvParallaxProperties={false}/>}
           />
           <Pressable
             hitSlop={30}
-            style={{paddingRight: 10, paddingLeft: 10}}
-            onPress={() => setIsVisible(true)}>
-            <Icon name='tune' 
-              type='material-community' 
-              color='#696969'
-              size={35}
-              tvParallaxProperties={false}
-            />
+            style={styles.filterIcon}
+            onPress={() => setIsVisible(true)}
+          >
+            <Icon name='tune' type='material-community' color='#696969'size={35} tvParallaxProperties={false}/>
           </Pressable>
         </View>
-        </Header>
-      <ScrollView
+      </Header>
+      <FlatList 
         style={styles.exploreButtonListContainer}
+        ref={flatListRef}
+        data={exploreButtonData}
+        renderItem={({item}) =>           
+          <ExploreButton 
+            title={item.title}
+            topic={item.id}
+            dynamicTopic={topicState} 
+            setDynamicTopic={setTopicState}
+            scrollToIndex={() => flatListRef.current.scrollToIndex({index: item.id, viewPosition: 0.5})}
+          />
+        }
         horizontal={true}
         showsHorizontalScrollIndicator={false}
-      >
-          <ExploreButton 
-            title='Recommended' 
-            topic={1} 
-            dynamicTopic={topicState} 
-            setDynamicTopic={setTopicState}/>
-          <ExploreButton 
-            title='Trending' 
-            topic={2} 
-            dynamicTopic={topicState} 
-            setDynamicTopic={setTopicState}/>
-          <ExploreButton 
-            title='COVID-19' 
-            topic={3} 
-            dynamicTopic={topicState} 
-            setDynamicTopic={setTopicState}/>
-          <ExploreButton 
-            title='Politics' 
-            topic={4} 
-            dynamicTopic={topicState} 
-            setDynamicTopic={setTopicState}/>
-          <ExploreButton 
-            title='Space' 
-            topic={5}
-            dynamicTopic={topicState} 
-            setDynamicTopic={setTopicState}/>
-          <ExploreButton 
-            title='Science' 
-            topic={6}
-            dynamicTopic={topicState} 
-            setDynamicTopic={setTopicState}/>     
-          <ExploreButton 
-            title='Fitness' 
-            topic={7}
-            dynamicTopic={topicState} 
-            setDynamicTopic={setTopicState}/>       
-          <View style={{width: 10}}></View>
-      </ScrollView>
+      />
       <ExploreScreenContent
         topic={topicState}
         category={categoryState}
@@ -119,12 +88,33 @@ const MainExploreScreen:FC = ({navigation}:any) => {
         isVisible={isVisible} 
         setIsVisible={setIsVisible} 
         categoryState={categoryState} 
-        setCategoryState={setCategoryState}/>
+        setCategoryState={setCategoryState}
+        tempCategoryState={tempCategoryState}
+        setTempCategoryState={setTempCategoryState}/>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  searchBarRow: {
+    flexDirection: 'row', 
+    justifyContent: 'space-between', 
+    alignItems: 'center'
+  },
+  searchBar: { //dynamic width is located inline
+    height: 35,
+    borderRadius: 20,
+    marginLeft: 10,
+    backgroundColor: '#f5f5f5',
+    elevation: 0,
+  },
+  searchBarText: {
+    fontSize: 17,
+  },
+  filterIcon: {
+    paddingRight: 10, 
+    paddingLeft: 10
+  },
   exploreButtonListContainer: {
     backgroundColor: 'white', 
     paddingLeft: 5, 

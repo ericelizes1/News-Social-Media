@@ -12,7 +12,18 @@ const ExploreScreenContent:FC<ExploreScreenContentProps> = (props:ExploreScreenC
 
     return(
         <View>
-            <Text>For You</Text>
+        {/*(() => {
+            switch (props.topic) {
+            case 1:
+                return <ForYouExploreScreen category={category}/>
+            case 2:
+                return <TrendingExploreScreen/>
+            case 3:
+                return <PostExploreScreen/>
+            case 4:
+                return <ArticleExploreScreen/>
+            }
+        })()*/}
         </View>
     )
 }

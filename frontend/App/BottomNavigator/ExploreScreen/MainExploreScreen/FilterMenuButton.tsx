@@ -16,25 +16,32 @@ interface FilterMenuButtonProps {
 const FilterMenuButton:FC<FilterMenuButtonProps> = (props:FilterMenuButtonProps) => {
 
     const toggleCategoryState = () => {
-        if (allUncheckedCategories()) {
-            //error message?
-        } else {
-            props.setCategoryState({
-                ...props.categoryState,
-                [props.category]: !props.categoryState[props.category]
-            })
-        }
-    }
-
-    const allUncheckedCategories = () => {
-        return Object.keys(props.categoryState).every((k) => {
-            if (k == props.category) {
-                return props.categoryState[k]
-            } else {
-                return !props.categoryState[k];
-            }
+        props.setCategoryState({
+            ...props.categoryState,
+            [props.category]: !props.categoryState[props.category]
         })
     }
+
+    // const toggleCategoryState = () => {
+    //     if (allUncheckedCategories()) {
+    //         //error message?
+    //     } else {
+    //         props.setCategoryState({
+    //             ...props.categoryState,
+    //             [props.category]: !props.categoryState[props.category]
+    //         })
+    //     }
+    // }
+
+    // const allUncheckedCategories = () => {
+    //     return Object.keys(props.categoryState).every((k) => {
+    //         if (k == props.category) {
+    //             return props.categoryState[k]
+    //         } else {
+    //             return !props.categoryState[k];
+    //         }
+    //     })
+    // }
 
     const isSelected = () => {
         return props.categoryState[props.category]

@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { View, Pressable, StyleSheet, Modal, useWindowDimensions } from 'react-native';
+import { View, Pressable, StyleSheet, Modal, useWindowDimensions, Platform, ToastAndroid, Alert } from 'react-native';
 import { BottomSheet, Text, Icon } from 'react-native-elements';
 import { Caption } from 'react-native-paper';
 
@@ -9,12 +9,34 @@ interface FilterMenuProps {
   isVisible: boolean,
   setIsVisible: any,
   categoryState: any,
-  setCategoryState: any
+  setCategoryState: any,
+  tempCategoryState: any,
+  setTempCategoryState: any
 }
 
 const FilterMenu: FC<FilterMenuProps> = (props: FilterMenuProps) => {
 
   const window = useWindowDimensions();
+
+  const handleCloseMenu = () => {
+    if (!allCategoriesUnchecked()) {
+      props.setIsVisible(false);
+      props.setCategoryState(props.tempCategoryState)
+    } else {
+      const msg = 'Please select at least (1) filter.'
+      
+      if (Platform.OS === 'android') {
+        ToastAndroid.show(msg, ToastAndroid.SHORT)
+      } else {
+        Alert.alert(msg);
+      }
+
+    }
+  }
+
+  const allCategoriesUnchecked = () => {
+    return Object.keys(props.tempCategoryState).every((k) => !props.tempCategoryState[k])
+  }
 
   return (
     <View>
@@ -24,30 +46,30 @@ const FilterMenu: FC<FilterMenuProps> = (props: FilterMenuProps) => {
       <Modal animationType='slide' visible={props.isVisible} transparent={true}>
         <Pressable 
             style={{ height: window.height - 240 }} 
-            onPress={() => props.setIsVisible(false)}/>
+            onPress={handleCloseMenu}/>
         <View style={styles.filterMenuContainer}>
           <FilterMenuButton
             isTop={true}
             isBottom={false}
             category={"stacks"}
-            categoryState={props.categoryState}
-            setCategoryState={props.setCategoryState}
+            categoryState={props.tempCategoryState}
+            setCategoryState={props.setTempCategoryState}
             title='Stacks'
             desc='Search the latest collection of news, blogs, and more.' />
           <FilterMenuButton 
             isTop={false} 
             isBottom={false} 
             category={"posts"} 
-            categoryState={props.categoryState} 
-            setCategoryState={props.setCategoryState} 
+            categoryState={props.tempCategoryState} 
+            setCategoryState={props.setTempCategoryState} 
             title='Posts' 
             desc='See what opinions and commentary are popular.' />
           <FilterMenuButton 
             isTop={false} 
             isBottom={true} 
             category={"articles"} 
-            categoryState={props.categoryState} 
-            setCategoryState={props.setCategoryState} 
+            categoryState={props.tempCategoryState} 
+            setCategoryState={props.setTempCategoryState} 
             title='Articles' 
             desc='Find the latest, breaking news from your favorite sources.' />
         </View>
