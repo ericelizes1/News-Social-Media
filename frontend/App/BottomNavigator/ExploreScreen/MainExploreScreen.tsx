@@ -56,7 +56,7 @@ const MainExploreScreen:FC = ({navigation}:any) => {
             icon={() => <Icon name='search' type='feather' color='#696969'size={20} tvParallaxProperties={false}/>}
           />
           <Pressable
-            hitSlop={30}
+            hitSlop={10}
             style={styles.filterIcon}
             onPress={() => setIsVisible(true)}
           >

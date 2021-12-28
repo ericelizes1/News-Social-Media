@@ -1,10 +1,9 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useRef, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { Animated, StyleSheet, Pressable, ImageBackground, View, TouchableNativeFeedbackBase } from 'react-native';
 import { Text, Icon } from 'react-native-elements';
 import { Caption } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useRef } from 'react';
 
 //const AnimatedIcon = Animated.createAnimatedComponent(Icon);
 
@@ -15,49 +14,53 @@ export interface PropType {
   username: string,
   imgUrl: string,
   isForYou: boolean,
-  removeCard: any
+  removeCard: any,
+  recentlyDeleted: boolean,
+  activateUndoBar: any,
+  
 }
 
 const StackMiniCard:FC<PropType> = (props:PropType) => {
   const navigation:any = useNavigation(); 
-  const [titleFontSize, setTitleFontSize] = useState(35);
-  var [isTitleFontSet, setIsTitleFontSet] = useState(false);
-
-  const getTitleFontSize = ({x, y, width, height}, isTitleFontSet) => {
-    if (!isTitleFontSet) {
-      if (height > 100) setTitleFontSize(30)
-      else if (height > 90) setTitleFontSize(35)
-      else if (height > 20) setTitleFontSize(40)
-
-      setIsTitleFontSet(true)
+  /*
+  useEffect(() => {
+    if (props.recentlyDeleted) {
+      undoRemoveAnimation();
     }
+  })*/
+
+  let titleFontSize = 35;
+  const getTitleFontSize = (height:number) => {
+    if (height > 100) titleFontSize = 30;
+    else if (height > 90) titleFontSize = 35;
+    else titleFontSize = 40;
   }
-  
-  var corr = {
-    1 : 400,
-    2 : 300,
-    3 : 250,
-  };
+
+  var corr = {1:400, 2:300, 3:250};
   var cardHeight = corr[props.size];
 
-  let animatedValue = new Animated.Value(0)
-  let val = 0;
-  animatedValue.addListener(({ value }) => {
-    val = value;
-  })
-  let frontOpacity = animatedValue.interpolate({ 
+  /* Below includes all coded related to the flipping animation. The state isFlipped 
+  ** and ref animatedFlip describe the flip animation, which is called by the flipCard()
+  ** function. The variables frontOpacity and frontInterpolate describe the movement of the
+  ** front of the card, while backOpacity and backInterpolate describe the back. These are
+  ** both used in frontAnimatedStyle and backAnimated style, which apply directly to 
+  ** the correlating Animated.View components.
+  */ 
+  const [isFlipped, setIsFlipped] = useState(false);
+  let animatedFlip = useRef(new Animated.Value(0));
+  let frontOpacity = animatedFlip.current.interpolate({ 
     inputRange: [89, 90], 
     outputRange: [1, 0] 
   })
-  let backOpacity = animatedValue.interpolate({ 
+  let backOpacity = animatedFlip.current.interpolate({ 
     inputRange: [89, 90], 
     outputRange: [0,1] 
   })
-  let frontInterpolate = animatedValue.interpolate({
+  let frontInterpolate = animatedFlip.current.interpolate({
     inputRange: [0, 180],
     outputRange: ['0deg', '180deg']
   })
-  let backInterpolate = animatedValue.interpolate({
+  let backInterpolate = animatedFlip.current.interpolate({
     inputRange: [0, 180],
     outputRange: ['180deg', '360deg']
   })
@@ -77,122 +80,198 @@ const StackMiniCard:FC<PropType> = (props:PropType) => {
     zIndex: backOpacity
   }
 
-
   const flipCard = () => {
-    Animated.spring(animatedValue, {
-      toValue: val >= 90 ? 0 : 180, 
+    setIsFlipped(!isFlipped);
+    Animated.spring(animatedFlip.current, {
+      toValue: isFlipped ? 0 : 180, 
       friction: 8,
-      tension: 10,
+      tension: 30,
       useNativeDriver: true,
     }).start();
   }
 
+  /* 
+  ** Below includes all coded related to the onPress scale animation. 
+  */ 
+  let animatedPress = useRef(new Animated.Value(0));
+  let scaleVal = animatedPress.current.interpolate({ 
+    inputRange: [0, 1], 
+    outputRange: [1, 0.95] 
+  })
+  const pressScaleStyle = {
+    transform: [
+      { scale: scaleVal }
+    ], 
+  }
+  const pressInAnimation = () => {
+    Animated.spring(animatedPress.current, {
+      toValue: 1,
+      friction: 7,
+      tension: 100,
+      useNativeDriver: true,
+    }).start();
+  }
+  const pressOutAnimation = () => {
+    Animated.spring(animatedPress.current, {
+      toValue: 0,
+      friction: 7,
+      tension: 100,
+      useNativeDriver: true,
+    }).start()
+  }
+
+  /* 
+  ** Below includes all coded related to the remove animation. 
+  */ 
+  let animatedRemove = useRef(new Animated.Value(props.recentlyDeleted ? 1 : 0));
+  let removeOpacity = animatedRemove.current.interpolate({
+    inputRange: [0, 1], 
+    outputRange: [1, 0] 
+  })
+  let removeX = animatedRemove.current.interpolate({
+    inputRange: [0, 1], 
+    outputRange: [0, 200] 
+  })
+  let removeHeight = animatedRemove.current.interpolate({
+    inputRange: [0, 1],
+    outputRange: [cardHeight, 0]
+  })
+  let removeMargin = animatedRemove.current.interpolate({
+    inputRange: [0, 1],
+    outputRange: [5, 0]
+  })
+
+  const removeTransformStyle = {
+    transform: [
+      { translateX: removeX },
+    ],
+    opacity: removeOpacity
+  }
+
+  const removeAnimation = () => {
+    props.activateUndoBar();
+    Animated.spring(animatedRemove.current, {
+      toValue: 1,
+      friction: 20,
+      tension: 50,
+      useNativeDriver: false,
+    }).start(() => {props.removeCard(props.id);})
+  }
+  
   return(
-    <View style={styles.container}>
-      <Animated.View style={[styles.cardStyle, frontAnimatedStyle]}>
-        <Pressable 
-          style= {({pressed}) => [styles.container, {opacity: pressed ? 0.8 : 1, height: cardHeight}]}
-          onPress={() => {navigation.navigate('StackScreen')}}
-        >
-          <ImageBackground
-            source={{uri: props.imgUrl}}
-            style={styles.imageContainer}
-            imageStyle={styles.image}
+    <Animated.View style={[styles.container, removeTransformStyle, { maxHeight: removeHeight, margin: removeMargin,}]}>
+      <Animated.View style={[pressScaleStyle, {height: '100%', width: '100%'}]}>
+        <Animated.View style={[styles.cardStyle, frontAnimatedStyle]}>
+          <Pressable
+            style= {({pressed}) => [styles.cardStyle]}
+            onPress={() => {
+              navigation.navigate('StackScreen')
+            }}
+            onPressIn={() => {console.log("press in"); pressInAnimation()}}
+            onPressOut={() => {console.log("press out"); pressOutAnimation()}}
           >
-            <LinearGradient //TOP GRADIENT
-              colors={['rgba(0, 0, 0, 0.60)', 'rgba(0, 0, 0, 0)']}
-              style={styles.topGradientStyle}>
-              <View style={styles.frontHeader}>
-                <Text 
-                  onLayout={(event) => {
-                    var {x, y, width, height} = event.nativeEvent.layout;
-                    getTitleFontSize({x, y, width, height}, isTitleFontSet);
-                  }}
-                  h2Style={[styles.frontTitle, {fontSize: titleFontSize}]}
-                  h2
-                >{props.title}</Text>
-                <Caption style={styles.lastUpdated}>1hr ago</Caption>
-              </View>
-              <View style={styles.subscribeIconContainer}>
-                <Pressable 
-                  hitSlop={20}
-                  style={styles.subscribeIcon}
-                  disabled={props.isForYou ? true : false}
-                  onPress = {() => {
-                    //REMOVE STACK
-                    props.removeCard(props.id);
-                  }}
-                >
-                  <Icon
-                    name={'bookmark'} 
-                    type='material-community' 
-                    color= {props.isForYou ? 'rgba(0, 0, 0, 0)' : 'white'}
-                    size={35}                
-                    tvParallaxProperties={false}
-                  />
-                </Pressable>
-              </View>
-            </LinearGradient>
-            <LinearGradient //BOTTOM GRADIENT
-              colors={['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 0.3)']}
-              style={styles.bottomGradientStyle}
+            <ImageBackground
+              source={{uri: props.imgUrl}}
+              style={styles.imageContainer}
+              imageStyle={styles.image}
             >
-              <Pressable 
-                style={styles.infoIcon}
-                hitSlop={50}
-                onPress={() => flipCard()}
+              <LinearGradient //TOP GRADIENT
+                colors={['rgba(0, 0, 0, 0.60)', 'rgba(0, 0, 0, 0)']}
+                style={styles.topGradientStyle}>
+                <View style={styles.frontHeader}>
+                  <Text
+                    onLayout={(event) => {
+                      var {height} = event.nativeEvent.layout;
+                      getTitleFontSize(height);
+                    }}
+                    h2Style={[styles.frontTitle, {fontSize: titleFontSize}]}
+                    h2
+                  >{props.title}</Text>
+                  <Caption style={styles.lastUpdated}>1hr ago</Caption>
+                </View>
+                <View style={styles.subscribeIconContainer}>
+                  <Pressable 
+                    hitSlop={20}
+                    style={styles.subscribeIcon}
+                    disabled={props.isForYou ? true : false}
+                    onPress = {() => {
+                      //REMOVE STACK
+                      removeAnimation();
+                    }}
+                  >
+                    <Icon
+                      name={'bookmark'} 
+                      type='material-community' 
+                      color= {props.isForYou ? 'rgba(0, 0, 0, 0)' : 'white'}
+                      size={35}                
+                      tvParallaxProperties={false}
+                    />
+                  </Pressable>
+                </View>
+              </LinearGradient>
+              <LinearGradient //BOTTOM GRADIENT
+                colors={['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 0.3)']}
+                style={styles.bottomGradientStyle}
               >
-                <Icon 
-                  name='information-outline' 
-                  type='material-community' 
-                  color= 'white'
-                  size={25}                
-                  tvParallaxProperties={false}
-                />
-              </Pressable>
-              <Pressable hitSlop={50}>
-                <Caption style={styles.username}>@{props.username}</Caption>
-              </Pressable>
-            </LinearGradient>
-          </ImageBackground>
-        </Pressable>
-      </Animated.View>
-      <Animated.View style={[styles.cardStyle, styles.backCardStyle, backAnimatedStyle]}>
-        <Pressable 
-          style=  {({pressed}) => [styles.container, {opacity: pressed ? 0.8 : 1, height: cardHeight}]}
-          onPress={() => {navigation.navigate('StackScreen')}}
-        >
-          <ImageBackground
-            source={{uri: props.imgUrl}}
-            imageStyle={styles.image}
-            style={styles.imageContainer}
-          >
-            <View style={styles.translucentView}>
-              <View style={styles.backHeader}>
                 <Pressable 
-                  hitSlop={50}
+                  style={styles.infoIcon}
+                  hitSlop={20}
                   onPress={() => flipCard()}
                 >
                   <Icon 
-                    name='arrow-left' 
+                    name='information-outline' 
                     type='material-community' 
                     color= 'white'
-                    size={35}                
+                    size={25}                
                     tvParallaxProperties={false}
                   />
                 </Pressable>
-                <Text 
-                  h2Style={styles.backTitle}
-                  ellipsizeMode='tail'
-                  numberOfLines={1}
-                  h2>{props.title}
-                </Text>
+                <Pressable hitSlop={20}>
+                  <Caption style={styles.username}>@{props.username}</Caption>
+                </Pressable>
+              </LinearGradient>
+            </ImageBackground>
+          </Pressable>
+        </Animated.View>
+        <Animated.View style={[styles.cardStyle, styles.backCardStyle, backAnimatedStyle]}>
+          <Pressable 
+            style=  {({pressed}) => [styles.container, {height: cardHeight}]}
+            onPress={() => {navigation.navigate('StackScreen')}}
+            onPressIn={() => {pressInAnimation()}}
+            onPressOut={() => {pressOutAnimation()}}
+          >
+            <ImageBackground
+              source={{uri: props.imgUrl}}
+              imageStyle={styles.image}
+              style={styles.imageContainer}
+            >
+              <View style={styles.translucentView}>
+                <View style={styles.backHeader}>
+                  <Pressable 
+                    hitSlop={50}
+                    onPress={() => flipCard()}
+                  >
+                    <Icon 
+                      name='arrow-left' 
+                      type='material-community' 
+                      color= 'white'
+                      size={35}                
+                      tvParallaxProperties={false}
+                    />
+                  </Pressable>
+                  <Text 
+                    h2Style={styles.backTitle}
+                    ellipsizeMode='tail'
+                    numberOfLines={1}
+                    h2>{props.title}
+                  </Text>
+                </View>
               </View>
-            </View>
-          </ImageBackground>
-        </Pressable>
+            </ImageBackground>
+          </Pressable>
+        </Animated.View>
       </Animated.View>
-    </View>
+    </Animated.View>
   );
 }
 
@@ -202,7 +281,6 @@ const styles = StyleSheet.create({
     flex: 1, 
     justifyContent: 'center', 
     alignItems: 'center',
-    margin: 5,
   },
   cardStyle: {
     height: '100%',

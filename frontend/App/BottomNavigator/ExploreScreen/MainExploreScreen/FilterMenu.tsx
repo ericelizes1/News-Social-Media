@@ -43,7 +43,7 @@ const FilterMenu: FC<FilterMenuProps> = (props: FilterMenuProps) => {
       <Modal animationType='fade' visible={props.isVisible} transparent={true}>
         <View style={styles.grayContainer}/>
       </Modal>
-      <Modal animationType='slide' visible={props.isVisible} transparent={true}>
+      <Modal animationType='slide' visible={props.isVisible} transparent={true} onRequestClose={handleCloseMenu}>
         <Pressable 
             style={{ height: window.height - 240 }} 
             onPress={handleCloseMenu}/>
