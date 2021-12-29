@@ -1,11 +1,9 @@
 import React, { FC, useState, useRef, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { Animated, StyleSheet, Pressable, ImageBackground, View, TouchableNativeFeedbackBase } from 'react-native';
+import { Animated, StyleSheet, Pressable, ImageBackground, View } from 'react-native';
 import { Text, Icon } from 'react-native-elements';
 import { Caption } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
-
-//const AnimatedIcon = Animated.createAnimatedComponent(Icon);
 
 export interface PropType {
   id: number,
@@ -96,7 +94,7 @@ const StackMiniCard:FC<PropType> = (props:PropType) => {
   let animatedPress = useRef(new Animated.Value(0));
   let scaleVal = animatedPress.current.interpolate({ 
     inputRange: [0, 1], 
-    outputRange: [1, 0.95] 
+    outputRange: [1, 0.97] 
   })
   const pressScaleStyle = {
     transform: [
@@ -163,12 +161,12 @@ const StackMiniCard:FC<PropType> = (props:PropType) => {
       <Animated.View style={[pressScaleStyle, {height: '100%', width: '100%'}]}>
         <Animated.View style={[styles.cardStyle, frontAnimatedStyle]}>
           <Pressable
-            style= {({pressed}) => [styles.cardStyle]}
+            style= {() => [styles.cardStyle]}
             onPress={() => {
-              navigation.navigate('StackScreen')
+              navigation.navigate('StackFocusScreen')
             }}
-            onPressIn={() => {console.log("press in"); pressInAnimation()}}
-            onPressOut={() => {console.log("press out"); pressOutAnimation()}}
+            onPressIn={() => { pressInAnimation() }}
+            onPressOut={() => { pressOutAnimation() }}
           >
             <ImageBackground
               source={{uri: props.imgUrl}}
@@ -195,9 +193,10 @@ const StackMiniCard:FC<PropType> = (props:PropType) => {
                     style={styles.subscribeIcon}
                     disabled={props.isForYou ? true : false}
                     onPress = {() => {
-                      //REMOVE STACK
                       removeAnimation();
                     }}
+                    onPressIn={() => { pressInAnimation() }}
+                    onPressOut={() => { pressOutAnimation() }}
                   >
                     <Icon
                       name={'bookmark'} 
@@ -217,6 +216,8 @@ const StackMiniCard:FC<PropType> = (props:PropType) => {
                   style={styles.infoIcon}
                   hitSlop={20}
                   onPress={() => flipCard()}
+                  onPressIn={() => { pressInAnimation() }}
+                  onPressOut={() => { pressOutAnimation() }}
                 >
                   <Icon 
                     name='information-outline' 
@@ -226,7 +227,12 @@ const StackMiniCard:FC<PropType> = (props:PropType) => {
                     tvParallaxProperties={false}
                   />
                 </Pressable>
-                <Pressable hitSlop={20}>
+                <Pressable 
+                  hitSlop={20}
+                  onPress={() => navigation.navigate('ProfileScreen')}
+                  onPressIn={() => { pressInAnimation() }}
+                  onPressOut={() => { pressOutAnimation() }}
+                >
                   <Caption style={styles.username}>@{props.username}</Caption>
                 </Pressable>
               </LinearGradient>
@@ -235,8 +241,8 @@ const StackMiniCard:FC<PropType> = (props:PropType) => {
         </Animated.View>
         <Animated.View style={[styles.cardStyle, styles.backCardStyle, backAnimatedStyle]}>
           <Pressable 
-            style=  {({pressed}) => [styles.container, {height: cardHeight}]}
-            onPress={() => {navigation.navigate('StackScreen')}}
+            style=  {() => [styles.container, {height: cardHeight}]}
+            onPress={() => {navigation.navigate('StackFocusScreen')}}
             onPressIn={() => {pressInAnimation()}}
             onPressOut={() => {pressOutAnimation()}}
           >
@@ -250,6 +256,8 @@ const StackMiniCard:FC<PropType> = (props:PropType) => {
                   <Pressable 
                     hitSlop={50}
                     onPress={() => flipCard()}
+                    onPressIn={() => { pressInAnimation() }}
+                    onPressOut={() => { pressOutAnimation() }}
                   >
                     <Icon 
                       name='arrow-left' 

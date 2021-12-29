@@ -32,6 +32,9 @@ const StackScreen:FC = ({navigation}: any) => {
       <NewsNavigator.Screen
         name='ProfileScreen'
         component={ProfileScreen}
+        options={{
+          headerShown: false
+        }}
       />
       <NewsNavigator.Screen
         name='PostScreen'

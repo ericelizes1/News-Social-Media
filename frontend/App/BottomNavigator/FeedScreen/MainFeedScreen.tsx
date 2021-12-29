@@ -13,7 +13,7 @@ const MainFeedScreen:FC = ({navigation}:any) => {
           <Text h4 style={{fontFamily: 'Palatino'}}>Feed</Text>
           <Pressable
             onPress={() => navigation.navigate('StoryScreen')}> 
-            <Icon name='bell-outline' type='material-community' color='black' size={28}/>
+            <Icon name='bell-outline' type='material-community' color='black' size={28} tvParallaxProperties={false}/>
           </Pressable>
         </View>
       </Header>
