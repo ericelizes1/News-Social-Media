@@ -2,6 +2,8 @@ import React, { FC, useState, useEffect } from 'react';
 import { View, SafeAreaView, StyleSheet, Pressable, ImageBackground, useWindowDimensions } from 'react-native';
 import { Avatar, Text, Icon } from 'react-native-elements';
 import { Caption } from 'react-native-paper';
+import axios from 'axios';
+import config from '../config';
 
 import Header from './components/Header';
 
@@ -12,22 +14,33 @@ const ProfileScreen:FC = () => {
 
   useEffect(() => {
     //replace with server call
-    setUserData({
-      user_id: 12345,
-      first_name: 'Tom',
-      last_name: 'Holland',
-      username: 'spiderman',
-      nickname: 'Peter Parker',
-      num_followers: 587,
-      num_following: 1024,
-      num_stacks_created: 11,
-      profile_img_url: 'https://cdn.vox-cdn.com/thumbor/SbX1VbxJhxijxD1tzRTJ8uq38P4=/1400x1400/filters:format(jpeg)/cdn.vox-cdn.com/uploads/chorus_asset/file/19101461/spider_man_far_from_home_peter_parker_1562394390.jpg',
-      background_img_url: 'https://wallpapercave.com/wp/wp7806389.jpg'
-    })
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get(`${config.SERVER_URL}/users`);
+        console.log(response);
+        setUserData(response);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
+    fetchUserData();
+    // setUserData({
+    //   user_id: 12345,
+    //   first_name: 'Tom',
+    //   last_name: 'Holland',
+    //   username: 'spiderman',
+    //   nickname: 'Peter Parker',
+    //   num_followers: 587,
+    //   num_following: 1024,
+    //   num_stacks_created: 11,
+    //   profile_img_url: 'https://cdn.vox-cdn.com/thumbor/SbX1VbxJhxijxD1tzRTJ8uq38P4=/1400x1400/filters:format(jpeg)/cdn.vox-cdn.com/uploads/chorus_asset/file/19101461/spider_man_far_from_home_peter_parker_1562394390.jpg',
+    //   background_img_url: 'https://wallpapercave.com/wp/wp7806389.jpg'
+    // })
   }, [])
 
   if (!userData) {
-    //repa
+    //replace with loading animation
     return (
       <Text>Loading</Text>
     )

@@ -84,9 +84,6 @@ const App:FC = () => {
         <MainNavigator.Screen
           name='ProfileScreen'
           component={ProfileScreen}
-          options={{
-            headerShown: false
-          }}
         />
         <MainNavigator.Screen
           name='EditProfileScreen'
