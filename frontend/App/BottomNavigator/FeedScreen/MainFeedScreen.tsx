@@ -10,7 +10,7 @@ const MainFeedScreen:FC = ({navigation}:any) => {
     <View>
       <Header elevated={true}>
         <View style={styles.headerContainer}>
-          <Text h4 style={{fontFamily: 'Palatino'}}>Feed</Text>
+          <Text h4 style={{fontFamily: 'Palatino', color: 'purple'}}>Feed</Text>
           <Pressable
             onPress={() => navigation.navigate('StoryScreen')}> 
             <Icon name='bell-outline' type='material-community' color='black' size={28} tvParallaxProperties={false}/>
@@ -26,7 +26,7 @@ const MainFeedScreen:FC = ({navigation}:any) => {
         <PostCard/>
         <PostCard/>
         <PostCard/>
-        <Text h4 style={{fontFamily: 'Palatino', alignSelf: 'center', margin: 25}}>Congrats! Your at the bottom</Text>
+        <Text h4 style={{fontFamily: 'Palatino', alignSelf: 'center', margin: 25}}>Congrats! Your up to date</Text>
       </ScrollView>
     </View>
   );

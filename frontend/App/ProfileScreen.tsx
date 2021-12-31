@@ -13,12 +13,10 @@ const ProfileScreen:FC = () => {
   const window = useWindowDimensions();
 
   useEffect(() => {
-    //replace with server call
     const fetchUserData = async () => {
       try {
-        const response = await axios.get(`${config.SERVER_URL}/users`);
-        console.log(response);
-        setUserData(response);
+        const response = await axios.get(`${config.SERVER_URL}/users/1`);
+        setUserData(response.data.data.data);
       } catch (err) {
         console.log(err);
       }

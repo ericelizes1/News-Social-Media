@@ -15,12 +15,11 @@ import EditProfileScreen from './App/EditProfileScreen';
 import PostScreen from './App/PostScreen';
 import ArticleScreen from './App/ArticleScreen';
 import StoryScreen from './App/StoryScreen';
-import LoginScreen from './App/LoginScreen';
-
+import SignupNavigator from './App/SignupNavigator';
 
 const App:FC = () => {
   const MainNavigator : any =  createStackNavigator();
-  const isLoggedIn:boolean = true;
+  const isLoggedIn:boolean = false;
   
   const SlideFromTop = ({ current, next, inverted, layouts: { screen } }) => {
     const progress = Animated.add(
@@ -63,22 +62,24 @@ const App:FC = () => {
     <NavigationContainer>
       <StatusBar
         animated={true}
-        backgroundColor="white"/>
+        backgroundColor='white'
+      />
       <MainNavigator.Navigator
-        initialRouteName= {isLoggedIn ? 'BottomNavigator' : 'LoginScreen'}
+        initialRouteName= {isLoggedIn ? 'BottomNavigator' : 'SignupNavigator'}
       >
         <MainNavigator.Screen
           name='BottomNavigator'
           component={BottomNavigator}
           options={{
-            headerShown: false
+            headerShown: false,
+            gestureEnabled: false
           }}
-        />
+        />        
         <MainNavigator.Screen
-          name='LoginScreen'
-          component={LoginScreen}
+          name='SignupNavigator'
+          component={SignupNavigator}
           options={{
-            headerShown: false
+            headerShown: false,
           }}
         />
         <MainNavigator.Screen

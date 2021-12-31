@@ -5,14 +5,16 @@ import { Text, Icon } from 'react-native-elements';
 import Header from '../../components/Header';
 
 const MainActivityScreen:FC = ({navigation}:any) => {
-
   return(
     <Header elevated={true}>
       <View style={styles.headerContainer}>
         <Text h4 style={{fontFamily: 'Palatino'}}>Activity</Text>
         <Pressable
           onPress={() => navigation.navigate('DMMenuScreen')}> 
-          <Icon name='bell-outline' type='material-community' color='black' size={28}/>
+          <Icon name='bell-outline' 
+                type='material-community' 
+                color='black' size={28}
+                tvParallaxProperties={false}/>
         </Pressable>
       </View>
     </Header>

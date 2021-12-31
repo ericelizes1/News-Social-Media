@@ -3,7 +3,7 @@ import { Animated, SafeAreaView, View, FlatList, Modal, Pressable, StyleSheet, u
 import { Text, Icon, Badge } from 'react-native-elements';
 import { Searchbar } from 'react-native-paper';
 
-import ForYouMiniCard from './YourStacksScreen/ForYouMiniCard';
+//import ForYouMiniCard from './YourStacksScreen/ForYouMiniCard';
 import StackMiniCard from './YourStacksScreen/StackMiniCard';
 import StackHeader from './YourStacksScreen/StackHeader';
 import { Item } from 'react-native-paper/lib/typescript/components/List/List';
@@ -365,13 +365,13 @@ const YourStacksScreen:FC = ({navigation}:any) => {
 }
 
 const styles = StyleSheet.create({
-  headerContainer: {
+ /*headerContainer: {
     width: '100%',
     flexDirection: 'column',
     justifyContent: 'flex-end',
     alignItems: 'center',
     padding: 10,
-  },
+  },*/
   header: {
     position: 'absolute',
     backgroundColor: 'white',
@@ -419,7 +419,7 @@ const styles = StyleSheet.create({
   },
   undoButtonText: {
     color: 'black',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   undoDescriptionContainer: {
   },
@@ -427,7 +427,7 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: 14,
     width: 200,
-    textAlign: 'left'
+    textAlign: 'left',
   },
 })
 export default YourStacksScreen;

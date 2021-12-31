@@ -38,6 +38,20 @@ app.get('/api/v1/users', async (_, res) => {
   }
 })
 
+app.get('/api/v1/users/:user_id', async (req, res) => {
+  try {
+    const results = await db.query(`SELECT DISTINCT * FROM users WHERE user_id = ${req.params.user_id};`);
+    res.status(200).json({
+      status: "Success",
+      data: {
+        data: results.rows[0],
+      }
+    })
+  } catch (err) {
+    console.log(err);
+  }
+})
+
 app.get('/api/v1/source', async (_, res) => {
   try {
     const results = await db.query("SELECT * FROM source;");
