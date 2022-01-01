@@ -13,7 +13,7 @@ const SignupVerifyScreen:FC = ({navigation}:any) => {
   return(
     <SafeAreaView style={[styles.container, {paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0}]}>
       <ImageBackground
-        source={{uri: 'https://image.winudf.com/v2/image1/Y29tLmRlc2VydC53YWxscGFwZXIuZGVzZXJ0aGR3YWxscGFwZXJfc2NyZWVuXzZfMTU1MTI1OTgxM18wMzM/screen-6.jpg?fakeurl=1&type=.jpg'}}
+        source={{uri: 'https://images.unsplash.com/photo-1582120031356-35f21bf61055?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8YnVyaiUyMGtoYWxpZmF8ZW58MHx8MHx8&w=1000&q=80'}}
         style={styles.imageContainer}
       >
         <LinearGradient

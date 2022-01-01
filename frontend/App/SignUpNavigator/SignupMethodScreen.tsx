@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { SafeAreaView, View, StyleSheet, ImageBackground, Pressable, useWindowDimensions, Platform, StatusBar } from 'react-native';
+import { SafeAreaView, View, StyleSheet, ImageBackground, Pressable, useWindowDimensions, Platform, StatusBar, KeyboardAvoidingView } from 'react-native';
 import { Text, Icon, Input } from 'react-native-elements';
 import { LinearGradient } from 'expo-linear-gradient';
 import {
@@ -22,7 +22,7 @@ const SignupMethodScreen:FC = ({navigation}:any) => {
         <ImageBackground
           source={{uri: 'https://images.unsplash.com/photo-1516905365385-7f89706faaf8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OXx8c2VhdHRsZXxlbnwwfHwwfHw%3D&w=1000&q=80'}}
           style={styles.imageContainer}
-        >
+        > 
           <LinearGradient
             colors={['rgba(128,0,128, 0.25)', 'rgba(128,0,128, 0)']}
             style={styles.imageContainer}
@@ -40,53 +40,51 @@ const SignupMethodScreen:FC = ({navigation}:any) => {
                 />
               </Pressable>
             </View>
-            <View style={[styles.subContainer]}>
+            <KeyboardAvoidingView 
+              behavior={Platform.OS === "android" ? '' : 'padding'}
+              style={[styles.menuContainer]}
+            >
               <View style={styles.titleContainer}>
                 <View style={{width: '100%', flexDirection: 'row', justifyContent: 'space-between'}}>
-                  <Text style={styles.title}>Create an account</Text>
+                  <Text style={styles.title}>Create your account</Text>
                   <Text style={[styles.title, {paddingRight: 10}]}>1/4</Text>
                 </View>
                 <Text style={styles.description}>Breaking news and popular opinions await at your fingertips</Text>
               </View>
-              <View style={styles.buttonContainer}>
-                <View style={{justifyContent: 'center'}}>
-                  <Input
-                    placeholder='Phone or Email*' autoCompleteType={undefined}                  />
-                  <View style={styles.orContainer}>
-                    <View style={styles.line}/>
-                    <Text style={[styles.description, {paddingHorizontal: 10,}]}>or</Text>
-                    <View style={styles.line}/>
-                  </View>
-                  <View style={{height: 125, justifyContent: 'space-between'}}>
-                    <Pressable
-                      style={[styles.loginButton, {backgroundColor: google ? 'rgba(128, 0, 128, 0.2)' : 'rgba(128,0,128, 0)'}]}
-                      onPress= {() => {}}     
-                      onPressIn={()=>{setGoogle(true)}}
-                      onPressOut={()=>{setGoogle(false)}}
-                    >
-                      <Text style={[styles.loginText, {color: 'purple',}]}>Google</Text>
-                    </Pressable>
-                    <Pressable
-                      style={[styles.loginButton, {backgroundColor: apple ? 'rgba(128, 0, 128, 0.2)' : 'rgba(128,0,128, 0)'}]}
-                      onPress= {() => {}}   
-                      onPressIn={()=>{setApple(true)}}
-                      onPressOut={()=>{setApple(false)}}
-                    >
-                      <Text style={[styles.loginText, {color: 'purple',}]}>Apple</Text>
-                    </Pressable>
-                  </View>
-                </View>
+              <Input
+                style={{width: '100%', marginTop: 10,}}
+                placeholder='Phone or Email*' 
+                autoCompleteType={undefined}/>
+              <View style={styles.orContainer}>
+                <View style={styles.line}/>
+                <Text style={[styles.description, {paddingHorizontal: 10,}]}>or</Text>
+                <View style={styles.line}/>
+              </View>
                 <Pressable
-                  style={[styles.loginButton, {backgroundColor: next ? 'rgba(128,0,128, 0.8)' : 'rgba(128,0,128, 1)'}]}
+                  style={[styles.loginButton, {marginTop: 20, backgroundColor: google ? 'rgba(128, 0, 128, 0.2)' : 'rgba(128,0,128, 0)'}]}
+                  onPress= {() => {}}     
+                  onPressIn={()=>{setGoogle(true)}}
+                  onPressOut={()=>{setGoogle(false)}}
+                >
+                  <Text style={[styles.loginText, {color: 'purple',}]}>Google</Text>
+                </Pressable>
+                <Pressable
+                  style={[styles.loginButton, {marginTop: 10, backgroundColor: apple ? 'rgba(128, 0, 128, 0.2)' : 'rgba(128,0,128, 0)'}]}
+                  onPress= {() => {}}   
+                  onPressIn={()=>{setApple(true)}}
+                  onPressOut={()=>{setApple(false)}}
+                >
+                  <Text style={[styles.loginText, {color: 'purple',}]}>Apple</Text>
+                </Pressable>
+                <Pressable
+                  style={[styles.loginButton, {marginTop: 20, backgroundColor: next ? 'rgba(128,0,128, 0.8)' : 'rgba(128,0,128, 1)'}]}
                   onPress= {() => navigation.navigate('SignupPersonalScreen')}
                   onPressIn={()=>{setNext(true)}}
                   onPressOut={()=>{setNext(false)}}      
                 >
                   <Text style={[styles.loginText, {color: 'white',}]}>Next</Text>
                 </Pressable>
-                
-              </View>
-            </View>
+              </KeyboardAvoidingView>
           </LinearGradient>
         </ImageBackground>
       </SafeAreaView>
@@ -114,16 +112,15 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingLeft: 10,
   },
-  subContainer: {
+  menuContainer: {
     width: '100%',
     flexDirection: 'column',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
     alignItems: 'center',
     backgroundColor: 'white',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    paddingHorizontal: 20,
-    paddingTop: 20,
+    padding: 20,
   },
   titleContainer: {
     width: '100%',
@@ -138,12 +135,6 @@ const styles = StyleSheet.create({
   description: {
     fontSize: 16,
     color: '#696969'
-  },
-  buttonContainer: {
-    height: 400,
-    width: '100%',
-    flexDirection: 'column',
-    justifyContent: 'space-evenly',
   },
   loginButton: {
     width: '100%',
@@ -163,8 +154,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-
-    paddingBottom: 30,
+    marginTop: -5,
   },
   line: {
     height: 1,

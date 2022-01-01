@@ -39,7 +39,7 @@ const BottomNavigator:FC = () => {
               size={33}
               tvParallaxProperties={false}
             />
-        }}
+          }}
       />
       <TabNavigator.Screen
         name="ExploreScreen"

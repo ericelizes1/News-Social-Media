@@ -1,18 +1,16 @@
 import React, { FC, useState, useRef } from 'react';
-import { Animated, SafeAreaView, View, StyleSheet, ImageBackground, Pressable, useWindowDimensions, Platform, StatusBar } from 'react-native';
-import { Text, Icon } from 'react-native-elements';
+import { Animated, SafeAreaView, View, StyleSheet, ImageBackground, Pressable, useWindowDimensions, Platform, StatusBar, KeyboardAvoidingView, Modal, Keyboard } from 'react-native';
+import { Text, Icon, Input } from 'react-native-elements';
 import { LinearGradient } from 'expo-linear-gradient';
 
 const LoginMenu:FC = ({navigation}:any) => {
     const window = useWindowDimensions()
     const [signIn, setSignIn] = useState(false);
     const [signUp, setSignUp] = useState(false);
-
-    let animatedHeader = useRef(new Animated.Value(0));
-    let headerLocation = animatedHeader.current.interpolate({ 
-      inputRange: [0, 1], 
-      outputRange: [0, -100] 
-    })
+    const [resetButton, setResetButton] = useState(false);
+    const [isSent, setIsSent] = useState(false);
+    const [cancelButton, setCancelButton] = useState(false);
+    const [isModalVisible, setIsModalVisible] = useState(false);
 
     let animatedMenu = useRef(new Animated.Value(0))
     let menuLocation = animatedMenu.current.interpolate({ 
@@ -26,11 +24,11 @@ const LoginMenu:FC = ({navigation}:any) => {
       outputRange: [0, -500]
     })
 
-    const animatedHeaderStyle = {
-      transform: [
-        { translateY: headerLocation }
-      ], 
-    }
+    let animatedForget = useRef(new Animated.Value(0));
+    let forgetLocation = animatedContent.current.interpolate({
+      inputRange: [0, 1],
+      outputRange: [0, -500]
+    })
     
     const animatedMenuStyle = {
       transform: [
@@ -44,33 +42,19 @@ const LoginMenu:FC = ({navigation}:any) => {
       ]
     }
 
-    const headerAnimation = () => {
-      Animated.spring(animatedHeader.current, {
-        toValue: 1,
-        friction: 25,
-        tension: 100,
-        useNativeDriver: true,
-      }).start();
-      Animated.spring(animatedHeader.current, {
-        toValue: 0,
-        friction: 25,
-        tension: 100,
-        useNativeDriver: true,
-      }).start();
-    }
 
     const menuExitAnimation = () => {
       Animated.spring(animatedMenu.current, {
         toValue: 1,
         friction:25,
         tension: 100,
-        useNativeDriver: true,
+        useNativeDriver: false,
       }).start();
       Animated.spring(animatedContent.current, {
         toValue: 1,
         friction:25,
         tension: 100,
-        useNativeDriver: true,
+        useNativeDriver: false,
       }).start();
     }
     const menuEnterAnimation = () => {
@@ -78,64 +62,147 @@ const LoginMenu:FC = ({navigation}:any) => {
         toValue: 0,
         friction: 25,
         tension: 100,
-        useNativeDriver: true,
+        useNativeDriver: false,
       }).start();
       Animated.spring(animatedMenu.current, {
         toValue: 0,
         friction:25,
         tension: 100,
-        useNativeDriver: true,
+        useNativeDriver: false,
       }).start();
     }
 
     const animateToSignIn = () => {
-      headerAnimation();
       menuExitAnimation()
     };
     const animateFromSignIn = () => {
-      headerAnimation();
-      menuEnterAnimation();
+      Animated.spring(animatedContent.current, {
+        toValue: 0,
+        friction: 25,
+        tension: 100,
+        useNativeDriver: false,
+      }).start();
+      Animated.spring(animatedMenu.current, {
+        toValue: 0,
+        friction:25,
+        tension: 100,
+        useNativeDriver: false,
+      }).start();
     };
 
     return(
       <SafeAreaView style={[styles.container, {paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0}]}> 
-
-
-        <ImageBackground
-          source={{uri: 'https://images.unsplash.com/photo-1500916434205-0c77489c6cf7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8&w=1000&q=80'}}
-          style={styles.imageContainer}
+        <KeyboardAvoidingView 
+          behavior={Platform.OS === "ios" ? 'padding': ''}
+          style={styles.container}
         >
-          <LinearGradient
-            colors={['rgba(128,0,128, 0.25)', 'rgba(128,0,128, 0)']}
-            style={styles.imageContainer}
-          >
-            <Animated.View style={[animatedContentStyle, styles.signInContainer]}>
-              <View
-                style={{width: '100%', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center'}}
-              >
+          <Modal animationType='fade' visible={isModalVisible} transparent={true}>
+            <View style={{height: '100%', width: '100%', justifyContent: 'center', alignItems: 'center', padding: 20, backgroundColor: 'rgba(0,0,0,0.3)'}}>
+              <View style={{width: '100%', backgroundColor: 'white', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', padding: 20, borderRadius: 20}}>
+                <Text style={[styles.title, {fontSize: 18}]}>Forgot your password?</Text>
+                <Text style={[styles.description, {fontSize: 16}]}>Enter the phone number or email you used to sign up below.</Text>
+                <Input
+                  style={{width: '100%', marginTop: 10,}}
+                  placeholder='Phone or Email*' 
+                  autoCompleteType={undefined}
+                />
                 <Pressable
-                  onPressIn={() => {animateFromSignIn()}}
+                  style={[styles.loginButton, {backgroundColor: resetButton ? 'rgba(128,0,128, 0.8)' : 'rgba(128,0,128, 1)'}]}
+                  onPress= {() => {
+                    setResetButton(false);
+                    navigation.navigate('BottomNavigator');
+                  }}                
+                  onPressIn={()=>{setResetButton(true)}}
+                  onPressOut={()=>{setResetButton(false)}}
                 >
-                  <Icon
-                    name='close'
-                    type='material-community'
-                    color='purple'
-                    size={35}
-                    tvParallaxProperties={false}
-                  />
+                  <Text style={[styles.loginText, {color: 'white',}]}>Reset Password</Text>
+                </Pressable>
+                <Pressable
+                  style={[styles.loginButton, {marginTop: 10, backgroundColor: cancelButton ? 'rgba(128,0,128, 0.2)' : 'rgba(128,0,128, 0)'}]}
+                  onPress= {() => {
+                    setCancelButton(false)
+                    setIsModalVisible(false);
+                  }} 
+                  onPressIn={()=>{setCancelButton(true)}}
+                  onPressOut={()=>{setCancelButton(false)}} 
+                >
+                  <Text style={[styles.loginText, {color: 'purple',}]}>Cancel</Text>
                 </Pressable>
               </View>
-            </Animated.View>
-            <Animated.View style={[styles.headerContainer, animatedHeaderStyle]}>
-              <Icon color='white' size={50} name='check' tvParallaxProperties={false}/>  
-              <Text style={[styles.title, {color: 'white'}]}>stack</Text>           
-            </Animated.View>
-            <Animated.View style={[styles.menuContainer, animatedMenuStyle]}>
-              <View style={styles.titleContainer}>
-                <Text style={styles.title}>Welcome</Text>
-                <Text style={styles.description}>Let's see what the world's up to today</Text>
-              </View>
-              <View style={styles.buttonContainer}>
+            </View>
+          </Modal>
+          <ImageBackground
+            source={{uri: 'https://images.unsplash.com/photo-1500916434205-0c77489c6cf7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8&w=1000&q=80'}}
+            style={styles.imageContainer}
+          >
+            <LinearGradient
+              colors={['rgba(128,0,128, 0.25)', 'rgba(128,0,128, 0)']}
+              style={styles.imageContainer}
+            >
+              <Animated.View style={[animatedContentStyle, styles.menuContainer,{position: 'absolute',bottom: -500}]}>
+                <View
+                  style={{width: '100%', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center'}}
+                >
+                  <Pressable
+                    onPress={() => {
+                      Keyboard.dismiss()
+                      animateFromSignIn()
+                    }}
+                  >
+                    <Icon
+                      name='chevron-down'
+                      type='material-community'
+                      color='purple'
+                      size={35}
+                      tvParallaxProperties={false}
+                    />
+                  </Pressable>
+                </View>
+                <View style={styles.titleContainer}>
+                  <Text style={styles.title}>Welcome back</Text>
+                  <Text style={styles.description}>Just sign in below to get this train moving</Text>
+                </View>
+                <Input
+                  style={{marginTop: -5,}}
+                  placeholder='Username*' 
+                  autoCompleteType={undefined} 
+                />
+                <Input
+                  style={{marginTop: -5,}}
+                  placeholder='Password*' 
+                  autoCompleteType={undefined}
+                  secureTextEntry={true}
+                />
+                <Pressable
+                  style={[styles.loginButton, {backgroundColor: signIn ? 'rgba(128,0,128, 0.8)' : 'rgba(128,0,128, 1)'}]}
+                  onPress= {() => {
+                    navigation.navigate('BottomNavigator');
+                  }}                
+                  onPressIn={()=>{setSignIn(true)}}
+                  onPressOut={()=>{setSignIn(false)}}
+                >
+                  <Text style={[styles.loginText, {color: 'white',}]}>Sign In</Text>
+                </Pressable>
+                <Pressable
+                  style={[styles.loginButton, {marginTop: 10, backgroundColor: signUp ? 'rgba(128,0,128, 0.2)' : 'rgba(128,0,128, 0)'}]}
+                  onPress= {() => {
+                    //Navigate to sign in
+                   setIsModalVisible(true);
+                  }} 
+                  onPressIn={()=>{setSignUp(true)}}
+                  onPressOut={()=>{setSignUp(false)}} 
+                >
+                  <Text style={[styles.loginText, {color: 'purple',}]}>Forgot your password?</Text>
+                </Pressable>
+              </Animated.View>
+              <Animated.View style={[styles.headerContainer]}>              
+                <Text style={[styles.title, {color: 'white'}]}>stack</Text>           
+              </Animated.View>
+              <Animated.View style={[styles.menuContainer, animatedMenuStyle]}>
+                <View style={styles.titleContainer}>
+                  <Text style={styles.title}>Welcome</Text>
+                  <Text style={styles.description}>Let's see what the world's up to today</Text>
+                </View>
                 <Pressable
                   style={[styles.loginButton, {backgroundColor: signIn ? 'rgba(128,0,128, 0.8)' : 'rgba(128,0,128, 1)'}]}
                   onPress= {() => animateToSignIn()}
@@ -157,10 +224,10 @@ const LoginMenu:FC = ({navigation}:any) => {
                 >
                   <Text style={[styles.loginText, {color: 'purple',}]}>Sign Up</Text>
                 </Pressable>
-              </View>
-            </Animated.View>
-          </LinearGradient>
-        </ImageBackground>
+              </Animated.View>
+            </LinearGradient>
+          </ImageBackground>
+        </KeyboardAvoidingView>
       </SafeAreaView>
     );
 }
@@ -180,29 +247,27 @@ const styles = StyleSheet.create({
       alignItems: 'center',
     },
     signInContainer: {
-      height: 500, 
       width: '100%', 
       flexDirection: 'column',
-      justifyContent: 'flex-start',
-      alignItems: 'flex-start',
+      justifyContent: 'flex-end',
+      alignItems: 'center',
       backgroundColor: 'white', 
       borderTopLeftRadius: 20, 
       borderTopRightRadius: 20, 
       padding: 20,
-      position: 'absolute', 
-      bottom: -500
     },
     headerContainer: {
       width: '100%', 
       flexDirection: 'row',
       justifyContent: 'flex-start',
       alignItems: 'center',
+      paddingHorizontal: 20,
+      paddingVertical: 10,
     },
     menuContainer: {
-      height: 325,
       width: '100%',
       flexDirection: 'column',
-      justifyContent: 'space-between',
+      justifyContent: 'flex-end',
       alignItems: 'center',
       backgroundColor: 'white',
       borderTopLeftRadius: 20,
@@ -214,6 +279,7 @@ const styles = StyleSheet.create({
       flexDirection: 'column',
       justifyContent: 'flex-start',
       alignItems: 'flex-start',
+      paddingBottom: 20,
     },
     title: {
       fontWeight: 'bold',
@@ -247,7 +313,8 @@ const styles = StyleSheet.create({
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
-      padding: 5,
+      paddingVertical: 10,
+      paddingHorizontal: 5,
     },
     line: {
       height: 1,

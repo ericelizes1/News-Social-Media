@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { SafeAreaView, View, StyleSheet, ImageBackground, Pressable, Platform, StatusBar } from 'react-native';
+import { SafeAreaView, View, StyleSheet, ImageBackground, Pressable, Platform, StatusBar, KeyboardAvoidingView } from 'react-native';
 import { Text, Icon, Input } from 'react-native-elements';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -59,7 +59,10 @@ const SignupUserInfoScreen:FC = ({navigation}:any) => {
               />
             </Pressable>
           </View>
-          <View style={[styles.subContainer]}>
+          <KeyboardAvoidingView 
+          behavior={Platform.OS === "android" ? '' : 'padding'}
+          style={[styles.menuContainer]}
+          >
             <View style={styles.titleContainer}>
               <View style={{width: '100%', flexDirection: 'row', justifyContent: 'space-between'}}>
                 <Text style={styles.title}>Secure your account</Text>
@@ -67,70 +70,68 @@ const SignupUserInfoScreen:FC = ({navigation}:any) => {
               </View>
               <Text style={styles.description}>For your safety, please guard your password close at hand</Text>
             </View>
-            <View style={styles.buttonContainer}>
-              <View style={{justifyContent: 'space-evenly'}}>
-                <Input
-                  placeholder='Username*' 
-                  autoCompleteType={undefined} />
-                <Input
-                  placeholder='Password*' 
-                  autoCompleteType={undefined}
-                  secureTextEntry={true}
-                  onChangeText={value => {
-                    validatePassword(value);
-                  }}
-                />
-                <View style={{paddingLeft: 10, marginTop: -10}}>
-                  <Text style={styles.description}>Your password should contain:</Text>
-                  <View style={{flexDirection: 'row'}}>
-                    <Text style={[styles.description, {paddingHorizontal: 10,}]}>- At least 8 characters</Text>
-                    <Icon
-                      name={passwordChar ? 'check' : 'close'}
-                      type='material-community'
-                      color='purple'
-                      tvParallaxProperties={false}
+            <Input
+              style={{marginTop: -5,}}
+              placeholder='Username*' 
+              autoCompleteType={undefined} />
+            <Input
+              style={{marginTop: -5,}}
+              placeholder='Password*' 
+              autoCompleteType={undefined}
+              secureTextEntry={true}
+              onChangeText={value => {
+                validatePassword(value);
+              }}
+            />
+            <View style={{paddingLeft: 10, justifyContent: 'flex-start', width: '100%', marginTop: -10}}>
+              <Text style={styles.description}>Your password should contain:</Text>
+              <View style={{flexDirection: 'row'}}>
+                <Text style={[styles.description, {paddingHorizontal: 10,}]}>- At least 8 characters</Text>
+                <Icon
+                  name={passwordChar ? 'check' : 'close'}
+                  type='material-community'
+                  color='purple'
+                  tvParallaxProperties={false}
 
-                    />
-                  </View>
-                  <View style={{flexDirection: 'row'}}>
-                    <Text style={[styles.description, {paddingHorizontal: 10,}]}>- Uppercase and lowercase letters</Text>
-                    <Icon
-                      name={passwordCase ? 'check' : 'close'}
-                      type='material-community'
-                      color='purple'
-                      tvParallaxProperties={false}
-                    />
-                  </View>
-                  <View style={{flexDirection: 'row'}}>
-                    <Text style={[styles.description, {paddingHorizontal: 10,}]}>- Letters and numbers</Text>
-                    <Icon
-                      name= {passwordNum ? 'check' : 'close'}
-                      type='material-community'
-                      color='purple'
-                      tvParallaxProperties={false}
-                    />
-                  </View>
-                  <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                    <Text style={[styles.description, {paddingHorizontal: 10,}]}>- At least 1 special character</Text>
-                    <Icon
-                      name= {passwordSpecial ? 'check' : 'close'}
-                      type='material-community'
-                      color='purple'
-                      tvParallaxProperties={false}
-                    />
-                  </View>
-                </View>
+                />
               </View>
-              <Pressable
-                style={[styles.loginButton, {backgroundColor: next ? 'rgba(128,0,128, 0.8)' : 'rgba(128,0,128, 1)'}]}
-                onPress= {() => navigation.navigate('SignupVerifyScreen')}
-                onPressIn={()=>{setNext(true)}}
-                onPressOut={()=>{setNext(false)}}      
-              >
-                <Text style={[styles.loginText, {color: 'white',}]}>Next</Text>
-              </Pressable>
+              <View style={{flexDirection: 'row'}}>
+                <Text style={[styles.description, {paddingHorizontal: 10,}]}>- Uppercase and lowercase letters</Text>
+                <Icon
+                  name={passwordCase ? 'check' : 'close'}
+                  type='material-community'
+                  color='purple'
+                  tvParallaxProperties={false}
+                />
+              </View>
+              <View style={{flexDirection: 'row'}}>
+                <Text style={[styles.description, {paddingHorizontal: 10,}]}>- Letters and numbers</Text>
+                <Icon
+                  name= {passwordNum ? 'check' : 'close'}
+                  type='material-community'
+                  color='purple'
+                  tvParallaxProperties={false}
+                />
+              </View>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Text style={[styles.description, {paddingHorizontal: 10,}]}>- At least 1 special character</Text>
+                <Icon
+                  name= {passwordSpecial ? 'check' : 'close'}
+                  type='material-community'
+                  color='purple'
+                  tvParallaxProperties={false}
+                />
+              </View>
             </View>
-          </View>
+            <Pressable
+              style={[styles.loginButton, {backgroundColor: next ? 'rgba(128,0,128, 0.8)' : 'rgba(128,0,128, 1)'}]}
+              onPress= {() => navigation.navigate('SignupVerifyScreen')}
+              onPressIn={()=>{setNext(true)}}
+              onPressOut={()=>{setNext(false)}}      
+            >
+              <Text style={[styles.loginText, {color: 'white',}]}>Next</Text>
+            </Pressable>
+          </KeyboardAvoidingView>
         </LinearGradient>
       </ImageBackground>
     </SafeAreaView>
@@ -141,7 +142,7 @@ const styles = StyleSheet.create({
   container: {
     height: '100%',
     width: '100%',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'white',
   },
@@ -158,22 +159,22 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingLeft: 10,
   },
-  subContainer: {
+  menuContainer: {
     width: '100%',
     flexDirection: 'column',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
     alignItems: 'center',
     backgroundColor: 'white',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    paddingHorizontal: 20,
-    paddingTop: 20,
+    padding: 20,
   },
   titleContainer: {
     width: '100%',
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
+    marginBottom: 15,
   },
   title: {
     fontWeight: 'bold',
@@ -183,12 +184,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#696969'
   },
-  buttonContainer: {
-    height: 380,
-    width: '100%',
-    flexDirection: 'column',
-    justifyContent: 'space-evenly',
-  },
   loginButton: {
     width: '100%',
     justifyContent: 'center',
@@ -197,6 +192,7 @@ const styles = StyleSheet.create({
     borderRadius: 35,
     borderWidth: 1,
     borderColor: 'purple',
+    marginTop: 20,
   },
   loginText: {
     fontWeight: 'bold',
@@ -207,8 +203,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-
-    paddingBottom: 30,
   },
   line: {
     height: 1,

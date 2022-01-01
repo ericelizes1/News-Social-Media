@@ -13,7 +13,10 @@ const SignupNavigator:FC = () => {
   return(
     <SignupNavigator.Navigator
       initialRouteName='LoginMenu'
-      screenOptions={false}
+      screenOptions={{
+        swipeEnabled: false
+
+      }}
       tabBar={() => {}}
     >
       <SignupNavigator.Screen
