@@ -27,7 +27,12 @@ const SignupMethodScreen:FC = ({navigation}:any) => {
       return(accountCondition);
     }
     return(
-      <SafeAreaView style={[styles.container, {paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0}]}>
+      <SafeAreaView style={[styles.container, {height: window.height + StatusBar.currentHeight, width: window.width, paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0}]}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? 'padding': 'position'}
+          contentContainerStyle={{height: '100%', width: '100%'}}
+          style={{height: window.height, width: '100%', flex: 1, }}
+        >
         <ImageBackground
           source={{uri: 'https://images.unsplash.com/photo-1516905365385-7f89706faaf8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OXx8c2VhdHRsZXxlbnwwfHwwfHw%3D&w=1000&q=80'}}
           style={styles.imageContainer}
@@ -49,14 +54,18 @@ const SignupMethodScreen:FC = ({navigation}:any) => {
                 />
               </Pressable>
             </View>
-            <KeyboardAvoidingView 
-              behavior={Platform.OS === "android" ? '' : 'padding'}
+            <View
               style={[styles.menuContainer]}
             >
               <View style={styles.titleContainer}>
                 <View style={{width: '100%', flexDirection: 'row', justifyContent: 'space-between'}}>
+                  <View style={{width: '24%', height: 2, backgroundColor: 'purple'}}/>
+                  <View style={{width: '24%', height: 2, backgroundColor: '#696969'}}/>
+                  <View style={{width: '24%', height: 2, backgroundColor: '#696969'}}/>
+                  <View style={{width: '24%', height: 2, backgroundColor: '#696969'}}/>
+                </View>
+                <View style={{width: '100%', flexDirection: 'row', justifyContent: 'space-between', marginTop: 10}}>
                   <Text style={styles.title}>Create your account</Text>
-                  <Text style={[styles.title, {paddingRight: 10}]}>1/4</Text>
                 </View>
                 <Text style={styles.description}>Breaking news and popular opinions await at your fingertips</Text>
               </View>
@@ -105,9 +114,10 @@ const SignupMethodScreen:FC = ({navigation}:any) => {
                 >
                   <Text style={[styles.loginText, {color: 'white',}]}>Next</Text>
                 </Pressable>
-              </KeyboardAvoidingView>
-          </LinearGradient>
-        </ImageBackground>
+              </View>
+            </LinearGradient>
+          </ImageBackground>
+        </KeyboardAvoidingView>
       </SafeAreaView>
 );
 }

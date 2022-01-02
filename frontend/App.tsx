@@ -5,7 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Animated } from 'react-native';
 
-// import { AuthProvider } from './App/context/AuthContext';
+import { AuthProvider } from './App/context/AuthContext';
 
 import ProfileScreen from './App/ProfileScreen';
 import BottomNavigator from './App/BottomNavigator';
@@ -61,7 +61,7 @@ const App:FC = () => {
     };
   };
   return (
-    // <AuthProvider>
+    <AuthProvider>
       <NavigationContainer>
         <StatusBar
           animated={true}
@@ -128,7 +128,7 @@ const App:FC = () => {
           />
         </MainNavigator.Navigator>
       </NavigationContainer>
-    // </AuthProvider>
+    </AuthProvider>
   );
 }
 

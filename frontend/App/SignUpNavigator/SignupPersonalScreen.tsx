@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { SafeAreaView, View, StyleSheet, ImageBackground, Pressable, useWindowDimensions, Platform, StatusBar, KeyboardAvoidingView, Keyboard } from 'react-native';
+import { SafeAreaView, View, StyleSheet, ImageBackground, Pressable, useWindowDimensions, Platform, StatusBar, KeyboardAvoidingView, Keyboard, Dimensions } from 'react-native';
 import { Text, Icon, Input, Button } from 'react-native-elements';
 import { LinearGradient } from 'expo-linear-gradient';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -17,8 +17,6 @@ const SignupPersonalScreen:FC = ({navigation}:any) => {
 
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-  const [nickname, setNickname] = useState('');
-  const [pronouns, setPronouns] = useState('');
   const [date, setDate] = useState(new Date());
 
 
@@ -70,136 +68,128 @@ const SignupPersonalScreen:FC = ({navigation}:any) => {
     return birthMonth + ' ' + birthDate + ', ' + birthYear;
   };
   return(
-    <SafeAreaView style={[styles.container, {paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0}]}>
-      <ImageBackground
-        source={{uri: 'https://i.pinimg.com/originals/c5/8d/9b/c58d9bac7b5bd11318b4a5ae63a96df9.jpg'}} 
-        style={styles.imageContainer}
+    <SafeAreaView style={[styles.container, {height: window.height + StatusBar.currentHeight, width: window.width, paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0}]}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? 'padding': 'position'}
+        contentContainerStyle={{height: '100%', width: '100%'}}
+        style={{height: window.height, width: '100%', flex: 1, }}
       >
-        <LinearGradient
-          colors={['rgba(128,0,128, 0.25)', 'rgba(128,0,128, 0)']}
+        <ImageBackground
+          source={{uri: 'https://images.unsplash.com/photo-1582120031356-35f21bf61055?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8YnVyaiUyMGtoYWxpZmF8ZW58MHx8MHx8&w=1000&q=80'}} 
           style={styles.imageContainer}
         >
-          <View style={styles.logoContainer}>
-            <Pressable
-              onPress={() => navigation.navigate('SignupMethodScreen')}
-            >
-              <Icon
-                name='chevron-left'
-                color='white'
-                type='material-community'
-                size={40}
-                tvParallaxProperties={false}
-              />
-            </Pressable>
-          </View>
-          <KeyboardAvoidingView
-            behavior={Platform.OS === "ios" ? 'padding': ''}
-            style={[styles.menuContainer]}
-           >
-            <View style={styles.titleContainer}>
-              <View style={{width: '100%', flexDirection: 'row', justifyContent: 'space-between'}}>
-                <Text style={styles.title}>What should we call you?</Text>
-                <Text style={[styles.title, {paddingRight: 10}]}>2/4</Text>
-              </View>
-              <Text style={styles.description}>Stack welcomes users from cultures across the globe</Text>
-            </View>
-            <Input
-              style={{marginTop: -5,}}
-              placeholder='First Name*' autoCompleteType={undefined}  
-              onChangeText={value => setFirstName(value)}
-              onPressIn={() => {
-                setShow(false)
-              }}
-            />
-            {showFirstNameError && 
-              <View style={{width: '100%', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start'}}>
-                <Text style={{paddingBottom: 20, paddingLeft: 10, marginTop: -25, color: 'red', fontSize: 14}}>Invalid first name</Text>
-              </View>
-            }
-            <Input
-              style={{marginTop: -5,}}
-              placeholder='Last Name*' autoCompleteType={undefined}  
-              onChangeText={value => setLastName(value)}
-              onPressIn={() => {
-                setShow(false)
-              }}
-            />
-            {showLastNameError && 
-              <View style={{width: '100%', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start'}}>
-                <Text style={{paddingBottom: 20, paddingLeft: 10, marginTop: -25, color: 'red', fontSize: 14}}>Invalid last name</Text>
-              </View>
-            }
-            <Input
-              style={{marginTop: -5,}}
-              placeholder='Nickname' autoCompleteType={undefined}
-              onChangeText={value => setNickname(value)}
-              onPressIn={() => {
-                setShow(false)
-              }}
-            />
-            <Input
-              style={{marginTop: -5,}}
-              placeholder='Pronouns' autoCompleteType={undefined}
-              onChangeText={value => setPronouns(value)}
-              onPressIn={() => {
-                setShow(false)
-              }}
-            />
-            <View style={{width: '100%', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start'}}>
+          <LinearGradient
+            colors={['rgba(128,0,128, 0.25)', 'rgba(128,0,128, 0)']}
+            style={styles.imageContainer}
+          >
+            <View style={styles.logoContainer}>
               <Pressable
-                style={{marginTop: -5, width:'100%'}}
-                onPress={() => {
-                  setShow(true)
-                  Keyboard.dismiss();
-                }}>
-                <View pointerEvents='none'>
-                  <Input
-                    placeholder='Birth Date*' autoCompleteType={undefined}
-                    value={isDateSet ? getCurrentDate() : null} 
-                  />
-                </View>
+                onPress={() => navigation.navigate('SignupMethodScreen')}
+              >
+                <Icon
+                  name='chevron-left'
+                  color='white'
+                  type='material-community'
+                  size={40}
+                  tvParallaxProperties={false}
+                />
               </Pressable>
-              {showBirthdayError && <Text style={{
-                paddingBottom: 20, 
-                paddingLeft: 10, 
-                marginTop: -25, 
-                color: 'red', 
-                fontSize: 14
-              }}>Users must be at least 13 years of age</Text>}
             </View>
-            {show && (
-              <View style={{width: 320, height: '30%' ,justifyContent: 'center' }}>
-                <DateTimePicker
-                  testID="dateTimePicker"
-                  value={date}
-                  mode={'date'}
-                  is24Hour={true}
-                  display={Platform.OS === "ios" ? "spinner": "default"}
-                  onChange={onChange}
-                  />
-              </View>
-            )}
-            <Pressable
-              style={[styles.loginButton, {backgroundColor: next ? 'rgba(128,0,128, 0.8)' : 'rgba(128,0,128, 1)'}]}
-              onPress= {() => {
-                if (verfiyPage()) {setShow(false), navigation.navigate('SignupUserInfoScreen')};
-              }}
-              onPressIn={()=>{setNext(true)}}
-              onPressOut={()=>{setNext(false)}}      
+            <View
+              style={[styles.menuContainer]}
             >
-              <Text style={[styles.loginText, {color: 'white',}]}>Next</Text>
-            </Pressable>
-          </KeyboardAvoidingView>
-        </LinearGradient>
-      </ImageBackground>
+              <View style={styles.titleContainer}>
+                <View style={{width: '100%', flexDirection: 'row', justifyContent: 'space-between'}}>
+                  <View style={{width: '24%', height: 2, backgroundColor: 'purple'}}/>
+                  <View style={{width: '24%', height: 2, backgroundColor: 'purple'}}/>
+                  <View style={{width: '24%', height: 2, backgroundColor: '#696969'}}/>
+                  <View style={{width: '24%', height: 2, backgroundColor: '#696969'}}/>
+                </View>
+                <View style={{width: '100%', flexDirection: 'row', justifyContent: 'space-between', marginTop: 10}}>
+                  <Text style={styles.title}>What should we call you?</Text>
+                </View>
+                <Text style={styles.description}>Stack welcomes users from cultures across the globe</Text>
+              </View>
+              <Input
+                style={{marginTop: -5,}}
+                placeholder='First Name*' autoCompleteType={undefined}  
+                onChangeText={value => setFirstName(value)}
+                onPressIn={() => {
+                  setShow(false)
+                }}
+              />
+              {showFirstNameError && 
+                <View style={{width: '100%', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start'}}>
+                  <Text style={{paddingBottom: 20, paddingLeft: 10, marginTop: -25, color: 'red', fontSize: 14}}>Invalid first name</Text>
+                </View>
+              }
+              <Input
+                style={{marginTop: -5,}}
+                placeholder='Last Name*' autoCompleteType={undefined}  
+                onChangeText={value => setLastName(value)}
+                onPressIn={() => {
+                  setShow(false)
+                }}
+              />
+              {showLastNameError && 
+                <View style={{width: '100%', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start'}}>
+                  <Text style={{paddingBottom: 20, paddingLeft: 10, marginTop: -25, color: 'red', fontSize: 14}}>Invalid last name</Text>
+                </View>
+              }
+              <View style={{width: '100%', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start'}}>
+                <Pressable
+                  style={{marginTop: -5, width:'100%'}}
+                  onPress={() => {
+                    setShow(true)
+                    Keyboard.dismiss();
+                  }}>
+                  <View pointerEvents='none'>
+                    <Input
+                      placeholder='Birth Date*' autoCompleteType={undefined}
+                      value={isDateSet ? getCurrentDate() : null} 
+                    />
+                  </View>
+                </Pressable>
+                {showBirthdayError && <Text style={{
+                  paddingBottom: 20, 
+                  paddingLeft: 10, 
+                  marginTop: -25, 
+                  color: 'red', 
+                  fontSize: 14
+                }}>Users must be at least 13 years of age</Text>}
+              </View>
+              {show && (
+                <View style={{width: 320, height: '30%' ,justifyContent: 'center' }}>
+                  <DateTimePicker
+                    testID="dateTimePicker"
+                    value={date}
+                    mode={'date'}
+                    is24Hour={true}
+                    display={Platform.OS === "ios" ? "spinner": "default"}
+                    onChange={onChange}
+                    />
+                </View>
+              )}
+              <Pressable
+                style={[styles.loginButton, {backgroundColor: next ? 'rgba(128,0,128, 0.8)' : 'rgba(128,0,128, 1)'}]}
+                onPress= {() => {
+                  if (verfiyPage()) {setShow(false), navigation.navigate('SignupUserInfoScreen')};
+                }}
+                onPressIn={()=>{setNext(true)}}
+                onPressOut={()=>{setNext(false)}}      
+              >
+                <Text style={[styles.loginText, {color: 'white',}]}>Next</Text>
+              </Pressable>
+            </View>
+          </LinearGradient>
+        </ImageBackground>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    height: '100%',
-    width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'white',

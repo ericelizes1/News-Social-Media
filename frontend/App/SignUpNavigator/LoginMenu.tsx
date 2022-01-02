@@ -91,10 +91,11 @@ const LoginMenu:FC = ({navigation}:any) => {
     };
 
     return(
-      <SafeAreaView style={[styles.container, {paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0}]}> 
-        <KeyboardAvoidingView 
-          behavior={Platform.OS === "ios" ? 'padding': ''}
-          style={styles.container}
+      <SafeAreaView style={[styles.container, {height: window.height + StatusBar.currentHeight, width: window.width, paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0}]}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? 'padding': 'position'}
+          contentContainerStyle={{height: '100%', width: '100%'}}
+          style={{height: window.height, width: '100%', flex: 1, }}
         >
           <Modal animationType='fade' visible={isModalVisible} transparent={true}>
             <View style={{height: '100%', width: '100%', justifyContent: 'center', alignItems: 'center', padding: 20, backgroundColor: 'rgba(0,0,0,0.3)'}}>
@@ -160,7 +161,7 @@ const LoginMenu:FC = ({navigation}:any) => {
                 </View>
                 <View style={styles.titleContainer}>
                   <Text style={styles.title}>Welcome back</Text>
-                  <Text style={styles.description}>Just sign in below to get this train moving</Text>
+                  <Text style={styles.description}>Sign in below to get started</Text>
                 </View>
                 <Input
                   style={{marginTop: -5,}}
@@ -236,7 +237,7 @@ const styles = StyleSheet.create({
     container: {
       height: '100%',
       width: '100%',
-      justifyContent: 'space-between',
+      justifyContent: 'center',
       alignItems: 'center',
       backgroundColor: 'white',
     },

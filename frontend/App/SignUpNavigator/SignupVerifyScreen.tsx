@@ -38,37 +38,38 @@ const SignupVerifyScreen:FC = ({navigation}:any) => {
           <View style={[styles.subContainer]}>
             <View style={styles.titleContainer}>
               <View style={{width: '100%', flexDirection: 'row', justifyContent: 'space-between'}}>
+                  <View style={{width: '24%', height: 2, backgroundColor: 'purple'}}/>
+                  <View style={{width: '24%', height: 2, backgroundColor: 'purple'}}/>
+                  <View style={{width: '24%', height: 2, backgroundColor: 'purple'}}/>
+                  <View style={{width: '24%', height: 2, backgroundColor: 'purple'}}/>
+                </View>
+                <View style={{width: '100%', flexDirection: 'row', justifyContent: 'space-between', marginTop: 10}}>
                 <Text style={styles.title}>You're almost done</Text>
-                <Text style={[styles.title, {paddingRight: 10}]}>4/4</Text>
               </View>
-              <Text style={styles.description}>If you are a robot, we are truly sorry</Text>
             </View>
             <View style={styles.buttonContainer}>
               <View style={{justifyContent: 'center'}}>
-                <View style={{width: '100%', flexDirection: 'row', justifyContent: 'flex-start',}}>
+                <View style={{width: '100%', flexDirection: 'row', justifyContent: 'flex-start', marginVertical: 10}}>
                   <Pressable
+                    style={{marginTop: 5}}
+                    hitSlop={100}
                     onPress={() => setCheck(!check)}
                   >
                     <Icon
                       name={check ? 'checkbox-marked-outline' : 'checkbox-blank-outline'}
                       type='material-community'
                       color='purple'
-                      size={20}
+                      size={30}
                       tvParallaxProperties={false}
                     />
                   </Pressable>
-                  {
-                    //PLACE CAPTCHA HERE
-                  }
-                  <View style={{width: '100%', flexDirection: 'row',}}>
-                    <Text style={styles.description}>By clicking here, I state that I have read and agree to the </Text>
-                    <Pressable>
+                  <View style={{display: "flex", flexDirection: "row", flex: 1, flexWrap: 'wrap', marginLeft: 10}}>
+                    <Text style={styles.description}>By clicking here, I state that I have read and agree to the{' '} 
                       <Text style={[styles.description, {fontWeight: 'bold', color: 'purple', textDecorationLine: 'underline'}]}>Terms and Conditions</Text>
-                    </Pressable>
-                    <Text style={styles.description}> and </Text>
-                    <Pressable>
+                      {' '}and{' '}
                       <Text style={[styles.description, {fontWeight: 'bold', color: 'purple', textDecorationLine: 'underline'}]}>Privacy Policy.</Text>
-                    </Pressable>
+                    </Text>
+
                   </View>
                 </View>
               </View>
@@ -132,7 +133,7 @@ const styles = StyleSheet.create({
   },
   description: {
     fontSize: 16,
-    color: '#696969'
+    color: '#696969',
   },
   buttonContainer: {
     width: '100%',
@@ -150,7 +151,7 @@ const styles = StyleSheet.create({
   },
   loginText: {
     fontWeight: 'bold',
-    fontSize: 17
+    fontSize: 17,
   },
   orContainer: {
     width: '100%',
