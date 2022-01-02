@@ -1,13 +1,15 @@
 import React, { FC, useState } from 'react';
 import { SafeAreaView, View, StyleSheet, ImageBackground, Pressable, useWindowDimensions, Platform, StatusBar } from 'react-native';
-import { Text, Icon, Input } from 'react-native-elements';
+import { Text, Icon, CheckBox } from 'react-native-elements';
 import { LinearGradient } from 'expo-linear-gradient';
+import Recaptcha from 'react-native-recaptcha-that-works';
 
 // What should we call you?
 // Stack welcomes users from cultures across the globe
 // Write FullName/Nickname/Pronouns/Birthday
 const SignupVerifyScreen:FC = ({navigation}:any) => {
-  const window = useWindowDimensions()
+  const window = useWindowDimensions();
+  const [check, setCheck] = useState(false);
   const [next, setNext] = useState(false);
 
   return(
@@ -43,9 +45,32 @@ const SignupVerifyScreen:FC = ({navigation}:any) => {
             </View>
             <View style={styles.buttonContainer}>
               <View style={{justifyContent: 'center'}}>
-              {/*
-                PUT CHECKBOX FOR TERMS AND CONDITIONS AND CAPTCHA HERE
-              */}
+                <View style={{width: '100%', flexDirection: 'row', justifyContent: 'flex-start',}}>
+                  <Pressable
+                    onPress={() => setCheck(!check)}
+                  >
+                    <Icon
+                      name={check ? 'checkbox-marked-outline' : 'checkbox-blank-outline'}
+                      type='material-community'
+                      color='purple'
+                      size={20}
+                      tvParallaxProperties={false}
+                    />
+                  </Pressable>
+                  {
+                    //PLACE CAPTCHA HERE
+                  }
+                  <View style={{width: '100%', flexDirection: 'row',}}>
+                    <Text style={styles.description}>By clicking here, I state that I have read and agree to the </Text>
+                    <Pressable>
+                      <Text style={[styles.description, {fontWeight: 'bold', color: 'purple', textDecorationLine: 'underline'}]}>Terms and Conditions</Text>
+                    </Pressable>
+                    <Text style={styles.description}> and </Text>
+                    <Pressable>
+                      <Text style={[styles.description, {fontWeight: 'bold', color: 'purple', textDecorationLine: 'underline'}]}>Privacy Policy.</Text>
+                    </Pressable>
+                  </View>
+                </View>
               </View>
               <Pressable
                 style={[styles.loginButton, {backgroundColor: next ? 'rgba(128,0,128, 0.8)' : 'rgba(128,0,128, 1)'}]}
@@ -93,8 +118,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    paddingHorizontal: 20,
-    paddingTop: 20,
+    padding: 20,
   },
   titleContainer: {
     width: '100%',
@@ -111,7 +135,6 @@ const styles = StyleSheet.create({
     color: '#696969'
   },
   buttonContainer: {
-    height: 300,
     width: '100%',
     flexDirection: 'column',
     justifyContent: 'space-evenly',

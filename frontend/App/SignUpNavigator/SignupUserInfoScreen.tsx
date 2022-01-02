@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { SafeAreaView, View, StyleSheet, ImageBackground, Pressable, Platform, StatusBar, KeyboardAvoidingView } from 'react-native';
+import { SafeAreaView, View, StyleSheet, ImageBackground, Pressable, Platform, StatusBar, KeyboardAvoidingView, Keyboard } from 'react-native';
 import { Text, Icon, Input } from 'react-native-elements';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -8,7 +8,12 @@ import { LinearGradient } from 'expo-linear-gradient';
 // Please guard your password close at hand.
 const SignupUserInfoScreen:FC = ({navigation}:any) => {
   const [next, setNext] = useState(false);
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+
+  const [showUsernameError, setShowUsernameError] = useState(false);
+  const [showPasswordError, setShowPasswordError] = useState(false);
+
   const [passwordChar, setPasswordChar] = useState(false);
   const [passwordCase, setPasswordCase] = useState(false);
   const [passwordNum, setPasswordNum] = useState(false);
@@ -34,7 +39,19 @@ const SignupUserInfoScreen:FC = ({navigation}:any) => {
       setPasswordSpecial(false)
     
     setPassword(value);
+
   };
+
+  const verifyPage = () => {
+    const usernameCondition = (username.length > 2) && (username.length < 33) && (/^[a-z]+$/i.test(username));
+    const passwordCondition = passwordChar && passwordCase && passwordNum && passwordSpecial;
+
+    setShowUsernameError(!usernameCondition);
+    setShowPasswordError(!passwordCondition);
+    Keyboard.dismiss();
+
+    return usernameCondition && passwordCondition;
+  }
 
   return(
     <SafeAreaView style={[styles.container, {paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0}]}>
@@ -60,20 +77,34 @@ const SignupUserInfoScreen:FC = ({navigation}:any) => {
             </Pressable>
           </View>
           <KeyboardAvoidingView 
-          behavior={Platform.OS === "android" ? '' : 'padding'}
-          style={[styles.menuContainer]}
+            behavior={Platform.OS === "android" ? '' : 'padding'}
+            style={[styles.menuContainer]}
           >
             <View style={styles.titleContainer}>
               <View style={{width: '100%', flexDirection: 'row', justifyContent: 'space-between'}}>
                 <Text style={styles.title}>Secure your account</Text>
                 <Text style={[styles.title, {paddingRight: 10}]}>3/4</Text>
               </View>
-              <Text style={styles.description}>For your safety, please guard your password close at hand</Text>
+              <Text style={[styles.description, {color: '#696969'}]}>For your safety, please guard your password close at hand</Text>
             </View>
             <Input
               style={{marginTop: -5,}}
               placeholder='Username*' 
-              autoCompleteType={undefined} />
+              autoCompleteType={undefined} 
+              onChangeText={value => {
+                setUsername(value);
+              }}/>
+            {showUsernameError && 
+              <View style={{width: '100%'}}>
+                <Text style={{
+                    paddingBottom: 20, 
+                    paddingLeft: 10, 
+                    marginTop: -25, 
+                    color: 'red', 
+                    fontSize: 14
+                }}>Please enter a username between 3 and 32 characters </Text>
+              </View>
+            }
             <Input
               style={{marginTop: -5,}}
               placeholder='Password*' 
@@ -83,49 +114,62 @@ const SignupUserInfoScreen:FC = ({navigation}:any) => {
                 validatePassword(value);
               }}
             />
+            {showPasswordError && 
+              <View style={{width: '100%'}}>
+                <Text style={{
+                    paddingBottom: 20, 
+                    paddingLeft: 10, 
+                    marginTop: -25, 
+                    color: 'red', 
+                    fontSize: 14
+                }}>Please enter a valid password</Text>
+              </View>
+            }
             <View style={{paddingLeft: 10, justifyContent: 'flex-start', width: '100%', marginTop: -10}}>
-              <Text style={styles.description}>Your password should contain:</Text>
+              <Text style={[styles.description, {color: '#696969'}]}>Your password should contain:</Text>
               <View style={{flexDirection: 'row'}}>
-                <Text style={[styles.description, {paddingHorizontal: 10,}]}>- At least 8 characters</Text>
+                <Text style={[styles.description, {color: passwordChar ? '#a8a8a8' : '#696969', paddingHorizontal: 10,}]}>- At least 8 characters</Text>
                 <Icon
-                  name={passwordChar ? 'check' : 'close'}
+                  name='check'
                   type='material-community'
-                  color='purple'
+                  color={passwordChar ? '#a8a8a8' : 'white'}
                   tvParallaxProperties={false}
 
                 />
               </View>
               <View style={{flexDirection: 'row'}}>
-                <Text style={[styles.description, {paddingHorizontal: 10,}]}>- Uppercase and lowercase letters</Text>
+                <Text style={[styles.description, {color: passwordCase ? '#a8a8a8' : '#696969', paddingHorizontal: 10,}]}>- Uppercase and lowercase letters</Text>
                 <Icon
-                  name={passwordCase ? 'check' : 'close'}
+                  name='check'
                   type='material-community'
-                  color='purple'
+                  color={passwordCase ? '#a8a8a8' : 'white'}
                   tvParallaxProperties={false}
                 />
               </View>
               <View style={{flexDirection: 'row'}}>
-                <Text style={[styles.description, {paddingHorizontal: 10,}]}>- Letters and numbers</Text>
+                <Text style={[styles.description, {color: passwordNum ? '#a8a8a8' : '#696969', paddingHorizontal: 10,}]}>- Letters and numbers</Text>
                 <Icon
-                  name= {passwordNum ? 'check' : 'close'}
+                  name= 'check'
                   type='material-community'
-                  color='purple'
+                  color={passwordNum ? '#a8a8a8' : 'white'}
                   tvParallaxProperties={false}
                 />
               </View>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Text style={[styles.description, {paddingHorizontal: 10,}]}>- At least 1 special character</Text>
+                <Text style={[styles.description, {color: passwordSpecial ? '#a8a8a8' : '#696969', paddingHorizontal: 10,}]}>- At least 1 special character</Text>
                 <Icon
-                  name= {passwordSpecial ? 'check' : 'close'}
+                  name='check'
                   type='material-community'
-                  color='purple'
+                  color={passwordSpecial ? '#a8a8a8' : 'white'}
                   tvParallaxProperties={false}
                 />
               </View>
             </View>
             <Pressable
               style={[styles.loginButton, {backgroundColor: next ? 'rgba(128,0,128, 0.8)' : 'rgba(128,0,128, 1)'}]}
-              onPress= {() => navigation.navigate('SignupVerifyScreen')}
+              onPress= {() => {
+                if (verifyPage()) {navigation.navigate('SignupVerifyScreen')};
+              }}
               onPressIn={()=>{setNext(true)}}
               onPressOut={()=>{setNext(false)}}      
             >
@@ -182,7 +226,6 @@ const styles = StyleSheet.create({
   },
   description: {
     fontSize: 16,
-    color: '#696969'
   },
   loginButton: {
     width: '100%',

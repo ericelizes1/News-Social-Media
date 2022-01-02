@@ -5,6 +5,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Animated } from 'react-native';
 
+// import { AuthProvider } from './App/context/AuthContext';
+
 import ProfileScreen from './App/ProfileScreen';
 import BottomNavigator from './App/BottomNavigator';
 import FollowersScreen from './App/FollowersScreen';
@@ -58,73 +60,75 @@ const App:FC = () => {
         },
     };
   };
-  return(
-    <NavigationContainer>
-      <StatusBar
-        animated={true}
-        backgroundColor='white'
-      />
-      <MainNavigator.Navigator
-        initialRouteName= {isLoggedIn ? 'BottomNavigator' : 'SignupNavigator'}
-      >
-        <MainNavigator.Screen
-          name='BottomNavigator'
-          component={BottomNavigator}
-          options={{
-            headerShown: false,
-            gestureEnabled: false
-          }}
-        />        
-        <MainNavigator.Screen
-          name='SignupNavigator'
-          component={SignupNavigator}
-          options={{
-            headerShown: false,
-          }}
+  return (
+    // <AuthProvider>
+      <NavigationContainer>
+        <StatusBar
+          animated={true}
+          backgroundColor='white'
         />
-        <MainNavigator.Screen
-          name='ProfileScreen'
-          component={ProfileScreen}
-        />
-        <MainNavigator.Screen
-          name='EditProfileScreen'
-          component={EditProfileScreen}
-        />
-        <MainNavigator.Screen
-          name='FollowingScreen'
-          component={FollowingScreen}
-        />      
-        <MainNavigator.Screen
-          name='FollowersScreen'
-          component={FollowersScreen}
-        />
-        <MainNavigator.Screen
-          name='StoryScreen'
-          component={StoryScreen}
-          options={{
-            headerShown: false,
-            cardStyleInterpolator: SlideFromTop,
+        <MainNavigator.Navigator
+          initialRouteName= {isLoggedIn ? 'BottomNavigator' : 'SignupNavigator'}
+        >
+          <MainNavigator.Screen
+            name='BottomNavigator'
+            component={BottomNavigator}
+            options={{
+              headerShown: false,
+              gestureEnabled: false
+            }}
+          />        
+          <MainNavigator.Screen
+            name='SignupNavigator'
+            component={SignupNavigator}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <MainNavigator.Screen
+            name='ProfileScreen'
+            component={ProfileScreen}
+          />
+          <MainNavigator.Screen
+            name='EditProfileScreen'
+            component={EditProfileScreen}
+          />
+          <MainNavigator.Screen
+            name='FollowingScreen'
+            component={FollowingScreen}
+          />      
+          <MainNavigator.Screen
+            name='FollowersScreen'
+            component={FollowersScreen}
+          />
+          <MainNavigator.Screen
+            name='StoryScreen'
+            component={StoryScreen}
+            options={{
+              headerShown: false,
+              cardStyleInterpolator: SlideFromTop,
+              }
             }
-          }
-        />
-        <MainNavigator.Screen
-          name='ArticleScreen'
-          component={ArticleScreen}
-        />
-        <MainNavigator.Screen
-          name='PostScreen'
-          component={PostScreen}
-        />
-        <MainNavigator.Screen
-          name='WritePostScreen'
-          component={WritePostScreen}
-        />
-        <MainNavigator.Screen
-          name='ShareScreen'
-          component={ShareScreen}
-        />
-      </MainNavigator.Navigator>
-    </NavigationContainer>
+          />
+          <MainNavigator.Screen
+            name='ArticleScreen'
+            component={ArticleScreen}
+          />
+          <MainNavigator.Screen
+            name='PostScreen'
+            component={PostScreen}
+          />
+          <MainNavigator.Screen
+            name='WritePostScreen'
+            component={WritePostScreen}
+          />
+          <MainNavigator.Screen
+            name='ShareScreen'
+            component={ShareScreen}
+          />
+        </MainNavigator.Navigator>
+      </NavigationContainer>
+    // </AuthProvider>
   );
 }
 

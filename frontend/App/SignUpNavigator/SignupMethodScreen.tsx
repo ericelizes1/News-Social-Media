@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { SafeAreaView, View, StyleSheet, ImageBackground, Pressable, useWindowDimensions, Platform, StatusBar, KeyboardAvoidingView } from 'react-native';
+import { SafeAreaView, View, StyleSheet, ImageBackground, Pressable, useWindowDimensions, Platform, StatusBar, KeyboardAvoidingView, Keyboard } from 'react-native';
 import { Text, Icon, Input } from 'react-native-elements';
 import { LinearGradient } from 'expo-linear-gradient';
 import {
@@ -8,15 +8,24 @@ import {
     statusCodes,
   } from '@react-native-google-signin/google-signin';
 
-// Select Phone/Email/Google/Apple
-// How do you want to sign up?
-// You will
+
 const SignupMethodScreen:FC = ({navigation}:any) => {
     const window = useWindowDimensions()
     const [google, setGoogle] = useState(false);
     const [apple, setApple] = useState(false);
     const [next, setNext] = useState(false);
+    const [accountIdentifier, setAccountIndentifier] = useState('');
+    const [accountError, setAccountError] = useState(false);
 
+    const verfiyPage = () => {
+      //WRITE THE CONDITION TO VERIFY WHETHER THIS IS A PHONE OR EMAIL ADDRESS, OR VERIFY WHETHER THEY SELECTED GOOGLE OR APPLE
+      const accountCondition = accountIdentifier.length > 0;
+      
+      setAccountError(!accountCondition);
+      Keyboard.dismiss();
+
+      return(accountCondition);
+    }
     return(
       <SafeAreaView style={[styles.container, {paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0}]}>
         <ImageBackground
@@ -54,7 +63,19 @@ const SignupMethodScreen:FC = ({navigation}:any) => {
               <Input
                 style={{width: '100%', marginTop: 10,}}
                 placeholder='Phone or Email*' 
+                onChangeText={value => setAccountIndentifier(value)}
                 autoCompleteType={undefined}/>
+              {accountError && 
+                <View style={{width: '100%', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start'}}>
+                  <Text style={{
+                    paddingBottom: 20, 
+                    paddingLeft: 10, 
+                    marginTop: -25, 
+                    color: 'red', 
+                    fontSize: 14
+                  }}>Please enter a valid phone or email address, or select one of the methods below</Text>
+                </View>
+              }
               <View style={styles.orContainer}>
                 <View style={styles.line}/>
                 <Text style={[styles.description, {paddingHorizontal: 10,}]}>or</Text>
@@ -78,7 +99,7 @@ const SignupMethodScreen:FC = ({navigation}:any) => {
                 </Pressable>
                 <Pressable
                   style={[styles.loginButton, {marginTop: 20, backgroundColor: next ? 'rgba(128,0,128, 0.8)' : 'rgba(128,0,128, 1)'}]}
-                  onPress= {() => navigation.navigate('SignupPersonalScreen')}
+                  onPress= {() => {if (verfiyPage()) {navigation.navigate('SignupPersonalScreen')}}}
                   onPressIn={()=>{setNext(true)}}
                   onPressOut={()=>{setNext(false)}}      
                 >
