@@ -2,12 +2,15 @@ import React, { FC, useState } from 'react';
 import { SafeAreaView, View, StyleSheet, ImageBackground, Pressable, Platform, StatusBar, KeyboardAvoidingView, Keyboard, useWindowDimensions } from 'react-native';
 import { Text, Icon, Input } from 'react-native-elements';
 import { LinearGradient } from 'expo-linear-gradient';
-
+import { AuthContext } from '../context/AuthContext';
 // Write Username/Password
 // Let's wrap things up
 // Please guard your password close at hand.
-const SignupUserInfoScreen:FC = ({navigation}:any) => {
+const SignupUserInfoScreen:FC = ({navigation, route}:any) => {
   const window = useWindowDimensions();
+  // const { type, email } = route.params;
+  const { firebaseSignUp } = React.useContext(AuthContext);
+
   const [next, setNext] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -43,7 +46,6 @@ const SignupUserInfoScreen:FC = ({navigation}:any) => {
       setPasswordSpecial(false)
     
     setPassword(value);
-
   };
 
   const verifyPage = () => {
@@ -52,10 +54,19 @@ const SignupUserInfoScreen:FC = ({navigation}:any) => {
 
     setShowUsernameError(!usernameCondition);
     setShowPasswordError(!passwordCondition);
-    setShowCheckError(!check)
+    setShowCheckError(!check);
     Keyboard.dismiss();
 
     return usernameCondition && passwordCondition && check;
+  }
+
+  const handleSignUp = () => {
+    if (verifyPage() && route.params.type === 'email') {
+      // navigation.navigate('SignupVerifyScreen')
+      console.log(route.params.email, password)
+      firebaseSignUp(route.params.email, password)
+      console.log("verified")
+    }
   }
 
   return(
@@ -93,10 +104,9 @@ const SignupUserInfoScreen:FC = ({navigation}:any) => {
             <View style={styles.menuContainer}>
               <View style={styles.titleContainer}>
                 <View style={{width: '100%', flexDirection: 'row', justifyContent: 'space-between'}}>
-                  <View style={{width: '24%', height: 2, backgroundColor: 'purple'}}/>
-                  <View style={{width: '24%', height: 2, backgroundColor: 'purple'}}/>
-                  <View style={{width: '24%', height: 2, backgroundColor: 'purple'}}/>
-                  <View style={{width: '24%', height: 2, backgroundColor: '#696969'}}/>
+                <View style={{width: '32.5%', height: 2, backgroundColor: 'purple'}}/>
+                  <View style={{width: '32.5%', height: 2, backgroundColor: 'purple'}}/>
+                  <View style={{width: '32.5%', height: 2, backgroundColor: 'purple'}}/>
                 </View>
                 <View style={{width: '100%', flexDirection: 'row', justifyContent: 'space-between', marginTop: 10}}>
                   <Text style={styles.title}>Secure your account</Text>
@@ -141,6 +151,15 @@ const SignupUserInfoScreen:FC = ({navigation}:any) => {
                   }}>Please enter a password containing at least 8 characters: at least 1 uppercase, lowercase, numeric, and special character</Text>
                 </View>
               }
+              <Input
+                style={{marginTop: -5,}}
+                placeholder='Retype Password*' 
+                autoCompleteType={undefined}
+                secureTextEntry={true}
+                onChangeText={value => {
+                  validatePassword(value);
+                }}
+              />
               <View style={{paddingLeft: 10, justifyContent: 'flex-start', width: '100%', marginTop: -10}}>
                 {/*<Text style={[styles.description, {color: '#696969'}]}>Your password should contain:</Text>
                 <View style={{flexDirection: 'row'}}>
@@ -215,9 +234,7 @@ const SignupUserInfoScreen:FC = ({navigation}:any) => {
               }
               <Pressable
                 style={[styles.loginButton, {backgroundColor: next ? 'rgba(128,0,128, 0.8)' : 'rgba(128,0,128, 1)'}]}
-                onPress= {() => {
-                  if (verifyPage()) {navigation.navigate('SignupVerifyScreen')};
-                }}
+                onPress= {handleSignUp}
                 onPressIn={()=>{setNext(true)}}
                 onPressOut={()=>{setNext(false)}}      
               >

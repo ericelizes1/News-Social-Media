@@ -9,8 +9,9 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 // What should we call you?
 // Stack welcomes users from cultures across the globe
 // Write FullName/Nickname/Pronouns/Birthday
-const SignupPersonalScreen:FC = ({navigation}:any) => {
+const SignupPersonalScreen:FC = ({navigation, route}:any) => {
   const window = useWindowDimensions()
+  // const { type, email } = route.params;
   const [next, setNext] = useState(false);
   const [isDateSet, setIsDateSet] = useState(false);
   const [show, setShow] = useState(false);
@@ -24,6 +25,12 @@ const SignupPersonalScreen:FC = ({navigation}:any) => {
   const [showLastNameError, setShowLastNameError] = useState(false);
   const [showBirthdayError, setShowBirthdayError] = useState(false);
 
+  // let type = 'email'
+  // let email = 'sdfads'
+  // React.useEffect(() => {
+  //   console.log(route.params);
+  // })
+
   const getAge = () => {
     var today = new Date();
     var birthDate = date;
@@ -36,7 +43,7 @@ const SignupPersonalScreen:FC = ({navigation}:any) => {
     return age;
   }
 
-  const verfiyPage = () => {
+  const verifyPage = () => {
     const firstNameCondition = (firstName.length > 0) && (/^[a-z ]+$/i.test(firstName));
     const lastNameCondition = (lastName.length > 0) && (/^[a-z ]+$/i.test(lastName));
     const birthdayCondition = (isDateSet && getAge() > 12);
@@ -100,10 +107,9 @@ const SignupPersonalScreen:FC = ({navigation}:any) => {
             >
               <View style={styles.titleContainer}>
                 <View style={{width: '100%', flexDirection: 'row', justifyContent: 'space-between'}}>
-                  <View style={{width: '24%', height: 2, backgroundColor: 'purple'}}/>
-                  <View style={{width: '24%', height: 2, backgroundColor: 'purple'}}/>
-                  <View style={{width: '24%', height: 2, backgroundColor: '#696969'}}/>
-                  <View style={{width: '24%', height: 2, backgroundColor: '#696969'}}/>
+                <View style={{width: '32.5%', height: 2, backgroundColor: 'purple'}}/>
+                  <View style={{width: '32.5%', height: 2, backgroundColor: 'purple'}}/>
+                  <View style={{width: '32.5%', height: 2, backgroundColor: '#696969'}}/>
                 </View>
                 <View style={{width: '100%', flexDirection: 'row', justifyContent: 'space-between', marginTop: 10}}>
                   <Text style={styles.title}>What should we call you?</Text>
@@ -173,7 +179,10 @@ const SignupPersonalScreen:FC = ({navigation}:any) => {
               <Pressable
                 style={[styles.loginButton, {backgroundColor: next ? 'rgba(128,0,128, 0.8)' : 'rgba(128,0,128, 1)'}]}
                 onPress= {() => {
-                  if (verfiyPage()) {setShow(false), navigation.navigate('SignupUserInfoScreen')};
+                  if (verifyPage()) {setShow(false); navigation.navigate('SignupUserInfoScreen', {
+                      type: route.params.type,
+                      email: route.params.email
+                  })};
                 }}
                 onPressIn={()=>{setNext(true)}}
                 onPressOut={()=>{setNext(false)}}      

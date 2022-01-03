@@ -3,8 +3,14 @@
 // import * as firebase from "firebase";
 // import firebase from 'firebase/app';
 // import 'firebase/auth';
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  logout
+} from 'firebase/auth';
 import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
+
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -22,16 +28,24 @@ const firebaseConfig = {
 
 // Initialize Firebase
 // let app;
+
+// let app;
 // if (firebase.apps.length === 0) {
 //   app = firebase.initializeApp(firebaseConfig);
 // } else {
-//   app = firebase.app()
+  // app = firebase.app()
 // }
 // const auth = firebase.auth()
 
 const app = initializeApp(firebaseConfig)
+// const auth = app.auth()
 const auth = getAuth(app)
+// export const auth = getAuth(app)
 
 // initializeApp(firebaseConfig);
-
-export { auth };
+export {
+  auth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  logout
+}

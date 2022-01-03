@@ -52,7 +52,6 @@ const SignupVerifyScreen:FC = ({navigation}:any) => {
                 <View style={{width: '100%', flexDirection: 'row', justifyContent: 'flex-start', marginVertical: 10}}>
                   <Pressable
                     style={{marginTop: 5}}
-                    hitSlop={100}
                     onPress={() => setCheck(!check)}
                   >
                     <Icon

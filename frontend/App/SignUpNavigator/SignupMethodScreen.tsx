@@ -15,6 +15,7 @@ const SignupMethodScreen:FC = ({navigation}:any) => {
     const [apple, setApple] = useState(false);
     const [next, setNext] = useState(false);
     const [accountIdentifier, setAccountIndentifier] = useState('');
+    const [accountIdentifierType, setAccountIndentifierType] = useState('email');
     const [accountError, setAccountError] = useState(false);
 
     const verfiyPage = () => {
@@ -59,10 +60,9 @@ const SignupMethodScreen:FC = ({navigation}:any) => {
             >
               <View style={styles.titleContainer}>
                 <View style={{width: '100%', flexDirection: 'row', justifyContent: 'space-between'}}>
-                  <View style={{width: '24%', height: 2, backgroundColor: 'purple'}}/>
-                  <View style={{width: '24%', height: 2, backgroundColor: '#696969'}}/>
-                  <View style={{width: '24%', height: 2, backgroundColor: '#696969'}}/>
-                  <View style={{width: '24%', height: 2, backgroundColor: '#696969'}}/>
+                  <View style={{width: '32.5%', height: 2, backgroundColor: 'purple'}}/>
+                  <View style={{width: '32.5%', height: 2, backgroundColor: '#696969'}}/>
+                  <View style={{width: '32.5%', height: 2, backgroundColor: '#696969'}}/>
                 </View>
                 <View style={{width: '100%', flexDirection: 'row', justifyContent: 'space-between', marginTop: 10}}>
                   <Text style={styles.title}>Create your account</Text>
@@ -108,7 +108,11 @@ const SignupMethodScreen:FC = ({navigation}:any) => {
                 </Pressable>
                 <Pressable
                   style={[styles.loginButton, {marginTop: 20, backgroundColor: next ? 'rgba(128,0,128, 0.8)' : 'rgba(128,0,128, 1)'}]}
-                  onPress= {() => {if (verfiyPage()) {navigation.navigate('SignupPersonalScreen')}}}
+                  onPress= {() => {if (verfiyPage()) {navigation.navigate('SignupPersonalScreen', {
+                    type: accountIdentifierType,
+                    email: accountIdentifier
+                  }
+                  )}}}
                   onPressIn={()=>{setNext(true)}}
                   onPressOut={()=>{setNext(false)}}      
                 >

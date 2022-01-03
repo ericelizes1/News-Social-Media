@@ -19,47 +19,50 @@ import ArticleScreen from './App/ArticleScreen';
 import StoryScreen from './App/StoryScreen';
 import SignupNavigator from './App/SignupNavigator';
 
-const App:FC = () => {
+
+const App:FC = () => { 
   const MainNavigator : any =  createStackNavigator();
   const isLoggedIn:boolean = false;
   
   const SlideFromTop = ({ current, next, inverted, layouts: { screen } }) => {
     const progress = Animated.add(
-        current.progress.interpolate({
-            inputRange: [0, 1],
+      current.progress.interpolate({
+        inputRange: [0, 1],
+        outputRange: [0, 1],
+        extrapolate: 'clamp',
+      }),
+      next
+        ? next.progress.interpolate({
+            inputRange: [1, 2],
             outputRange: [0, 1],
             extrapolate: 'clamp',
-        }),
-        next
-            ? next.progress.interpolate({
-                inputRange: [1, 2],
-                outputRange: [0, 1],
-                extrapolate: 'clamp',
-            })
-            : 0
+        })
+        : 0
     );
     
     return {
-        cardStyle: {
-            transform: [
-                {
-                    translateY: Animated.multiply(
-                        progress.interpolate({
-                            inputRange: [0, 1, 2],
-                            outputRange: [
-                              -screen.height,
-                              0,
-                              -screen.height,
-                            ],
-                            extrapolate: 'clamp',
-                        }),
-                        inverted
-                    ),
-                },
-            ],
-        },
+      cardStyle: {
+        transform: [
+          {
+            translateY: Animated.multiply(
+              progress.interpolate({
+                inputRange: [0, 1, 2],
+                outputRange: [
+                  -screen.height,
+                  0,
+                  -screen.height,
+                ],
+                extrapolate: 'clamp',
+              }),
+              inverted
+            ),
+          },
+        ],
+      },
     };
+
   };
+
   return (
     <AuthProvider>
       <NavigationContainer>

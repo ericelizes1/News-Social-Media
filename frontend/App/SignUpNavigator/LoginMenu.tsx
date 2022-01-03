@@ -1,79 +1,55 @@
 import React, { FC, useState, useRef } from 'react';
-import { Animated, SafeAreaView, View, StyleSheet, ImageBackground, Pressable, useWindowDimensions, Platform, StatusBar, KeyboardAvoidingView, Modal, Keyboard } from 'react-native';
+import { Animated, SafeAreaView, View, StyleSheet, ImageBackground, Pressable, useWindowDimensions, Platform, StatusBar, Modal, KeyboardAvoidingView, Keyboard } from 'react-native';
 import { Text, Icon, Input } from 'react-native-elements';
 import { LinearGradient } from 'expo-linear-gradient';
+
+import CodeInput from './LoginMenu/CodeInput';
 
 const LoginMenu:FC = ({navigation}:any) => {
     const window = useWindowDimensions()
     const [signIn, setSignIn] = useState(false);
     const [signUp, setSignUp] = useState(false);
     const [resetButton, setResetButton] = useState(false);
-    const [isSent, setIsSent] = useState(false);
     const [cancelButton, setCancelButton] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [isCodeVisible, setIsCodeVisible] = useState(false);
 
-    let animatedMenu = useRef(new Animated.Value(0))
+
+    let animatedMenu = useRef(new Animated.Value(0));
+    let animatedContent = useRef(new Animated.Value(0));
     let menuLocation = animatedMenu.current.interpolate({ 
       inputRange: [0, 1], 
       outputRange: [0, 400] 
     })
-
-    let animatedContent = useRef(new Animated.Value(0));
     let contentLocation = animatedContent.current.interpolate({
       inputRange: [0, 1],
       outputRange: [0, -500]
     })
 
-    let animatedForget = useRef(new Animated.Value(0));
-    let forgetLocation = animatedContent.current.interpolate({
-      inputRange: [0, 1],
-      outputRange: [0, -500]
-    })
-    
     const animatedMenuStyle = {
       transform: [
         { translateY: menuLocation }
       ], 
     }
-
     const animatedContentStyle = {
       transform: [
         {translateY: contentLocation}
       ]
     }
 
-
-    const menuExitAnimation = () => {
-      Animated.spring(animatedMenu.current, {
-        toValue: 1,
-        friction:25,
-        tension: 100,
-        useNativeDriver: false,
-      }).start();
-      Animated.spring(animatedContent.current, {
-        toValue: 1,
-        friction:25,
-        tension: 100,
-        useNativeDriver: false,
-      }).start();
-    }
-    const menuEnterAnimation = () => {
-      Animated.spring(animatedContent.current, {
-        toValue: 0,
-        friction: 25,
-        tension: 100,
-        useNativeDriver: false,
-      }).start();
-      Animated.spring(animatedMenu.current, {
-        toValue: 0,
-        friction:25,
-        tension: 100,
-        useNativeDriver: false,
-      }).start();
-    }
-
     const animateToSignIn = () => {
-      menuExitAnimation()
+      Animated.spring(animatedMenu.current, {
+        toValue: 1,
+        friction:25,
+        tension: 100,
+        useNativeDriver: false,
+      }).start();
+      Animated.spring(animatedContent.current, {
+        toValue: 1,
+        friction:25,
+        tension: 100,
+        useNativeDriver: false,
+      }).start();
     };
     const animateFromSignIn = () => {
       Animated.spring(animatedContent.current, {
@@ -90,48 +66,93 @@ const LoginMenu:FC = ({navigation}:any) => {
       }).start();
     };
 
+
+
     return(
       <SafeAreaView style={[styles.container, {height: window.height + StatusBar.currentHeight, width: window.width, paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0}]}>
         <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? 'padding': 'position'}
+          behavior='position'
           contentContainerStyle={{height: '100%', width: '100%'}}
           style={{height: window.height, width: '100%', flex: 1, }}
         >
           <Modal animationType='fade' visible={isModalVisible} transparent={true}>
-            <View style={{height: '100%', width: '100%', justifyContent: 'center', alignItems: 'center', padding: 20, backgroundColor: 'rgba(0,0,0,0.3)'}}>
-              <View style={{width: '100%', backgroundColor: 'white', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', padding: 20, borderRadius: 20}}>
-                <Text style={[styles.title, {fontSize: 18}]}>Forgot your password?</Text>
-                <Text style={[styles.description, {fontSize: 16}]}>Enter the phone number or email you used to sign up below.</Text>
-                <Input
-                  style={{width: '100%', marginTop: 10,}}
-                  placeholder='Phone or Email*' 
-                  autoCompleteType={undefined}
-                />
-                <Pressable
-                  style={[styles.loginButton, {backgroundColor: resetButton ? 'rgba(128,0,128, 0.8)' : 'rgba(128,0,128, 1)'}]}
-                  onPress= {() => {
-                    setResetButton(false);
-                    navigation.navigate('BottomNavigator');
-                  }}                
-                  onPressIn={()=>{setResetButton(true)}}
-                  onPressOut={()=>{setResetButton(false)}}
-                >
-                  <Text style={[styles.loginText, {color: 'white',}]}>Reset Password</Text>
-                </Pressable>
-                <Pressable
-                  style={[styles.loginButton, {marginTop: 10, backgroundColor: cancelButton ? 'rgba(128,0,128, 0.2)' : 'rgba(128,0,128, 0)'}]}
-                  onPress= {() => {
-                    setCancelButton(false)
-                    setIsModalVisible(false);
-                  }} 
-                  onPressIn={()=>{setCancelButton(true)}}
-                  onPressOut={()=>{setCancelButton(false)}} 
-                >
-                  <Text style={[styles.loginText, {color: 'purple',}]}>Cancel</Text>
-                </Pressable>
+            <View style={{height: '100%', width: '100%', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', padding: 20, backgroundColor: 'rgba(0,0,0,0.3)'}}>
+              <View
+                style={[
+                  {width: '100%', backgroundColor: 'white', 
+                  flexDirection: 'column', justifyContent: 'flex-start', 
+                  alignItems: 'flex-start', padding: 20, borderRadius: 20}
+                ]}
+              >
+                {!isCodeVisible &&
+                  <View style={{width: '100%', flexDirection: 'column', }}>
+                    <Text style={[styles.title, {fontSize: 18}]}>Forgot your password?</Text>
+                    <Text style={[styles.description, {fontSize: 16}]}>Enter the phone number or email you used to sign up below.</Text>
+                    <Input
+                      style={{width: '100%', marginTop: 10,}}
+                      placeholder='Phone or Email*' 
+                      autoCompleteType={undefined}
+                    />
+                    <Pressable
+                      style={[styles.loginButton, {backgroundColor: resetButton ? 'rgba(128,0,128, 0.8)' : 'rgba(128,0,128, 1)'}]}
+                      onPress= {() => {
+                        setResetButton(false);
+                        setIsCodeVisible(true);
+                        //navigation.navigate('BottomNavigator');
+                      }}                
+                      onPressIn={()=>{setResetButton(true)}}
+                      onPressOut={()=>{setResetButton(false)}}
+                    >
+                      <Text style={[styles.loginText, {color: 'white',}]}>Reset Password</Text>
+                    </Pressable>
+                    <Pressable
+                      style={[styles.loginButton, {marginTop: 10, backgroundColor: cancelButton ? 'rgba(128,0,128, 0.2)' : 'rgba(128,0,128, 0)'}]}
+                      onPress= {() => {
+                        setCancelButton(false);
+                        setIsModalVisible(false);
+                      }} 
+                      onPressIn={()=>{setCancelButton(true)}}
+                      onPressOut={()=>{setCancelButton(false)}} 
+                    >
+                      <Text style={[styles.loginText, {color: 'purple',}]}>Cancel</Text>
+                    </Pressable>
+                  </View>
+                } 
+                {isCodeVisible &&
+                  <View style={{width: '100%', flexDirection: 'column', }}>
+                    <Text style={[styles.title, {fontSize: 18}]}>Verify your account</Text>
+                    <Text style={[styles.description, {fontSize: 16}]}>Please enter the verification code we sent to your account identifier</Text>
+                    <CodeInput/>
+                    <Pressable
+                      style={[styles.loginButton, {backgroundColor: resetButton ? 'rgba(128,0,128, 0.8)' : 'rgba(128,0,128, 1)'}]}
+                      onPress= {() => {
+                        setResetButton(false);
+                        //RESEND VERIFICATION
+                        //navigation.navigate('BottomNavigator');
+                      }}                
+                      onPressIn={()=>{setResetButton(true)}}
+                      onPressOut={()=>{setResetButton(false)}}
+                    >
+                      <Text style={[styles.loginText, {color: 'white',}]}>Resend Verification</Text>
+                    </Pressable>
+                    <Pressable
+                      style={[styles.loginButton, {marginTop: 10, backgroundColor: cancelButton ? 'rgba(128,0,128, 0.2)' : 'rgba(128,0,128, 0)'}]}
+                      onPress= {() => {
+                        setCancelButton(false);
+                        setIsModalVisible(false);
+                        setIsCodeVisible(false);
+                      }} 
+                      onPressIn={()=>{setCancelButton(true)}}
+                      onPressOut={()=>{setCancelButton(false)}} 
+                    >
+                      <Text style={[styles.loginText, {color: 'purple',}]}>Return to</Text>
+                    </Pressable>   
+                  </View>
+                }
               </View>
             </View>
-          </Modal>
+          </Modal> 
+                  
           <ImageBackground
             source={{uri: 'https://images.unsplash.com/photo-1500916434205-0c77489c6cf7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8&w=1000&q=80'}}
             style={styles.imageContainer}
@@ -178,7 +199,7 @@ const LoginMenu:FC = ({navigation}:any) => {
                   style={[styles.loginButton, {backgroundColor: signIn ? 'rgba(128,0,128, 0.8)' : 'rgba(128,0,128, 1)'}]}
                   onPress= {() => {
                     navigation.navigate('BottomNavigator');
-                  }}                
+                  }}
                   onPressIn={()=>{setSignIn(true)}}
                   onPressOut={()=>{setSignIn(false)}}
                 >
@@ -197,7 +218,7 @@ const LoginMenu:FC = ({navigation}:any) => {
                 </Pressable>
               </Animated.View>
               <Animated.View style={[styles.headerContainer]}>              
-                <Text style={[styles.title, {color: 'white'}]}>stack</Text>           
+                <Text style={[styles.title, {color: 'white'}]}>stack</Text>     
               </Animated.View>
               <Animated.View style={[styles.menuContainer, animatedMenuStyle]}>
                 <View style={styles.titleContainer}>
@@ -228,7 +249,7 @@ const LoginMenu:FC = ({navigation}:any) => {
               </Animated.View>
             </LinearGradient>
           </ImageBackground>
-        </KeyboardAvoidingView>
+        </KeyboardAvoidingView> 
       </SafeAreaView>
     );
 }

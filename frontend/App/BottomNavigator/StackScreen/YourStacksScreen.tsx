@@ -93,7 +93,7 @@ const YourStacksScreen:FC = ({navigation}:any) => {
       id: 3,
       size: 3, 
       title: 'Exploring Modern Music', 
-      user: 'thereal_lingling', 
+      user: 'thereal_langlang', 
       img: 'https://newyorkclassicalreview.com/wp-content/uploads/2019/10/10.7.2019-Concert-26_Photo-Zach-Mahone.jpg', 
       desc: '', 
       isForYou: false,
