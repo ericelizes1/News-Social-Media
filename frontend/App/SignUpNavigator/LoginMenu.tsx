@@ -151,8 +151,7 @@ const LoginMenu:FC = ({navigation}:any) => {
                 }
               </View>
             </View>
-          </Modal> 
-                  
+          </Modal>       
           <ImageBackground
             source={{uri: 'https://images.unsplash.com/photo-1500916434205-0c77489c6cf7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8&w=1000&q=80'}}
             style={styles.imageContainer}
