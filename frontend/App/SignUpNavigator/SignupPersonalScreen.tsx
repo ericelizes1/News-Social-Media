@@ -122,6 +122,7 @@ const SignupPersonalScreen:FC = ({navigation, route}:any) => {
                 onChangeText={value => setFirstName(value)}
                 onPressIn={() => {
                   setShow(false)
+                  setShowFirstNameError(false);
                 }}
               />
               {showFirstNameError && 
@@ -135,6 +136,7 @@ const SignupPersonalScreen:FC = ({navigation, route}:any) => {
                 onChangeText={value => setLastName(value)}
                 onPressIn={() => {
                   setShow(false)
+                  setShowLastNameError(false);
                 }}
               />
               {showLastNameError && 

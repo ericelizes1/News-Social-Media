@@ -5,7 +5,6 @@ import LoginMenu from './SignUpNavigator/LoginMenu';
 import SignupMethodScreen from './SignUpNavigator/SignupMethodScreen';
 import SignupPersonalScreen from './SignUpNavigator/SignupPersonalScreen';
 import SignupUserInfoScreen from './SignUpNavigator/SignupUserInfoScreen';
-import SignupVerifyScreen from './SignUpNavigator/SignupVerifyScreen';
 
 const SignupNavigator:FC = () => {
   const SignupNavigator : any =  createMaterialTopTabNavigator();
@@ -37,10 +36,6 @@ const SignupNavigator:FC = () => {
       <SignupNavigator.Screen // Write Username/Password
         name='SignupUserInfoScreen'
         component={SignupUserInfoScreen}
-      />  
-      <SignupNavigator.Screen // Write Username/Password
-        name='SignupVerifyScreen'
-        component={SignupVerifyScreen}
       />  
 
     </SignupNavigator.Navigator>

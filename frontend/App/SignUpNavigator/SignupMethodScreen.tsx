@@ -72,7 +72,7 @@ const SignupMethodScreen:FC = ({navigation}:any) => {
               <Input
                 style={{width: '100%', marginTop: 10,}}
                 placeholder='Phone or Email*' 
-                onChangeText={value => setAccountIndentifier(value)}
+                onChangeText={value => {setAccountIndentifier(value); setAccountError(false);}}
                 autoCompleteType={undefined}/>
               {accountError && 
                 <View style={{width: '100%', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start'}}>

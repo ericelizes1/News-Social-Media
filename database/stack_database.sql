@@ -106,8 +106,244 @@ ALTER TABLE ONLY post ADD CONSTRAINT fk_post_id FOREIGN KEY(media_post_id) REFER
 ALTER TABLE ONLY post ADD CONSTRAINT fk_article_id FOREIGN KEY(media_article_id) REFERENCES article(article_id) ON DELETE SET NULL;
 
 
+DROP TABLE IF EXISTS user_like_post CASCADE;
+CREATE TABLE user_like_post (
+  user_id BIGINT,
+  post_id BIGINT,
+  PRIMARY KEY (user_id, post_id),
+  CONSTRAINT fk_user_id FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+  CONSTRAINT fk_post_id FOREIGN KEY(post_id) REFERENCES post(post_id) ON DELETE CASCADE
+);
+
+DROP TABLE IF EXISTS user_report_post CASCADE;
+CREATE TABLE user_report_post (
+  user_id BIGINT,
+  post_id BIGINT,
+  PRIMARY KEY (user_id, post_id),
+  CONSTRAINT fk_user_id FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+  CONSTRAINT fk_post_id FOREIGN KEY(post_id) REFERENCES post(post_id) ON DELETE CASCADE
+);
+
+DROP TABLE IF EXISTS user_block_post CASCADE;
+CREATE TABLE user_block_post (
+  user_id BIGINT,
+  post_id BIGINT,
+  PRIMARY KEY (user_id, post_id),
+  CONSTRAINT fk_user_id FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+  CONSTRAINT fk_post_id FOREIGN KEY(post_id) REFERENCES post(post_id) ON DELETE CASCADE
+);
+
+DROP TABLE IF EXISTS user_follow_user CASCADE;
+CREATE TABLE user_follow_user (
+  followed_user_id BIGINT,
+  following_user_id BIGINT,
+  PRIMARY KEY (followed_user_id, following_user_id),
+  CONSTRAINT fk_followed_user_id FOREIGN KEY(followed_user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+  CONSTRAINT fk_following_user_id FOREIGN KEY(following_user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+  CONSTRAINT enforce_different_users CHECK (followed_user_id <> following_user_id)
+);
+
+DROP TABLE IF EXISTS user_report_user CASCADE;
+CREATE TABLE user_report_user (
+  reported_user_id BIGINT,
+  reporting_user_id BIGINT,
+  PRIMARY KEY (reported_user_id, reporting_user_id),
+  CONSTRAINT fk_reported_user_id FOREIGN KEY(reported_user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+  CONSTRAINT fk_reporting_user_id FOREIGN KEY(reporting_user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+  CONSTRAINT enforce_different_users CHECK (reported_user_id <> reporting_user_id)
+);
+
+DROP TABLE IF EXISTS user_block_user CASCADE;
+CREATE TABLE user_block_user (
+  blocked_user_id BIGINT,
+  blocking_user_id BIGINT,
+  PRIMARY KEY (blocked_user_id, blocking_user_id),
+  CONSTRAINT fk_blocked_user_id FOREIGN KEY(blocked_user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+  CONSTRAINT fk_blocking_user_id FOREIGN KEY(blocking_user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+  CONSTRAINT enforce_different_users CHECK (blocked_user_id <> blocking_user_id)
+);
+
+DROP TABLE IF EXISTS user_subscribe_stack CASCADE;
+CREATE TABLE user_subscribe_stack (
+  user_id BIGINT,
+  stack_id BIGINT,
+  PRIMARY KEY (user_id, stack_id),
+  CONSTRAINT fk_user_id FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+  CONSTRAINT fk_stack_id FOREIGN KEY(stack_id) REFERENCES stack(stack_id) ON DELETE CASCADE
+);
+
+DROP TABLE IF EXISTS user_report_stack CASCADE;
+CREATE TABLE user_report_stack (
+  user_id BIGINT,
+  stack_id BIGINT,
+  PRIMARY KEY (user_id, stack_id),
+  CONSTRAINT fk_user_id FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+  CONSTRAINT fk_stack_id FOREIGN KEY(stack_id) REFERENCES stack(stack_id) ON DELETE CASCADE
+);
+
+DROP TABLE IF EXISTS user_block_stack CASCADE;
+CREATE TABLE user_block_stack (
+  user_id BIGINT,
+  stack_id BIGINT,
+  PRIMARY KEY (user_id, stack_id),
+  CONSTRAINT fk_user_id FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+  CONSTRAINT fk_stack_id FOREIGN KEY(stack_id) REFERENCES stack(stack_id) ON DELETE CASCADE
+);
+
+DROP TABLE IF EXISTS user_like_comment CASCADE;
+CREATE TABLE user_like_comment (
+  user_id BIGINT,
+  comment_id BIGINT,
+  PRIMARY KEY (user_id, comment_id),
+  CONSTRAINT fk_user_id FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+  CONSTRAINT fk_comment_id FOREIGN KEY(comment_id) REFERENCES comment(comment_id) ON DELETE CASCADE
+);
+
+DROP TABLE IF EXISTS user_report_comment CASCADE;
+CREATE TABLE user_report_comment (
+  user_id BIGINT,
+  comment_id BIGINT,
+  PRIMARY KEY (user_id, comment_id),
+  CONSTRAINT fk_user_id FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+  CONSTRAINT fk_comment_id FOREIGN KEY(comment_id) REFERENCES comment(comment_id) ON DELETE CASCADE
+);
+
+DROP TABLE IF EXISTS user_block_comment CASCADE;
+CREATE TABLE user_block_comment (
+  user_id BIGINT,
+  comment_id BIGINT,
+  PRIMARY KEY (user_id, comment_id),
+  CONSTRAINT fk_user_id FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+  CONSTRAINT fk_comment_id FOREIGN KEY(comment_id) REFERENCES comment(comment_id) ON DELETE CASCADE
+);
+
+DROP TABLE IF EXISTS user_like_article CASCADE;
+CREATE TABLE user_like_article (
+  user_id BIGINT,
+  article_id BIGINT,
+  PRIMARY KEY (user_id, article_id),
+  CONSTRAINT fk_user_id FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+  CONSTRAINT fk_article_id FOREIGN KEY(article_id) REFERENCES article(article_id) ON DELETE CASCADE
+);
+
+DROP TABLE IF EXISTS user_bookmark_article CASCADE;
+CREATE TABLE user_bookmark_article (
+  user_id BIGINT,
+  article_id BIGINT,
+  PRIMARY KEY (user_id, article_id),
+  CONSTRAINT fk_user_id FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+  CONSTRAINT fk_article_id FOREIGN KEY(article_id) REFERENCES article(article_id) ON DELETE CASCADE
+);
+
+DROP TABLE IF EXISTS user_report_article CASCADE;
+CREATE TABLE user_report_article (
+  user_id BIGINT,
+  article_id BIGINT,
+  PRIMARY KEY (user_id, article_id),
+  CONSTRAINT fk_user_id FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+  CONSTRAINT fk_article_id FOREIGN KEY(article_id) REFERENCES article(article_id) ON DELETE CASCADE
+);
+
+DROP TABLE IF EXISTS user_block_article CASCADE;
+CREATE TABLE user_block_article (
+  user_id BIGINT,
+  article_id BIGINT,
+  PRIMARY KEY (user_id, article_id),
+  CONSTRAINT fk_user_id FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+  CONSTRAINT fk_article_id FOREIGN KEY(article_id) REFERENCES article(article_id) ON DELETE CASCADE
+);
+
+DROP TABLE IF EXISTS user_like_stack_card CASCADE;
+CREATE TABLE user_like_stack_card (
+  user_id BIGINT,
+  stack_card_id BIGINT,
+  PRIMARY KEY (user_id, stack_card_id),
+  CONSTRAINT fk_user_id FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+  CONSTRAINT fk_stack_card_id FOREIGN KEY(stack_card_id) REFERENCES stack_card(stack_card_id) ON DELETE CASCADE
+);
+
+DROP TABLE IF EXISTS user_block_stack_card CASCADE;
+CREATE TABLE user_block_stack_card (
+  user_id BIGINT,
+  stack_card_id BIGINT,
+  PRIMARY KEY (user_id, stack_card_id),
+  CONSTRAINT fk_user_id FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+  CONSTRAINT fk_stack_card_id FOREIGN KEY(stack_card_id) REFERENCES stack_card(stack_card_id) ON DELETE CASCADE
+);
+
+DROP TABLE IF EXISTS user_report_stack_card CASCADE;
+CREATE TABLE user_report_stack_card (
+  user_id BIGINT,
+  stack_card_id BIGINT,
+  PRIMARY KEY (user_id, stack_card_id),
+  CONSTRAINT fk_user_id FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+  CONSTRAINT fk_stack_card_id FOREIGN KEY(stack_card_id) REFERENCES stack_card(stack_card_id) ON DELETE CASCADE
+);
+
+CREATE OR REPLACE VIEW user_info (
+  username,
+  nickname,
+  birthdate,
+  first_name,
+  last_name,
+  email,
+  phone,
+  pronouns,
+  bio,
+  website,
+  profile_img_url,
+  background_img_url,
+  created_on,
+  followed_count,
+  following_count,
+  num_stacks_created,
+  num_stacks_subscribed,
+  num_posts
+) AS
+SELECT
+  username,
+  nickname,
+  birthdate,
+  first_name,
+  last_name,
+  email,
+  phone,
+  pronouns,
+  bio,
+  website,
+  profile_img_url,
+  background_img_url,
+  created_on,
+  (SELECT count(*) from user_follow_user where following_user_id = users.user_id),
+  (SELECT count(*) from user_follow_user where followed_user_id = users.user_id),
+  (SELECT count(*) from stack where stack.user_id = users.user_id),
+  (SELECT count(*) from user_subscribe_stack where user_subscribe_stack.user_id = users.user_id),
+  (SELECT count(*) from post where post.user_id = users.user_id)
+from users;
+
+-- CREATE OR REPLACE VIEW post_info (
+  
+-- ) AS
+
+-- CREATE OR REPLACE VIEW comment_info (
+  
+-- ) AS
+
+-- CREATE OR REPLACE VIEW article_info (
+  
+-- ) AS
+
+-- CREATE OR REPLACE VIEW stack_info (
+  
+-- ) AS
+
+-- CREATE OR REPLACE VIEW stack_card_info (
+  
+-- ) AS
+
 INSERT INTO users (username, password, nickname, birthdate, first_name, last_name, email, phone, pronouns, bio, website, profile_img_url, background_img_url, created_on) VALUES
-('spiderman', 'iamnotpeterparker', 'Peter Parker', '1996-06-01', 'Tom', 'Holland', 'tomholland@gmail.com', null, 'He/Him', 'Your friendly neighborhood spiderman ;)', null, 'https://cdn.vox-cdn.com/thumbor/SbX1VbxJhxijxD1tzRTJ8uq38P4=/1400x1400/filters:format(jpeg)/cdn.vox-cdn.com/uploads/chorus_asset/file/19101461/spider_man_far_from_home_peter_parker_1562394390.jpg', 'https://wallpapercave.com/wp/wp7806389.jpg', '2021-12-29 22:00:00');
+('spiderman', 'iamnotpeterparker', 'Peter Parker', '1996-06-01', 'Tom', 'Holland', 'tomholland@gmail.com', null, 'He/Him', 'Your friendly neighborhood spiderman ;)', null, 'https://cdn.vox-cdn.com/thumbor/SbX1VbxJhxijxD1tzRTJ8uq38P4=/1400x1400/filters:format(jpeg)/cdn.vox-cdn.com/uploads/chorus_asset/file/19101461/spider_man_far_from_home_peter_parker_1562394390.jpg', 'https://wallpapercave.com/wp/wp7806389.jpg', '2021-12-29 22:00:00'),
+('therock', 'iamtherock', 'The Rock', '1972-05-02', 'Dwayne', 'Johnson', 'dwaynejohnson@gmail.com', null, 'He/Him', 'Can you smell what Im cookin?', null, 'https://pbs.twimg.com/profile_images/3478244961/01ebfc40ecc194a2abc81e82ab877af4_400x400.jpeg', 'https://cdn.wallpapersafari.com/36/2/h9Hqcu.jpg', '2022-1-3 20:43:00');
 
 INSERT INTO source (name, logo_url) VALUES
 ('The Guardian', 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/The_Guardian_2018.svg/1200px-The_Guardian_2018.svg.png');
@@ -166,3 +402,17 @@ INSERT INTO stack_card (stack_id, category, media_article_id, media_post_id, med
 (1, 'article', 1, null, null),
 (1, 'post', null, 1, null),
 (1, 'comment', null, null, 1);
+
+INSERT INTO user_like_post VALUES (1, 1);
+
+INSERT INTO user_follow_user VALUES (1, 2);
+
+INSERT INTO user_subscribe_stack VALUES (2, 1);
+
+INSERT INTO user_like_comment VALUES (2, 1);
+
+INSERT INTO user_like_article VALUES (1, 1), (2, 1);
+
+INSERT INTO user_bookmark_article VALUES (2, 1);
+
+INSERT INTO user_like_stack_card VALUES (1, 1), (1, 2), (2, 1), (2, 3);

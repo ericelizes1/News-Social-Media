@@ -14,9 +14,11 @@ const SignupUserInfoScreen:FC = ({navigation, route}:any) => {
   const [next, setNext] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [retypePassword, setRetypePassword] = useState('');
 
   const [showUsernameError, setShowUsernameError] = useState(false);
   const [showPasswordError, setShowPasswordError] = useState(false);
+  const [showRetypePasswordError, setShowRetypePasswordError] = useState(false);
   const [showCheckError, setShowCheckError] = useState(false);
 
   const [passwordChar, setPasswordChar] = useState(false);
@@ -51,9 +53,11 @@ const SignupUserInfoScreen:FC = ({navigation, route}:any) => {
   const verifyPage = () => {
     const usernameCondition = (username.length > 2) && (username.length < 33) && (/^[a-z]+$/i.test(username));
     const passwordCondition = passwordChar && passwordCase && passwordNum && passwordSpecial;
+    const retypeCondition = password === retypePassword
 
     setShowUsernameError(!usernameCondition);
     setShowPasswordError(!passwordCondition);
+    setShowRetypePasswordError(!retypeCondition);
     setShowCheckError(!check);
     Keyboard.dismiss();
 
@@ -119,6 +123,7 @@ const SignupUserInfoScreen:FC = ({navigation, route}:any) => {
                 autoCompleteType={undefined} 
                 onChangeText={value => {
                   setUsername(value);
+                  setShowUsernameError(false);
                 }}/>
               {showUsernameError && 
                 <View style={{width: '100%'}}>
@@ -138,6 +143,7 @@ const SignupUserInfoScreen:FC = ({navigation, route}:any) => {
                 secureTextEntry={true}
                 onChangeText={value => {
                   validatePassword(value);
+                  setShowPasswordError(false);
                 }}
               />
               {showPasswordError && 
@@ -157,9 +163,21 @@ const SignupUserInfoScreen:FC = ({navigation, route}:any) => {
                 autoCompleteType={undefined}
                 secureTextEntry={true}
                 onChangeText={value => {
-                  validatePassword(value);
+                  setRetypePassword(value);
+                  setShowRetypePasswordError(false);
                 }}
               />
+              {showRetypePasswordError && 
+                <View style={{width: '100%'}}>
+                  <Text style={{
+                      paddingBottom: 20, 
+                      paddingLeft: 10, 
+                      marginTop: -25, 
+                      color: 'red', 
+                      fontSize: 14
+                  }}>Please make sure your passwords match</Text>
+                </View>
+              }
               <View style={{paddingLeft: 10, justifyContent: 'flex-start', width: '100%', marginTop: -10}}>
                 {/*<Text style={[styles.description, {color: '#696969'}]}>Your password should contain:</Text>
                 <View style={{flexDirection: 'row'}}>
@@ -203,7 +221,10 @@ const SignupUserInfoScreen:FC = ({navigation, route}:any) => {
                   <Pressable
                     style={{marginTop: 5}}
                     hitSlop={30}
-                    onPress={() => setCheck(!check)}
+                    onPress={() => {
+                      setCheck(!check);
+                      setShowCheckError(false);
+                    }}
                   >
                     <Icon
                       name={check ? 'checkbox-marked-outline' : 'checkbox-blank-outline'}

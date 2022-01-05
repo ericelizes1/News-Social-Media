@@ -4,6 +4,7 @@ import { Text, Icon, Input } from 'react-native-elements';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import CodeInput from './LoginMenu/CodeInput';
+import globalStyles from '../constants/globalStyles';
 
 const LoginMenu:FC = ({navigation}:any) => {
     const window = useWindowDimensions()
@@ -69,7 +70,7 @@ const LoginMenu:FC = ({navigation}:any) => {
 
 
     return(
-      <SafeAreaView style={[styles.container, {height: window.height + StatusBar.currentHeight, width: window.width, paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0}]}>
+      <SafeAreaView style={[globalStyles.SafeArea, {height: window.height + StatusBar.currentHeight, width: window.width,}]}>
         <KeyboardAvoidingView
           behavior='position'
           contentContainerStyle={{height: '100%', width: '100%'}}
