@@ -355,8 +355,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     padding: 10,
     paddingTop: '10%',
-    borderBottomLeftRadius: 6,
-    borderBottomRightRadius: 6,
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
   },
   translucentView: {
     flex: 1,

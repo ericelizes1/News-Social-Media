@@ -88,7 +88,7 @@ const LoginMenu:FC = ({navigation}:any) => {
                 {!isCodeVisible &&
                   <View style={{width: '100%', flexDirection: 'column', }}>
                     <Text style={[styles.title, {fontSize: 18}]}>Forgot your password?</Text>
-                    <Text style={[styles.description, {fontSize: 16}]}>Enter the phone number or email you used to sign up below.</Text>
+                    <Text style={[styles.description, {fontSize: 16}]}>Enter the phone number or email you used to create this account</Text>
                     <Input
                       style={{width: '100%', marginTop: 10,}}
                       placeholder='Phone or Email*' 
@@ -104,7 +104,7 @@ const LoginMenu:FC = ({navigation}:any) => {
                       onPressIn={()=>{setResetButton(true)}}
                       onPressOut={()=>{setResetButton(false)}}
                     >
-                      <Text style={[styles.loginText, {color: 'white',}]}>Reset Password</Text>
+                      <Text style={[styles.loginText, {color: 'white',}]}>Verify Account</Text>
                     </Pressable>
                     <Pressable
                       style={[styles.loginButton, {marginTop: 10, backgroundColor: cancelButton ? 'rgba(128,0,128, 0.2)' : 'rgba(128,0,128, 0)'}]}
@@ -240,7 +240,7 @@ const LoginMenu:FC = ({navigation}:any) => {
                 </View>
                 <Pressable
                   style={[styles.loginButton, {backgroundColor: signUp ? 'rgba(128,0,128, 0.2)' : 'rgba(128,0,128, 0)'}]}
-                  onPress= {() => navigation.navigate('SignupMethodScreen')}
+                  onPress= {() => navigation.navigate('SignUp')}
                   onPressIn={()=>{setSignUp(true)}}
                   onPressOut={()=>{setSignUp(false)}}      
                 >

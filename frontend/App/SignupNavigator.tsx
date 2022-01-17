@@ -2,9 +2,7 @@ import React, { FC } from 'react';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
 
 import LoginMenu from './SignUpNavigator/LoginMenu';
-import SignupMethodScreen from './SignUpNavigator/SignupMethodScreen';
-import SignupPersonalScreen from './SignUpNavigator/SignupPersonalScreen';
-import SignupUserInfoScreen from './SignUpNavigator/SignupUserInfoScreen';
+import SignUp from './SignUpNavigator/SignUp';
 
 const SignupNavigator:FC = () => {
   const SignupNavigator : any =  createMaterialTopTabNavigator();
@@ -26,16 +24,8 @@ const SignupNavigator:FC = () => {
         }}
       />
       <SignupNavigator.Screen // Select Phone/Email/Google/Apple
-        name='SignupMethodScreen' 
-        component={SignupMethodScreen}
-      />  
-      <SignupNavigator.Screen // Write FullName/Nickname/Pronouns/Birthday
-        name='SignupPersonalScreen'
-        component={SignupPersonalScreen}
-      />  
-      <SignupNavigator.Screen // Write Username/Password
-        name='SignupUserInfoScreen'
-        component={SignupUserInfoScreen}
+        name='SignUp' 
+        component={SignUp}
       />  
 
     </SignupNavigator.Navigator>

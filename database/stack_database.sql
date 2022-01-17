@@ -5,16 +5,16 @@ CREATE TABLE users (
   password VARCHAR(255) NOT NULL,
   nickname VARCHAR(255) NOT NULL,
   birthdate DATE NOT NULL,
-  first_name VARCHAR(255) NOT NULL,
-  last_name VARCHAR(255) NOT NULL,
+  first_name VARCHAR(255),
+  last_name VARCHAR(255),
   email VARCHAR(255) UNIQUE,
   phone TEXT UNIQUE,
-  pronouns VARCHAR(255) NOT NULL,
+  pronouns VARCHAR(255),
   bio TEXT,
   website TEXT,
   profile_img_url TEXT,
   background_img_url TEXT,
-  created_on TIMESTAMP,
+  created_on TIMESTAMP NOT NULL,
   PRIMARY KEY (user_id)
 );
 
@@ -281,6 +281,7 @@ CREATE TABLE user_report_stack_card (
 );
 
 CREATE OR REPLACE VIEW user_info (
+  user_id,
   username,
   nickname,
   birthdate,
@@ -301,6 +302,7 @@ CREATE OR REPLACE VIEW user_info (
   num_posts
 ) AS
 SELECT
+  user_id,
   username,
   nickname,
   birthdate,

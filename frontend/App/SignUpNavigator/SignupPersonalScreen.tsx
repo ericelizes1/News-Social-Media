@@ -74,6 +74,7 @@ const SignupPersonalScreen:FC = ({navigation, route}:any) => {
 
     return birthMonth + ' ' + birthDate + ', ' + birthYear;
   };
+  /*
   return(
     <SafeAreaView style={[styles.container, {height: window.height + StatusBar.currentHeight, width: window.width, paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0}]}>
       <KeyboardAvoidingView
@@ -196,7 +197,121 @@ const SignupPersonalScreen:FC = ({navigation, route}:any) => {
         </ImageBackground>
       </KeyboardAvoidingView>
     </SafeAreaView>
+  );*/
+  return(
+    <SafeAreaView style={[styles.container, {height: window.height + StatusBar.currentHeight, width: window.width, paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0}]}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? 'padding': 'padding'}
+        contentContainerStyle={{height: '100%', width: '100%'}}
+        style={{height: window.height, width: '100%', flex: 1, }}
+      >
+        <View style={styles.logoContainer}>
+          <Pressable
+            onPress={() => navigation.navigate('SignupMethodScreen')}
+          >
+            <Icon
+              name='chevron-left'
+              color='purple'
+              type='material-community'
+              size={40}
+              tvParallaxProperties={false}
+            />
+          </Pressable>
+        </View>
+        <View
+          style={[styles.menuContainer]}
+        >
+          <View style={styles.titleContainer}>
+            <View style={{width: '100%', flexDirection: 'row', justifyContent: 'space-between'}}>
+            <View style={{width: '32.5%', height: 2, backgroundColor: 'purple'}}/>
+              <View style={{width: '32.5%', height: 2, backgroundColor: 'purple'}}/>
+              <View style={{width: '32.5%', height: 2, backgroundColor: '#696969'}}/>
+            </View>
+            <View style={{width: '100%', flexDirection: 'row', justifyContent: 'space-between', marginTop: 10}}>
+              <Text style={styles.title}>What should we call you?</Text>
+            </View>
+            <Text style={styles.description}>Stack welcomes users from cultures across the globe</Text>
+          </View>
+          <Input
+            style={{marginTop: -5,}}
+            placeholder='First Name*' autoCompleteType={undefined}  
+            onChangeText={value => setFirstName(value)}
+            onPressIn={() => {
+              setShow(false)
+              setShowFirstNameError(false);
+            }}
+          />
+          {showFirstNameError && 
+            <View style={{width: '100%', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start'}}>
+              <Text style={{paddingBottom: 20, paddingLeft: 10, marginTop: -25, color: 'red', fontSize: 14}}>Invalid first name</Text>
+            </View>
+          }
+          <Input
+            style={{marginTop: -5,}}
+            placeholder='Last Name*' autoCompleteType={undefined}  
+            onChangeText={value => setLastName(value)}
+            onPressIn={() => {
+              setShow(false)
+              setShowLastNameError(false);
+            }}
+          />
+          {showLastNameError && 
+            <View style={{width: '100%', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start'}}>
+              <Text style={{paddingBottom: 20, paddingLeft: 10, marginTop: -25, color: 'red', fontSize: 14}}>Invalid last name</Text>
+            </View>
+          }
+          <View style={{width: '100%', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start'}}>
+            <Pressable
+              style={{marginTop: -5, width:'100%'}}
+              onPress={() => {
+                setShow(true)
+                Keyboard.dismiss();
+              }}>
+              <View pointerEvents='none'>
+                <Input
+                  placeholder='Birth Date*' autoCompleteType={undefined}
+                  value={isDateSet ? getCurrentDate() : null} 
+                />
+              </View>
+            </Pressable>
+            {showBirthdayError && <Text style={{
+              paddingBottom: 20, 
+              paddingLeft: 10, 
+              marginTop: -25, 
+              color: 'red', 
+              fontSize: 14
+            }}>Users must be at least 13 years of age</Text>}
+          </View>
+          {show && (
+            <View style={{width: 320, height: '30%' ,justifyContent: 'center' }}>
+              <DateTimePicker
+                testID="dateTimePicker"
+                value={date}
+                mode={'date'}
+                is24Hour={true}
+                display={Platform.OS === "ios" ? "spinner": "default"}
+                onChange={onChange}
+                />
+            </View>
+          )}
+          <Pressable
+            style={[styles.loginButton, {backgroundColor: next ? 'rgba(128,0,128, 0.8)' : 'rgba(128,0,128, 1)'}]}
+            onPress= {() => {
+              if (verifyPage()) {setShow(false); navigation.navigate('SignupUserInfoScreen', {
+                  type: route.params.type,
+                  email: route.params.email
+              })};
+            }}
+            onPressIn={()=>{setNext(true)}}
+            onPressOut={()=>{setNext(false)}}      
+          >
+            <Text style={[styles.loginText, {color: 'white',}]}>Next</Text>
+          </Pressable>
+        </View>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
+
 }
 
 const styles = StyleSheet.create({
