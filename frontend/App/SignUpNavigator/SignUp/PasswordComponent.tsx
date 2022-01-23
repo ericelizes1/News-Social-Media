@@ -130,6 +130,7 @@ const PasswordComponent:FC<Props> = (props: Props, {navigation}:any) => {
         backgroundColor: 'white', 
         height: window.height - HEADER_HEIGHT * 2.5}}
       showsVerticalScrollIndicator={false}
+      alwaysBounceVertical={false}
     >
       <Input
         ref={passwordRef}

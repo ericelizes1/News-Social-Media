@@ -19,18 +19,26 @@ const SignUp:FC = ({navigation}:any) => {
     birthdate: new Date(),
     password: ''
   });
+  const [showDatePicker, setShowDatePicker] = useState(false);
 
   let animated = useRef(new Animated.Value(0));
 
   //Animates the indicator
-  let opacity = animated.current.interpolate({ 
+  let rightOpacity = animated.current.interpolate({ 
     inputRange: [0, 1], 
     outputRange: [0, 1] 
   })
-  const animatedIndicatorStyle = {
-    opacity: opacity,
+  const animatedRightIndicatorStyle = {
+    opacity: rightOpacity,
   }
 
+  let leftOpacity = animated.current.interpolate({ 
+    inputRange: [0, 1], 
+    outputRange: [1, 0] 
+  })
+  const animatedLeftIndicatorStyle = {
+    opacity: leftOpacity,
+  }
   //Animates the UsernameComponent and PasswordComponent
   let transformContent = animated.current.interpolate({ 
     inputRange: [0, 1], 
@@ -90,6 +98,7 @@ const SignUp:FC = ({navigation}:any) => {
               onPress={() => {
                 Keyboard.dismiss();
                 if (isUsernameScreen) {
+                  setShowDatePicker(false);
                   navigation.navigate('LoginMenu')
                 } else {
                   animatePrev()
@@ -109,15 +118,17 @@ const SignUp:FC = ({navigation}:any) => {
             </View>
           </View>
           <View style={styles.indicatorContainer}>
-            <View style={[styles.indicator, {backgroundColor: 'purple'}]}/>
             <View style={[styles.indicator, {backgroundColor: 'white', borderWidth: 2, borderColor: '#696969'}]}>
-              <Animated.View style={[styles.indicator, animatedIndicatorStyle, {backgroundColor: 'purple'}]}/>
+              <Animated.View style={[styles.indicator, animatedLeftIndicatorStyle, {backgroundColor: 'purple'}]}/>
+            </View>
+            <View style={[styles.indicator, {backgroundColor: 'white', borderWidth: 2, borderColor: '#696969'}]}>
+              <Animated.View style={[styles.indicator, animatedRightIndicatorStyle, {backgroundColor: 'purple'}]}/>
             </View>
           </View>
         </View>
         <View style={[styles.screenContainer, {maxHeight: window.height - (HEADER_HEIGHT * 2)}]}>
           <Animated.View style={[styles.screen, animatedContentStyle]}>
-            <UsernameComponent next={animateNext} fields={fields} setFields={setFields} />
+            <UsernameComponent next={animateNext} fields={fields} setFields={setFields} show={showDatePicker} setShow={setShowDatePicker}/>
           </Animated.View>
           <Animated.View style={[styles.screen, animatedContentStyle]}>
             <PasswordComponent fields={fields} onSubmit={handleSignUp} setFields={setFields} />

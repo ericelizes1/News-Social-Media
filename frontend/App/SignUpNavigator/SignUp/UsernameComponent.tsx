@@ -1,16 +1,17 @@
 import React, { FC, useState } from 'react';
-import { ScrollView, View, StyleSheet, Pressable, useWindowDimensions, Platform, Keyboard } from 'react-native';
+import { ScrollView, View, StyleSheet, Pressable, useWindowDimensions, Platform, Keyboard, FlatList } from 'react-native';
 import { Text, Icon, Input } from 'react-native-elements';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 interface Props {
   fields: any,
   setFields: any,
-  next: any
+  next: any,
+  show: any,
+  setShow: any,
 }
 
 const HEADER_HEIGHT:number = 93;
-
 
 const UsernameComponent:FC<Props> = (props: Props, {navigation}:any) => {
   const window = useWindowDimensions()
@@ -26,34 +27,37 @@ const UsernameComponent:FC<Props> = (props: Props, {navigation}:any) => {
   const [showBirthdayError, setShowBirthdayError] = useState(false);
 
   const [isDateSet, setIsDateSet] = useState(false);
-  const [show, setShow] = useState(false);
-
+  
+  const [keyboardOpen, setKeyboardOpen] = useState(false);
+  
   //Keyboard Listener
   const scrollViewRef = React.useRef(null);
 
-  // React.useEffect(() => {
-  //   const keyboardDidShowListener = Keyboard.addListener(
-  //     'keyboardDidShow',
-  //     () => {
-  //       if (scrollViewRef != null && scrollViewRef.current != null) {
-  //         scrollViewRef.current.scrollToEnd();
-  //         console.log('dont test me')
-  //       }
-  //       console.log('hello')
-  //     }
-  //   );
-  //   const keyboardDidHideListener = Keyboard.addListener(
-  //     'keyboardDidHide',
-  //     () => {
-  //       console.log('goodbye')
-  //     }
-  //   );
+  React.useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => {
+        // if (scrollViewRef != null && scrollViewRef.current != null) {
+        //   scrollViewRef.current.scrollToEnd();
+        //   console.log('dont test me')
+        // }
+        console.log('hello')
+        setKeyboardOpen(true);
+      }
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        console.log('goodbye')
+        setKeyboardOpen(false);
+      }
+    );
 
-  //   return () => {
-  //     keyboardDidHideListener.remove();
-  //     keyboardDidShowListener.remove();
-  //   };
-  // }, []);
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
+  }, []);
 
   const getAge = () => {
     var today = new Date();
@@ -80,7 +84,7 @@ const UsernameComponent:FC<Props> = (props: Props, {navigation}:any) => {
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
-    setShow(Platform.OS === 'ios');
+    props.setShow(Platform.OS === 'ios');
     setDate(currentDate);
     setIsDateSet(true);
   };
@@ -99,20 +103,13 @@ const UsernameComponent:FC<Props> = (props: Props, {navigation}:any) => {
     return(accountCondition && birthdayCondition && usernameCondition);
   }
 
-  return(
-    <ScrollView
-      ref={scrollViewRef}
-      style={[styles.menuContainer]}
-      contentContainerStyle={{
-        justifyContent: 'center', 
-        alignItems: 'center', 
-        backgroundColor: 'white', 
-        height: window.height - HEADER_HEIGHT * 2.5}}
-      showsVerticalScrollIndicator={false}
-    >
+  const COMPONENTS = [
+    <View style={{height: keyboardOpen ? 0 : 105}} />,
+    <View>
       <Input
         style={{width: '100%', marginTop: 10,}}
         placeholder='Phone or Email*' 
+        onFocus={() =>props.setShow(false)}
         onChangeText={value => {
           props.setFields({
             ...props.fields,
@@ -133,10 +130,13 @@ const UsernameComponent:FC<Props> = (props: Props, {navigation}:any) => {
           }}>Please enter a valid phone or email address</Text>
         </View>
       }
+    </View>,
+    <View>
       <Input
         style={{marginTop: -5,}}
         placeholder='Username*' 
         autoCompleteType={undefined} 
+        onFocus={() =>props.setShow(false)}
         onChangeText={value => {
           props.setFields({
             ...props.fields,
@@ -144,22 +144,25 @@ const UsernameComponent:FC<Props> = (props: Props, {navigation}:any) => {
           })
           // setUsername(value);
           setShowUsernameError(false);
-      }}/>
+        }}
+      />
       {showUsernameError && 
-      <View style={{width: '100%', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start'}}>
-      <Text style={{
-              paddingBottom: 20, 
-              paddingLeft: 10, 
-              marginTop: -25, 
-              color: 'red', 
-              fontSize: 14
+        <View style={{width: '100%', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start'}}>
+        <Text style={{
+            paddingBottom: 20, 
+            paddingLeft: 10, 
+            marginTop: -25, 
+            color: 'red', 
+            fontSize: 14
           }}>Please enter a username from 3 to 32 characters </Text>
         </View>
       }
+    </View>,
+    <View>
       <Pressable
         style={{marginTop: -5, width:'100%'}}
         onPress={() => {
-          setShow(true)
+          props.setShow(true)
           Keyboard.dismiss();
         }}>
         <View pointerEvents='none'>
@@ -169,7 +172,19 @@ const UsernameComponent:FC<Props> = (props: Props, {navigation}:any) => {
           />
         </View>
       </Pressable>
-      {show && (
+      {showBirthdayError && 
+      <View style={{width: '100%', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start'}}>
+        <Text style={{
+          paddingBottom: 20, 
+          paddingLeft: 10, 
+          marginTop: -25, 
+          color: 'red', 
+          fontSize: 14
+        }}>Users must be at least 13 years of age</Text>
+      </View>}
+    </View>,
+    <View>
+      {props.show && (
         <View style={{width: 320, height: '30%' ,justifyContent: 'center' }}>
           <DateTimePicker
             testID="dateTimePicker"
@@ -181,31 +196,146 @@ const UsernameComponent:FC<Props> = (props: Props, {navigation}:any) => {
             />
         </View>
       )}
-      {showBirthdayError && 
-      <View style={{width: '100%', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start'}}>
-        <Text style={{
-          paddingBottom: 20, 
-          paddingLeft: 10, 
-          marginTop: -25, 
-          color: 'red', 
-          fontSize: 14
-        }}>Users must be at least 13 years of age</Text>
-      </View>}
-      <Pressable
-        style={[styles.loginButton, {marginTop: 20, backgroundColor: next ? 'rgba(128,0,128, 0.8)' : 'rgba(128,0,128, 1)'}]}
-        onPress= {() => {if (verifyPage()) {
+    </View>,
+    <Pressable
+      style={[styles.loginButton, {marginTop: 20, backgroundColor: next ? 'rgba(128,0,128, 0.8)' : 'rgba(128,0,128, 1)'}]}
+      onPress= {() => {
+        if (verifyPage()) {
+          props.setShow(false)
           props.next()
-          /*navigation.navigate('SignupPersonalScreen', {
-          type: accountIdentifierType,
-          email: accountIdentifier
-        }
-      )*/}}}
-        onPressIn={()=>{setNext(true)}}
-        onPressOut={()=>{setNext(false)}}      
-      >
-        <Text style={[styles.loginText, {color: 'white',}]}>Next</Text>
-      </Pressable>
-    </ScrollView>
+        /*navigation.navigate('SignupPersonalScreen', {
+        type: accountIdentifierType,
+        email: accountIdentifier
+      }
+    )*/}}}
+      onPressIn={()=>{setNext(true)}}
+      onPressOut={()=>{setNext(false)}}      
+    >
+      <Text style={[styles.loginText, {color: 'white',}]}>Next</Text>
+    </Pressable>,
+    <View style={{height: 105}} />
+  ]
+//window.height - HEADER_HEIGHT / 3}}
+  const renderItem = ({ item }) => item;
+
+  return(
+    <FlatList
+      data={COMPONENTS}
+      style={[styles.menuContainer]}
+      renderItem={renderItem}
+      showsVerticalScrollIndicator={false}
+    />
+    // <ScrollView
+    //   ref={scrollViewRef}
+    //   style={[styles.menuContainer]}
+    //   contentContainerStyle={{
+    //     justifyContent: 'center', 
+    //     alignItems: 'center', 
+    //     backgroundColor: 'white', 
+    //     height: window.height - HEADER_HEIGHT * 2.5}}
+    //   showsVerticalScrollIndicator={false}
+    //   alwaysBounceVertical={false}
+    // >
+    //   <Input
+    //     style={{width: '100%', marginTop: 10,}}
+    //     placeholder='Phone or Email*' 
+    //     onFocus={() =>props.setShow(false)}
+    //     onChangeText={value => {
+    //       props.setFields({
+    //         ...props.fields,
+    //         accountIdentifier: value
+    //       })
+    //       // setAccountIndentifier(value); 
+    //       setAccountError(false);
+    //     }}
+    //     autoCompleteType={undefined}/>
+    //   {accountError && 
+    //     <View style={{width: '100%', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start'}}>
+    //       <Text style={{
+    //         paddingBottom: 20, 
+    //         paddingLeft: 10, 
+    //         marginTop: -25, 
+    //         color: 'red', 
+    //         fontSize: 14
+    //       }}>Please enter a valid phone or email address</Text>
+    //     </View>
+    //   }
+    //   <Input
+    //     style={{marginTop: -5,}}
+    //     placeholder='Username*' 
+    //     autoCompleteType={undefined} 
+    //     onFocus={() =>props.setShow(false)}
+    //     onChangeText={value => {
+    //       props.setFields({
+    //         ...props.fields,
+    //         username: value
+    //       })
+    //       // setUsername(value);
+    //       setShowUsernameError(false);
+    //   }}/>
+    //   {showUsernameError && 
+    //   <View style={{width: '100%', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start'}}>
+    //   <Text style={{
+    //           paddingBottom: 20, 
+    //           paddingLeft: 10, 
+    //           marginTop: -25, 
+    //           color: 'red', 
+    //           fontSize: 14
+    //       }}>Please enter a username from 3 to 32 characters </Text>
+    //     </View>
+    //   }
+    //   <Pressable
+    //     style={{marginTop: -5, width:'100%'}}
+    //     onPress={() => {
+    //       props.setShow(true)
+    //       Keyboard.dismiss();
+    //     }}>
+    //     <View pointerEvents='none'>
+    //       <Input
+    //         placeholder='Birth Date*' autoCompleteType={undefined}
+    //         value={isDateSet ? getCurrentDate() : null} 
+    //       />
+    //     </View>
+    //   </Pressable>
+    //   {showBirthdayError && 
+    //   <View style={{width: '100%', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start'}}>
+    //     <Text style={{
+    //       paddingBottom: 20, 
+    //       paddingLeft: 10, 
+    //       marginTop: -25, 
+    //       color: 'red', 
+    //       fontSize: 14
+    //     }}>Users must be at least 13 years of age</Text>
+    //   </View>}
+    //   {props.show && (
+    //     <View style={{width: 320, height: '30%' ,justifyContent: 'center' }}>
+    //       <DateTimePicker
+    //         testID="dateTimePicker"
+    //         value={date}
+    //         mode={'date'}
+    //         is24Hour={true}
+    //         display={Platform.OS === "ios" ? "spinner": "default"}
+    //         onChange={onChange}
+    //         />
+    //     </View>
+    //   )}
+    //   <Pressable
+    //     style={[styles.loginButton, {marginTop: 20, backgroundColor: next ? 'rgba(128,0,128, 0.8)' : 'rgba(128,0,128, 1)'}]}
+    //     onPress= {() => {
+    //       if (verifyPage()) {
+    //         props.setShow(false)
+    //         props.next()
+    //       /*navigation.navigate('SignupPersonalScreen', {
+    //       type: accountIdentifierType,
+    //       email: accountIdentifier
+    //     }
+    //   )*/}}}
+    //     onPressIn={()=>{setNext(true)}}
+    //     onPressOut={()=>{setNext(false)}}      
+    //   >
+    //     <Text style={[styles.loginText, {color: 'white',}]}>Next</Text>
+    //   </Pressable>
+    // </ScrollView>
   );
 }
 

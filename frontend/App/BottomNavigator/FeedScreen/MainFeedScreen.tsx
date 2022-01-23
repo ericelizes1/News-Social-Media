@@ -28,6 +28,27 @@ const MainFeedScreen:FC = ({navigation}:any) => {
         <PostCard/>
         <Text h4 style={{fontFamily: 'Palatino', alignSelf: 'center', margin: 25}}>Congrats! Your up to date</Text>
       </ScrollView>
+      <Pressable
+        style={{
+          position: 'absolute',
+          bottom: 93 + 20,
+          right: 20,
+          backgroundColor: 'purple',
+          height: 70,
+          width: 70,
+          borderRadius: 50,
+          justifyContent: 'center',
+          elevation: 2,
+        }}
+      >
+        <Icon
+          name='plus' 
+          type='material-community' 
+          color='white' 
+          size={30} 
+          tvParallaxProperties={false}
+        />
+      </Pressable>
     </View>
   );
 }

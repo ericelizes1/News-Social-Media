@@ -1,4 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
+import * as NavigationBar from 'expo-navigation-bar';
 import 'react-native-gesture-handler';
 import React, { FC } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
