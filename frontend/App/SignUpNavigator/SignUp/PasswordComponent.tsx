@@ -1,5 +1,5 @@
 import React, { FC, useState, useEffect, useRef } from 'react';
-import { ScrollView, View, StyleSheet, Pressable, useWindowDimensions, Keyboard } from 'react-native';
+import { Animated, FlatList, View, StyleSheet, Pressable, useWindowDimensions, Keyboard } from 'react-native';
 import { Text, Icon, Input } from 'react-native-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
@@ -29,11 +29,10 @@ const PasswordComponent:FC<Props> = (props: Props, {navigation}:any) => {
   const [showRetypePasswordError, setShowRetypePasswordError] = useState(false);
   const [showCheckError, setShowCheckError] = useState(false);
 
-  const [passwordLayout, setPasswordLayout] = useState(null);
-  const [retypeLayout, setRetypeLayout] = useState(null);
+  const [keyboardOpen, setKeyboardOpen] = useState(false);
 
   //Keyboard Listener
-  const scrollViewRef = useRef(null);
+  const flatListRef = React.useRef<FlatList>(null);
 
   const passwordRef = useRef(null);
   const retypeRef = useRef(null);
@@ -42,27 +41,15 @@ const PasswordComponent:FC<Props> = (props: Props, {navigation}:any) => {
     const keyboardDidShowListener = Keyboard.addListener(
       'keyboardDidShow',
       () => {
-        console.log("o");
-        if (scrollViewRef != null && scrollViewRef.current != null) {
-          if (passwordRef != null && passwordRef.current != null && passwordRef.current.isFocused()) {
-            if (passwordLayout != null) {
-              console.log(passwordLayout);
-              console.log("password focused");
-              scrollViewRef.current.scrollToEnd();
-            }
-          } else if (retypeRef != null && retypeRef.current != null && retypeRef.current.isFocused()) {
-            if (retypeLayout != null) {
-              console.log(retypeLayout);
-              console.log("retype password focused");
-              scrollViewRef.current.scrollToEnd();
-            }
-          }
-        }
+        moveUp();
+        setKeyboardOpen(true);
       }
     );
     const keyboardDidHideListener = Keyboard.addListener(
       'keyboardDidHide',
       () => {
+        moveDown();
+        setKeyboardOpen(false);
       }
     );
 
@@ -119,52 +106,51 @@ const PasswordComponent:FC<Props> = (props: Props, {navigation}:any) => {
     }
   }
 
-  return(
-    <ScrollView
-      // ref = {ref => scrollView.current = ref}
-      ref={scrollViewRef}
-      style={[styles.menuContainer]}
-      contentContainerStyle={{
-        justifyContent: 'center', 
-        alignItems: 'center', 
-        backgroundColor: 'white', 
-        height: window.height - HEADER_HEIGHT * 2.5}}
-      showsVerticalScrollIndicator={false}
-      alwaysBounceVertical={false}
-    >
+  const animatedVal = useRef(new Animated.Value(0));
+  const gapHeight = (window.height - HEADER_HEIGHT - 400) / 2
+  const translate = animatedVal.current.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, -gapHeight]
+  })
+
+  const animatedStyle = {
+    transform: [
+      { translateY: translate }
+    ], 
+  }
+  const moveUp = () => {
+    Animated.spring(animatedVal.current, {
+      toValue: 1,
+      friction: 25,
+      tension: 100,
+      useNativeDriver: false,
+    }).start();
+  }
+  const moveDown = () => {
+    Animated.spring(animatedVal.current, {
+      toValue: 0,
+      friction: 25,
+      tension: 100,
+      useNativeDriver: false,
+    }).start();
+  }
+  const flatListComponents = [
+    <View style={{height: gapHeight}}/>,
+    <Animated.View style={animatedStyle}>
       <Input
         ref={passwordRef}
         style={{marginTop: -5,}}
         placeholder='Password*' 
         autoCompleteType={undefined}
         secureTextEntry={true}
+        onFocus={() => {
+          flatListRef.current.scrollToIndex({index: 1, viewPosition: 0.4});
+          //setKeyboardOpen(true);
+        }}
         onChangeText={value => {
           validatePassword(value);
           setShowPasswordError(false);
-        }}
-        onLayout={({nativeEvent}) => {
-          setPasswordLayout({nativeEvent: nativeEvent.layout});
-        }}
-        // onLayout={(event) => {
-        //   event.target.measure((x, y, width, height, pageX, pageY) => {
-        //     doSomethingWithAbsolutePosition({
-        //       x: x + pageX,
-        //       y: y + pageY,
-        //     });
-        //   }
-        // }}
-        // onFocus={() => {
-        //   if (passwordRef != null && passwordRef.current != null) {
-        //     passwordRef.current.measure((fx, fy, width, height, px, py) => {
-        //       let yOffset = py;
-        //       console.log(yOffset);
-        //       if (scrollViewRef != null && scrollViewRef.current != null) {
-        //         scrollViewRef.current.scrollTo({x: 0, y: yOffset, animated: true});
-        //       }
-        //     })
-        //   }
-        // }}
-      />
+        }}/>
       {showPasswordError && 
         <View style={{width: '100%'}}>
           <Text style={{
@@ -176,18 +162,21 @@ const PasswordComponent:FC<Props> = (props: Props, {navigation}:any) => {
           }}>Please enter a password containing at least 8 characters: at least 1 uppercase, lowercase, numeric, and special character</Text>
         </View>
       }
+    </Animated.View>,
+    <Animated.View style={animatedStyle}>
       <Input
         ref={retypeRef}
         style={{marginTop: -5,}}
         placeholder='Retype Password*' 
         autoCompleteType={undefined}
+        onFocus={() => {
+          flatListRef.current.scrollToIndex({index: 2, viewPosition: 0.4});
+          setKeyboardOpen(true);
+        }}
         secureTextEntry={true}
         onChangeText={value => {
           setRetypePassword(value);
           setShowRetypePasswordError(false);
-        }}
-        onLayout={({nativeEvent}) => {
-          setRetypeLayout({nativeEvent: nativeEvent.layout});
         }}
       />
       {showRetypePasswordError && 
@@ -201,6 +190,8 @@ const PasswordComponent:FC<Props> = (props: Props, {navigation}:any) => {
           }}>Please make sure your passwords match</Text>
         </View>
       }
+    </Animated.View>,
+    <Animated.View style={animatedStyle}>
       <View style={{width: '100%', flexDirection: 'row', justifyContent: 'flex-start', marginVertical: 10}}>
         <Pressable
           style={{marginTop: 5}}
@@ -236,6 +227,8 @@ const PasswordComponent:FC<Props> = (props: Props, {navigation}:any) => {
           }}>Please agree to the Terms and Conditions before signing up</Text>
         </View>
       }
+    </Animated.View>,
+    <Animated.View style={animatedStyle}>
       <Pressable
         style={[styles.loginButton, {marginTop: 20, backgroundColor: next ? 'rgba(128,0,128, 0.8)' : 'rgba(128,0,128, 1)'}]}
         onPress= {handleSignUpButtonPress}
@@ -244,7 +237,22 @@ const PasswordComponent:FC<Props> = (props: Props, {navigation}:any) => {
       >
         <Text style={[styles.loginText, {color: 'white',}]}>Sign Up</Text>
       </Pressable>
-    </ScrollView>
+    </Animated.View>,
+    <Animated.View style={[animatedStyle, {height: keyboardOpen ? 50 : (window.height - HEADER_HEIGHT - 400) / 2, backgroundColor: 'red'}]} />,
+  ]
+
+  const renderItem = ({item}) => item;
+  
+  return(
+    <FlatList
+      data={flatListComponents}
+      ref={flatListRef}
+      style={[styles.menuContainer]}
+      renderItem={renderItem}
+      keyExtractor={(item, index) => index.toString()}
+      showsVerticalScrollIndicator={false}
+      alwaysBounceVertical={false}
+    />
   );
 }
 

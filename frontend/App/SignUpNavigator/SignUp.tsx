@@ -71,10 +71,8 @@ const SignUp:FC = ({navigation}:any) => {
 
   const handleSignUp = () => {
     if (fields.accountIdentifierType === 'email') {
-      // navigation.navigate('SignupVerifyScreen')
-      // console.log(fields.accountIdentifier, fields.password);
-      // firebaseSignUp(fields.accountIdentifier, fields.password)
       console.log(fields)
+      // firebaseSignUp(fields.accountIdentifier, fields.password, fields.username, fields.birthdate)
     }
   }
 
@@ -153,6 +151,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingLeft: 10,
     zIndex: 1,
+    backgroundColor: 'white'
   },
   titleContainer: {
     width: '100%',

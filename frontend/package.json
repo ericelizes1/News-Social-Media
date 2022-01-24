@@ -19,13 +19,14 @@
     "axios": "^0.24.0",
     "expo": "^43.0.0",
     "expo-linear-gradient": "~10.0.3",
+    "expo-navigation-bar": "~1.0.0",
     "expo-splash-screen": "~0.13.4",
     "expo-status-bar": "~1.1.0",
     "expo-updates": "~0.10.5",
     "firebase": "^9.6.1",
     "react": "17.0.1",
     "react-dom": "17.0.1",
-    "react-native": "0.64.2",
+    "react-native": "^0.64.3",
     "react-native-card-flip": "^1.0.7",
     "react-native-confirmation-code-field": "^7.2.0",
     "react-native-dotenv": "^3.3.1",
@@ -42,8 +43,7 @@
     "react-native-screens": "~3.8.0",
     "react-native-tab-view": "^3.1.1",
     "react-native-unimodules": "~0.15.0",
-    "react-native-web": "0.17.1",
-    "expo-navigation-bar": "~1.0.0"
+    "react-native-web": "0.17.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
